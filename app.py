@@ -1,6 +1,14 @@
 import os
-from flask import Flask, redirect, render_template, request, send_file, jsonify
+from flask import Flask, redirect, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import (
+    LoginManager,
+    UserMixin,
+    login_user,
+    logout_user,
+    login_required,
+    current_user,
+)
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
@@ -9,18 +17,30 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///links.db"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key")
 
 database_url = os.environ.get("DATABASE_URL", "sqlite:///links.db")
-
-# Render uses postgres:// but SQLAlchemy needs postgresql://
 if database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
-
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 
 db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+login_manager.login_view = "login"
+
+
+# ── Single user from environment ──
+class User(UserMixin):
+    id = 1
+    username = os.environ.get("ADMIN_USERNAME", "admin")
+    password = os.environ.get("ADMIN_PASSWORD", "password")
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    if int(user_id) == 1:
+        return User()
+    return None
 
 
 class Link(db.Model):
@@ -43,7 +63,7 @@ def home():
     return render_template("home.html")
 
 
-@app.route("/python_notes")
+@app.route("/python-notes")
 def python_notes():
     return render_template("python_notes.html")
 
@@ -75,14 +95,32 @@ def links():
     )
 
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        if username == User.username and password == User.password:
+            login_user(User())
+            return redirect("/links")
+        return render_template("login.html", error="Invalid credentials")
+    return render_template("login.html")
+
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect("/links")
+
+
 @app.route("/add", methods=["GET", "POST"])
+@login_required
 def add_link():
     if request.method == "POST":
         url = request.form.get("url")
-
         if not url.startswith("http://") and not url.startswith("https://"):
             url = "https://" + url
-
         new_link = Link(
             url=url,
             title=request.form.get("title"),
@@ -94,19 +132,11 @@ def add_link():
         db.session.add(new_link)
         db.session.commit()
         return redirect("/links")
-
     return render_template("add_link.html")
 
 
-@app.route("/delete/<int:id>", methods=["POST"])
-def delete_link(id):
-    link = Link.query.get(id)
-    db.session.delete(link)
-    db.session.commit()
-    return redirect("/links")
-
-
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
+@login_required
 def edit_link(id):
     link = Link.query.get(id)
     if request.method == "POST":
@@ -120,13 +150,20 @@ def edit_link(id):
     return render_template("edit_link.html", link=link)
 
 
+@app.route("/delete/<int:id>", methods=["POST"])
+@login_required
+def delete_link(id):
+    link = Link.query.get(id)
+    db.session.delete(link)
+    db.session.commit()
+    return redirect("/links")
+
+
 @app.route("/fetch-metadata", methods=["POST"])
 def fetch_metadata():
     url = request.form.get("url")
-
     if not url.startswith("http://") and not url.startswith("https://"):
         url = "https://" + url
-
     try:
         from urllib.parse import urlparse, urljoin
 
@@ -139,11 +176,9 @@ def fetch_metadata():
         og_image = soup.find("meta", property="og:image")
         thumbnail = og_image["content"] if og_image else ""
 
-        # Google favicon service
         domain = urlparse(url).netloc
         favicon_google = f"https://www.google.com/s2/favicons?domain={domain}&sz=64"
 
-        # Direct favicon from page HTML
         favicon_tag = soup.find("link", rel=lambda r: r and "icon" in r)
         favicon_direct = ""
         if favicon_tag and favicon_tag.get("href"):
