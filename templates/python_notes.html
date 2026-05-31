@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Python_notes</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #cccccc; background-color: #303030; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ffcfaf; } /* Alert */
+    code span.an { color: #7f9f7f; font-weight: bold; } /* Annotation */
+    code span.at { } /* Attribute */
+    code span.bn { color: #dca3a3; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #f0dfaf; } /* ControlFlow */
+    code span.ch { color: #dca3a3; } /* Char */
+    code span.cn { color: #dca3a3; font-weight: bold; } /* Constant */
+    code span.co { color: #7f9f7f; } /* Comment */
+    code span.cv { color: #7f9f7f; font-weight: bold; } /* CommentVar */
+    code span.do { color: #7f9f7f; } /* Documentation */
+    code span.dt { color: #dfdfbf; } /* DataType */
+    code span.dv { color: #dcdccc; } /* DecVal */
+    code span.er { color: #c3bf9f; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #c0bed1; } /* Float */
+    code span.fu { color: #efef8f; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #7f9f7f; font-weight: bold; } /* Information */
+    code span.kw { color: #f0dfaf; } /* Keyword */
+    code span.op { color: #f0efd0; } /* Operator */
+    code span.ot { color: #efef8f; } /* Other */
+    code span.pp { color: #ffcfaf; font-weight: bold; } /* Preprocessor */
+    code span.sc { color: #dca3a3; } /* SpecialChar */
+    code span.ss { color: #cc9393; } /* SpecialString */
+    code span.st { color: #cc9393; } /* String */
+    code span.va { } /* Variable */
+    code span.vs { color: #cc9393; } /* VerbatimString */
+    code span.wa { color: #7f9f7f; font-weight: bold; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='darkstyle.css') }}" />
+</head>
+<body>
+<a href="/">← Back Home</a><br>
+<nav>
+<a href="#section-1-opening-closing-files">Section 1 — Opening &amp;
+Closing Files</a> <a href="#section-2-file-modes">Section 2 — File
+Modes</a> <a href="#section-3-reading-files">Section 3 — Reading
+Files</a> <a href="#section-4-writing-files">Section 4 — Writing
+Files</a> <a href="#section-5-working-with-paths-os-pathlib">Section 5 —
+Paths</a> <a href="#section-6-exception-handling">Section 6 — Exception
+Handling</a> <a href="#section-7-csv-files">Section 7 — CSV Files</a>
+<a href="#section-8-json">Section 8 — JSON</a>
+<a href="#section-9-apis-with-requests">Section 9 — APIs</a>
+<a href="#section-10-sample-programs">Section 10 — Sample Programs</a>
+<a href="#section-11-list-comprehension">Section 11 — List
+Comprehension</a>
+<a href="#section-12-dicts-and-dict-comprehension">Section 12 —
+Dicts</a> <a href="#section-13-virtual-environments">Section 13 —
+Virtual Environments</a> <a href="#section-14-modules">Section 14 —
+Modules</a> <a href="#section-15-packages">Section 15 — Packages</a>
+<a href="#section-16-error-handling">Section 16 — Error Handling</a>
+<a href="#section-17-object-oriented-programming-oop">Section 17 —
+OOP</a> <a href="#section-18-generators">Section 18 — Generators</a>
+<a href="#section-19-decorators">Section 19 — Decorators</a>
+<a href="#section-20-testing-with-pytest">Section 20 — Testing</a>
+<a href="#section-21-structured-query-language-sql">Section 21 — SQL</a>
+<a href="#section-22-flask-html-render-website">Section 22 — Flask</a>
+<span class="site-title">Python Notes 2026</span>
+</nav>
+<h1 id="python-tutorial-notes-2026">Python Tutorial Notes 2026</h1>
+<h2 id="section-1-opening-closing-files">Section 1 — Opening &amp;
+Closing Files</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Always use &#39;with&#39; — it auto-closes the file</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;file.txt&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> f.read()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Without &#39;with&#39; (not recommended)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="bu">open</span>(<span class="st">&quot;file.txt&quot;</span>, <span class="st">&quot;r&quot;</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>content <span class="op">=</span> f.read()</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>f.close()  <span class="co"># easy to forget!</span></span></code></pre></div>
+<h2 id="section-2-file-modes">Section 2 — File Modes</h2>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"r"</code></td>
+<td>Read only. Error if missing.</td>
+</tr>
+<tr>
+<td><code>"w"</code></td>
+<td>Write. Overwrites existing!</td>
+</tr>
+<tr>
+<td><code>"a"</code></td>
+<td>Append to end.</td>
+</tr>
+<tr>
+<td><code>"x"</code></td>
+<td>Create new. Error if exists.</td>
+</tr>
+<tr>
+<td><code>"rb"</code>/<code>"wb"</code></td>
+<td>Binary read/write.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section-3-reading-files">Section 3 — Reading Files</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;file.txt&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    content <span class="op">=</span> f.read()       <span class="co"># entire file as string</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    lines <span class="op">=</span> f.readlines()    <span class="co"># list of lines</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    line <span class="op">=</span> f.readline()      <span class="co"># one line at a time</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Best for large files — memory efficient</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;file.txt&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> line <span class="kw">in</span> f:</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(line.strip())  <span class="co"># strip() removes \n</span></span></code></pre></div>
+<h2 id="section-4-writing-files">Section 4 — Writing Files</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># write() — single string</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;file.txt&quot;</span>, <span class="st">&quot;w&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    f.write(<span class="st">&quot;Hello, world!</span><span class="ch">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># writelines() — list of strings (no auto \n)</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>lines <span class="op">=</span> [<span class="st">&quot;line 1</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;line 2</span><span class="ch">\n</span><span class="st">&quot;</span>, <span class="st">&quot;line 3</span><span class="ch">\n</span><span class="st">&quot;</span>]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;file.txt&quot;</span>, <span class="st">&quot;w&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    f.writelines(lines)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co"># join() approach</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;file.txt&quot;</span>, <span class="st">&quot;w&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    f.write(<span class="st">&quot;</span><span class="ch">\n</span><span class="st">&quot;</span>.join(lines))</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># append mode</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;file.txt&quot;</span>, <span class="st">&quot;a&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    f.write(<span class="st">&quot;This will be added to the end.</span><span class="ch">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<h2 id="section-5-working-with-paths-os-pathlib">Section 5 — Working
+with Paths: <code>os</code> &amp; <code>pathlib</code></h2>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span></code></pre></div>
+<h3 id="path-operations">Path Operations</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>os.path.exists(<span class="st">&quot;file.txt&quot;</span>)           <span class="co"># True or False</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>os.path.join(<span class="st">&quot;folder&quot;</span>, <span class="st">&quot;file.txt&quot;</span>)   <span class="co"># safe path joining</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>os.path.basename(<span class="st">&quot;/a/b/file.txt&quot;</span>)    <span class="co"># &quot;file.txt&quot;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>os.path.dirname(<span class="st">&quot;/a/b/file.txt&quot;</span>)     <span class="co"># &quot;/a/b&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>os.path.isfile(<span class="st">&quot;file.txt&quot;</span>)           <span class="co"># is it a file?</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>os.path.isdir(<span class="st">&quot;folder&quot;</span>)              <span class="co"># is it a directory?</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>os.path.getsize(<span class="st">&quot;file.txt&quot;</span>)          <span class="co"># size in bytes</span></span></code></pre></div>
+<h3 id="directory-operations">Directory Operations</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>os.getcwd()                          <span class="co"># current working directory</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="st">&quot;/new/path&quot;</span>)                <span class="co"># change directory</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>os.listdir(<span class="st">&quot;.&quot;</span>)                      <span class="co"># list files &amp; folders</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>os.mkdir(<span class="st">&quot;new_folder&quot;</span>)               <span class="co"># create one folder</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>os.makedirs(<span class="st">&quot;a/b/c&quot;</span>)                 <span class="co"># create nested folders</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>os.rmdir(<span class="st">&quot;empty_folder&quot;</span>)             <span class="co"># remove empty folder</span></span></code></pre></div>
+<h3 id="file-operations">File Operations</h3>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>os.remove(<span class="st">&quot;file.txt&quot;</span>)                <span class="co"># delete a file</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>os.rename(<span class="st">&quot;old.txt&quot;</span>, <span class="st">&quot;new.txt&quot;</span>)      <span class="co"># rename or move</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Walk entire directory tree</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> root, dirs, files <span class="kw">in</span> os.walk(<span class="st">&quot;folder&quot;</span>):</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="bu">file</span> <span class="kw">in</span> files:</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(os.path.join(root, <span class="bu">file</span>))</span></code></pre></div>
+<h3 id="environment-variables">Environment Variables</h3>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">&quot;PATH&quot;</span>]                   <span class="co"># get a variable</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>os.environ.get(<span class="st">&quot;MY_KEY&quot;</span>, <span class="st">&quot;default&quot;</span>)  <span class="co"># safe get</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">&quot;MY_KEY&quot;</span>] <span class="op">=</span> <span class="st">&quot;value&quot;</span>       <span class="co"># set a variable</span></span></code></pre></div>
+<h3 id="os-vs-pathlib-quick-comparison"><code>os</code> vs
+<code>pathlib</code> Quick Comparison</h3>
+<table>
+<thead>
+<tr>
+<th><code>os</code> style</th>
+<th><code>pathlib</code> style</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>os.path.exists(p)</code></td>
+<td><code>Path(p).exists()</code></td>
+</tr>
+<tr>
+<td><code>os.path.join(a, b)</code></td>
+<td><code>Path(a) / b</code></td>
+</tr>
+<tr>
+<td><code>os.listdir(p)</code></td>
+<td><code>list(Path(p).iterdir())</code></td>
+</tr>
+<tr>
+<td><code>os.mkdir(p)</code></td>
+<td><code>Path(p).mkdir()</code></td>
+</tr>
+<tr>
+<td><code>os.path.isfile(p)</code></td>
+<td><code>Path(p).is_file()</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="section-6-exception-handling">Section 6 — Exception
+Handling</h2>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># code that might fail</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;file.txt&quot;</span>, <span class="st">&quot;r&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        content <span class="op">=</span> f.read()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;File not found!&quot;</span>)        <span class="co"># runs if file doesn&#39;t exist</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">PermissionError</span>:</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Permission denied!&quot;</span>)     <span class="co"># runs if no read access</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Unexpected error: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">&quot;</span>) <span class="co"># catches anything else</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;File read successfully!&quot;</span>) <span class="co"># runs only if NO exception occurred</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="cf">finally</span>:</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Done.&quot;</span>)                  <span class="co"># ALWAYS runs, error or not</span></span></code></pre></div>
+<h3 id="common-file-exceptions">Common File Exceptions</h3>
+<table>
+<thead>
+<tr>
+<th>Exception</th>
+<th>Cause</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FileNotFoundError</code></td>
+<td>File or folder doesn’t exist</td>
+</tr>
+<tr>
+<td><code>PermissionError</code></td>
+<td>No read/write access</td>
+</tr>
+<tr>
+<td><code>IsADirectoryError</code></td>
+<td>Tried to open a folder as a file</td>
+</tr>
+<tr>
+<td><code>FileExistsError</code></td>
+<td>File already exists (mode <code>"x"</code>)</td>
+</tr>
+<tr>
+<td><code>OSError</code></td>
+<td>General OS-level file error</td>
+</tr>
+<tr>
+<td><code>UnicodeDecodeError</code></td>
+<td>Wrong encoding when reading</td>
+</tr>
+</tbody>
+</table>
+<h2 id="section-7-csv-files">Section 7 — CSV Files</h2>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span></code></pre></div>
+<h3 id="reading-csv-files">Reading CSV Files</h3>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># reader — rows as lists</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;data.csv&quot;</span>, <span class="st">&quot;r&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    reader <span class="op">=</span> csv.reader(f)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> reader:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(row)  <span class="co"># [&#39;Ken&#39;, &#39;30&#39;, &#39;Montreal&#39;]</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># DictReader — rows as dicts (uses header row as keys)</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;data.csv&quot;</span>, <span class="st">&quot;r&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    reader <span class="op">=</span> csv.DictReader(f)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> reader:</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(row[<span class="st">&quot;name&quot;</span>], row[<span class="st">&quot;city&quot;</span>])</span></code></pre></div>
+<h3 id="writing-csv-files">Writing CSV Files</h3>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># writer — write rows as lists</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;data.csv&quot;</span>, <span class="st">&quot;w&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    writer <span class="op">=</span> csv.writer(f)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    writer.writerow([<span class="st">&quot;name&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;city&quot;</span>])       <span class="co"># header</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    writer.writerow([<span class="st">&quot;Ken&quot;</span>, <span class="dv">30</span>, <span class="st">&quot;Montreal&quot;</span>])</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    writer.writerows([                              <span class="co"># multiple rows</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Alice&quot;</span>, <span class="dv">25</span>, <span class="st">&quot;Toronto&quot;</span>],</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Bob&quot;</span>, <span class="dv">35</span>, <span class="st">&quot;Vancouver&quot;</span>]</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    ])</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co"># DictWriter — write rows as dicts</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;data.csv&quot;</span>, <span class="st">&quot;w&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    fields <span class="op">=</span> [<span class="st">&quot;name&quot;</span>, <span class="st">&quot;age&quot;</span>, <span class="st">&quot;city&quot;</span>]</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    writer <span class="op">=</span> csv.DictWriter(f, fieldnames<span class="op">=</span>fields)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    writer.writeheader()</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    writer.writerow({<span class="st">&quot;name&quot;</span>: <span class="st">&quot;Ken&quot;</span>, <span class="st">&quot;age&quot;</span>: <span class="dv">30</span>, <span class="st">&quot;city&quot;</span>: <span class="st">&quot;Montreal&quot;</span>})</span></code></pre></div>
+<h3 id="reader-vs-dictreader"><code>reader</code> vs
+<code>DictReader</code></h3>
+<table>
+<thead>
+<tr>
+<th><code>reader</code> (list)</th>
+<th><code>DictReader</code> (dict)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>row[0]  # "Ken"</code></td>
+<td><code>row["name"]  # "Ken"</code></td>
+</tr>
+<tr>
+<td><code>row[1]  # "30"</code></td>
+<td><code>row["age"]   # "30"</code></td>
+</tr>
+<tr>
+<td><code>row[2]  # "Montreal"</code></td>
+<td><code>row["city"]  # "Montreal"</code></td>
+</tr>
+<tr>
+<td>Good for simple files</td>
+<td>More readable, preferred</td>
+</tr>
+</tbody>
+</table>
+<h3 id="key-gotchas">Key Gotchas</h3>
+<blockquote>
+<p><strong>Always use <code>newline=""</code></strong> — without it you
+get blank lines between rows on Windows.<br />
+<strong>Everything is a string</strong> — convert with
+<code>int(row[1])</code> or <code>float(row[1])</code> as needed.<br />
+<strong><code>DictReader</code> skips the header</strong> — it uses the
+first row as keys automatically.<br />
+<strong>Use <code>encoding="utf-8"</code></strong> — for files with
+accents or special characters.</p>
+</blockquote>
+<h2 id="section-8-json">Section 8 — JSON</h2>
+<h3 id="what-is-json">What is JSON?</h3>
+<p>JSON (JavaScript Object Notation) is a human-readable data format
+used everywhere in APIs. It looks like Python dicts and lists:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ken&quot;</span><span class="fu">,</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;age&quot;</span><span class="fu">:</span> <span class="dv">30</span><span class="fu">,</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;city&quot;</span><span class="fu">:</span> <span class="st">&quot;Montreal&quot;</span><span class="fu">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;hobbies&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;Python&quot;</span><span class="ot">,</span> <span class="st">&quot;coding&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;active&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="the-4-key-functions">The 4 Key Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>json.load(f)</code></td>
+<td>Read JSON from a file</td>
+</tr>
+<tr>
+<td><code>json.dump(data, f)</code></td>
+<td>Write JSON to a file</td>
+</tr>
+<tr>
+<td><code>json.loads(string)</code></td>
+<td>Parse JSON from a string</td>
+</tr>
+<tr>
+<td><code>json.dumps(data)</code></td>
+<td>Convert data to a JSON string</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Memory trick:</strong> <code>load</code>/<code>dump</code> =
+files. <code>loads</code>/<code>dumps</code> = strings (the
+<code>s</code> = string).</p>
+</blockquote>
+<h3 id="reading-writing-json-files">Reading &amp; Writing JSON
+Files</h3>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Read from file</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;data.json&quot;</span>, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> json.load(f)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data[<span class="st">&quot;name&quot;</span>])  <span class="co"># access like a dict</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Write to file</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>person <span class="op">=</span> {<span class="st">&quot;name&quot;</span>: <span class="st">&quot;Ken&quot;</span>, <span class="st">&quot;age&quot;</span>: <span class="dv">30</span>, <span class="st">&quot;city&quot;</span>: <span class="st">&quot;Montreal&quot;</span>}</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;data.json&quot;</span>, <span class="st">&quot;w&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    json.dump(person, f, indent<span class="op">=</span><span class="dv">4</span>)  <span class="co"># indent=4 makes it human-readable</span></span></code></pre></div>
+<h3 id="working-with-json-strings">Working with JSON Strings</h3>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># loads — parse a JSON string into Python</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>json_string <span class="op">=</span> <span class="st">&#39;{&quot;name&quot;: &quot;Ken&quot;, &quot;age&quot;: 30}&#39;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> json.loads(json_string)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data[<span class="st">&quot;name&quot;</span>])  <span class="co"># &quot;Ken&quot;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># dumps — convert Python to JSON string</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>person <span class="op">=</span> {<span class="st">&quot;name&quot;</span>: <span class="st">&quot;Ken&quot;</span>, <span class="st">&quot;age&quot;</span>: <span class="dv">30</span>}</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>json_string <span class="op">=</span> json.dumps(person, indent<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json_string)</span></code></pre></div>
+<blockquote>
+<p>You’ll use <code>loads</code>/<code>dumps</code> a lot with APIs —
+responses come back as strings, not files.<br />
+<code>loads()</code> converts a string → dict. <code>dumps()</code>
+converts a dict → string.</p>
+</blockquote>
+<h3 id="key-gotchas-1">Key Gotchas</h3>
+<blockquote>
+<p><strong>JSON keys must be strings</strong> — <code>{1: "a"}</code>
+will fail, use <code>{"1": "a"}</code>.<br />
+<strong><code>true</code>/<code>false</code> vs
+<code>True</code>/<code>False</code></strong> — JSON uses lowercase;
+<code>json.load()</code> converts automatically.<br />
+<strong>Always use <code>encoding="utf-8"</code></strong> — especially
+important with French accented characters.<br />
+<strong>Use <code>indent=</code>for readability</strong> —
+<code>json.dump(data, f, indent=4)</code> writes pretty-printed
+JSON.</p>
+</blockquote>
+<h2 id="section-9-apis-with-requests">Section 9 — APIs with
+<code>requests</code></h2>
+<p>An API lets programs talk to each other. Web APIs use HTTP requests
+to exchange data, usually in JSON format.</p>
+<h3 id="making-http-requests">Making HTTP Requests</h3>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># GET request — retrieve data</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.get(<span class="st">&quot;https://api.example.com/data&quot;</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> response.json()  <span class="co"># parse JSON response</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(data)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Error: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="co"># POST request — send data</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>payload <span class="op">=</span> {<span class="st">&quot;name&quot;</span>: <span class="st">&quot;Ken&quot;</span>, <span class="st">&quot;age&quot;</span>: <span class="dv">30</span>}</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>response <span class="op">=</span> requests.post(<span class="st">&quot;https://api.example.com/users&quot;</span>, json<span class="op">=</span>payload)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">201</span>:</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;User created successfully!&quot;</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Error: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<h3 id="requests-exception-handling"><code>requests</code> Exception
+Handling</h3>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note: more specific exceptions must come before broader ones</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(url, timeout<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    response.raise_for_status()</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> requests.exceptions.<span class="pp">ConnectionError</span>:</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;No internet connection.&quot;</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> requests.exceptions.Timeout:</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Request timed out.&quot;</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> requests.exceptions.HTTPError <span class="im">as</span> e:    <span class="co"># before RequestException!</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;HTTP error occurred: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> requests.exceptions.RequestException <span class="im">as</span> e:</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Something went wrong: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<h3 id="key-gotchas-2">Key Gotchas</h3>
+<blockquote>
+<p><strong>Always check status codes</strong> — 200 = success (GET), 201
+= created (POST).<br />
+<strong>Use <code>.json()</code></strong> to parse JSON responses into a
+dict.<br />
+<strong><code>HTTPError</code> before
+<code>RequestException</code></strong> — <code>HTTPError</code> is a
+subclass, so it must come first.<br />
+<strong>Use <code>timeout=</code></strong> — always set a timeout so
+your program doesn’t hang forever.</p>
+</blockquote>
+<h3 id="fetchurl.py-reusable-fetch-function"><code>fetchurl.py</code> —
+Reusable Fetch Function</h3>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch(url):</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> requests.get(url, timeout<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        response.raise_for_status()</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> response.json()</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> requests.exceptions.<span class="pp">ConnectionError</span>:</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;No internet connection.&quot;</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> requests.exceptions.Timeout:</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;Request timed out.&quot;</span>)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> requests.exceptions.HTTPError <span class="im">as</span> e:</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;HTTP error occurred: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> requests.exceptions.RequestException <span class="im">as</span> e:</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;Something went wrong: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<h2 id="section-10-sample-programs">Section 10 — Sample Programs</h2>
+<h3 id="github-repo-search-fetch-save-to-csv">GitHub Repo Search — Fetch
+&amp; Save to CSV</h3>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> csv</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">&quot;https://api.github.com/search/repositories&quot;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Enter search query: &quot;</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {<span class="st">&quot;q&quot;</span>: query, <span class="st">&quot;sort&quot;</span>: <span class="st">&quot;stars&quot;</span>, <span class="st">&quot;per_page&quot;</span>: <span class="dv">5</span>}</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(url, params<span class="op">=</span>params, timeout<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    response.raise_for_status()</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> response.json()</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">&quot;repositories.csv&quot;</span>, <span class="st">&quot;w&quot;</span>, newline<span class="op">=</span><span class="st">&quot;&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="im">as</span> csvfile:</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        csvwriter <span class="op">=</span> csv.writer(csvfile)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        csvwriter.writerow([<span class="st">&quot;Name&quot;</span>, <span class="st">&quot;Stargazers&quot;</span>, <span class="st">&quot;Description&quot;</span>])</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> repo <span class="kw">in</span> data[<span class="st">&quot;items&quot;</span>]:</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(repo[<span class="st">&quot;name&quot;</span>])</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(repo[<span class="st">&quot;stargazers_count&quot;</span>])</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>            description <span class="op">=</span> repo[<span class="st">&quot;description&quot;</span>] <span class="kw">or</span> <span class="st">&quot;No description provided.&quot;</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(description[:<span class="dv">100</span>] <span class="op">+</span> <span class="st">&quot;...&quot;</span> <span class="cf">if</span> <span class="bu">len</span>(description) <span class="op">&gt;</span> <span class="dv">100</span> <span class="cf">else</span> description)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">&quot;---&quot;</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>            csvwriter.writerow([repo[<span class="st">&quot;name&quot;</span>], repo[<span class="st">&quot;stargazers_count&quot;</span>], description])</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> requests.exceptions.<span class="pp">ConnectionError</span>:</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;No internet connection.&quot;</span>)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> requests.exceptions.Timeout:</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Request timed out.&quot;</span>)</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> requests.exceptions.HTTPError <span class="im">as</span> e:</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;HTTP error occurred: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> requests.exceptions.RequestException <span class="im">as</span> e:</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;Something went wrong: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<h2 id="section-11-list-comprehension">Section 11 — List
+Comprehension</h2>
+<h3 id="basic-structure">Basic Structure</h3>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>[expression <span class="cf">for</span> item <span class="kw">in</span> iterable]</span></code></pre></div>
+<h3 id="with-optional-filter">With Optional Filter</h3>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>[expression <span class="cf">for</span> item <span class="kw">in</span> iterable <span class="cf">if</span> condition]</span></code></pre></div>
+<h3 id="example">Example:</h3>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>word_list <span class="op">=</span> [<span class="st">&quot;python&quot;</span>, <span class="st">&quot;json&quot;</span>, <span class="st">&quot;csv&quot;</span>, <span class="st">&quot;requests&quot;</span>]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>uppercase_list <span class="op">=</span> [item.upper() <span class="cf">for</span> item <span class="kw">in</span> <span class="bu">list</span> <span class="cf">if</span> <span class="bu">len</span>(item) <span class="op">&gt;</span> <span class="dv">3</span>]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(uppercase_list)</span></code></pre></div>
+<h2 id="section-12-dicts-and-dict-comprehension">Section 12 — Dicts and
+Dict Comprehension</h2>
+<h3 id="methods-to-know">Methods to know:</h3>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>person.keys()    <span class="co"># dict_keys([&#39;name&#39;, &#39;age&#39;])</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>person.values()  <span class="co"># dict_values([&#39;Ken&#39;, 30])</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>person.items()   <span class="co"># dict_items([(&#39;name&#39;, &#39;Ken&#39;), (&#39;age&#39;, 30)])</span></span></code></pre></div>
+<p><code>.items()</code> lets you loop over both <strong>key</strong>
+and <strong>value</strong> at once:</p>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, value <span class="kw">in</span> person.items():</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<p>And <code>.get()</code> for safe lookups:</p>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>person[<span class="st">&quot;city&quot;</span>]                  <span class="co"># KeyError if missing!</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>person.get(<span class="st">&quot;city&quot;</span>)              <span class="co"># None — no crash</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>person.get(<span class="st">&quot;city&quot;</span>, <span class="st">&quot;unknown&quot;</span>)   <span class="co"># &quot;unknown&quot; — default value</span></span></code></pre></div>
+<h3 id="example-1">Example:</h3>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dict_summary(data):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    notes <span class="op">=</span> data.get(<span class="st">&quot;notes&quot;</span>, <span class="st">&quot;No notes&quot;</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Dictionary Summary:&quot;</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> key, value <span class="kw">in</span> data.items():</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;    </span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>value<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">&quot;notes&quot;</span> <span class="kw">not</span> <span class="kw">in</span> data:</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;    notes: </span><span class="sc">{</span>notes<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>person <span class="op">=</span> {<span class="st">&quot;name&quot;</span>: <span class="st">&quot;Ken&quot;</span>, <span class="st">&quot;age&quot;</span>: <span class="dv">30</span>, <span class="st">&quot;city&quot;</span>: <span class="st">&quot;Trois-Rivières&quot;</span>}</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>dict_summary(person)</span></code></pre></div>
+<h3 id="dict-comprehension">Dict comprehension:</h3>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list comprehension</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>[repo.name <span class="cf">for</span> repo <span class="kw">in</span> repos]</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="co"># dict comprehension</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>{repo.name: repo.stars <span class="cf">for</span> repo <span class="kw">in</span> repos}</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="co"># result: {&quot;redis&quot;: 74520, &quot;redux&quot;: 61447, ...}</span></span></code></pre></div>
+<p>Pattern:
+<code>{key_expression: value_expression for item in iterable}</code></p>
+<h2 id="section-13-virtual-environments">Section 13 — Virtual
+Environments</h2>
+<h3 id="to-start-any-project">To start any project:</h3>
+<ol type="1">
+<li><p>Create the virtual environment
+<code>python -m venv venv</code></p></li>
+<li><p>Activate it (Windows) <code>venv\Scripts\activate</code></p></li>
+<li><p>Install requests <code>pip install</code> whatever you need
+(e.g. requests)</p></li>
+<li><p>Save dependencies
+<code>pip freeze &gt; requirements.txt</code></p></li>
+<li><p>Add <code>venv/</code> to <code>.gitignore</code> before pushing
+to GitHub</p></li>
+</ol>
+<h2 id="section-14-modules">Section 14 — Modules</h2>
+<p>The pattern: <code>module_name.thing_inside_it</code>. The dot is how
+you reach inside.</p>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Style 1 — import the whole module</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math_helpers</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>math_helpers.add(<span class="dv">3</span>, <span class="dv">5</span>)      <span class="co"># must use the module name as prefix</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Style 2 — grab specific names from it</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math_helpers <span class="im">import</span> add, PI</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>add(<span class="dv">3</span>, <span class="dv">5</span>)                   <span class="co"># no prefix needed</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(PI)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Style 3 — give it a nickname (alias)</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math_helpers <span class="im">as</span> mh</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>mh.add(<span class="dv">3</span>, <span class="dv">5</span>)                <span class="co"># shorter prefix</span></span></code></pre></div>
+<h2 id="section-15-packages">Section 15 — Packages</h2>
+<p>A package is just a folder with an <code>__init__.py</code> file
+inside it. Here’s the structure:</p>
+<pre><code>my_project/
+    main.py
+    helpers/              ← this is the package
+        __init__.py       ← this makes it a package
+        math_helpers.py
+        file_helpers.py</code></pre>
+<p>And how you import from it:</p>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># main.py</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> helpers <span class="im">import</span> math_helpers</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>math_helpers.add(<span class="dv">3</span>, <span class="dv">5</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># or go straight to the function</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> helpers.math_helpers <span class="im">import</span> add</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>add(<span class="dv">3</span>, <span class="dv">5</span>)</span></code></pre></div>
+<p>The dot in <code>helpers.math_helpers</code> means “inside the
+<code>helpers</code> package, find <code>math_helpers</code>.” You can
+read it like a file path — <code>helpers/math_helpers.py</code>. The
+<code>__init__.py</code> file can be completely empty — and often is.
+Its job is just to mark the folder as a package. But it can also do
+something useful: pre-load the things you want exposed at the package
+level:</p>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># helpers/__init__.py</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> .math_helpers <span class="im">import</span> add, multiply</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> .file_helpers <span class="im">import</span> read_lines</span></code></pre></div>
+<p>The dot before the module name (<code>.math_helpers</code>) means
+“look inside this same package.” It’s called a relative import.</p>
+<h3 id="a-well-structured-version">A well-structured version:</h3>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>my_project<span class="op">/</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    main.py              ← only the entry point, ties everything together</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    io<span class="op">/</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">__init__</span>.py</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>        reader.py        ← reads files, nothing <span class="cf">else</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>        writer.py        ← writes files, nothing <span class="cf">else</span></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    processing<span class="op">/</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">__init__</span>.py</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>        cleaner.py       ← cleans<span class="op">/</span>validates data</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>        calculator.py    ← does the math</span></code></pre></div>
+<p>Each file has one job. <code>reader.py</code> doesn’t know anything
+about math. <code>calculator.py</code> doesn’t know anything about
+files.</p>
+<h3 id="how-the-files-talk-to-each-other">How the files talk to each
+other:</h3>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># main.py</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io.reader <span class="im">import</span> load_csv</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> processing.cleaner <span class="im">import</span> clean_data</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> processing.calculator <span class="im">import</span> summarize</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io.writer <span class="im">import</span> write_report</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_csv(<span class="st">&quot;sales.csv&quot;</span>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> clean_data(data)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> summarize(data)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>write_report(summary, <span class="st">&quot;report.txt&quot;</span>)</span></code></pre></div>
+<p><code>main.py</code> reads like a table of contents for your whole
+program. That’s the goal.</p>
+<h2 id="section-16-error-handling">Section 16 — Error Handling</h2>
+<p><code>try</code> — run this code. <code>except</code> — if this
+specific error happens, do this instead</p>
+<h3 id="exceptions-are-just-classes">Exceptions are just classes</h3>
+<p>This is the key insight. Every exception in Python is a class, and
+they form an inheritance hierarchy. That’s why this works:</p>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(e)</span></code></pre></div>
+<p><code>Exception</code> is the base class for almost every error —
+catching it catches nearly anything. But that’s usually too broad. You
+want to catch specific exceptions so you handle each case appropriately.
+Here’s a slice of the hierarchy relevant to your project:</p>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="pp">BaseException</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>└── <span class="pp">Exception</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    ├── <span class="pp">ValueError</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    ├── <span class="pp">TypeError</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    ├── <span class="pp">OSError</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    │   └── <span class="pp">FileNotFoundError</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    └── requests.exceptions.RequestException</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>        ├── <span class="pp">ConnectionError</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>        ├── Timeout</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>        └── HTTPError</span></code></pre></div>
+<h3 id="else-and-finally"><code>else</code> and
+<code>finally</code>:</h3>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    response <span class="op">=</span> requests.get(url, timeout<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> requests.exceptions.<span class="pp">ConnectionError</span>:</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;No internet connection.&quot;</span>)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># runs only if NO exception was raised</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Request succeeded!&quot;</span>)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="cf">finally</span>:</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># runs ALWAYS — exception or not</span></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Done attempting request.&quot;</span>)</span></code></pre></div>
+<p><code>else</code> is useful for code that should only run on success
+— keeps it visually separate from the try block. <code>finally</code> is
+useful for cleanup — closing files, closing connections — things that
+must happen regardless.</p>
+<h3 id="raising-your-own-exceptions">Raising your own exceptions:</h3>
+<div class="sourceCode" id="cb37"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_query():</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Enter search query: &quot;</span>)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> query.strip():</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&quot;Search query cannot be empty.&quot;</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> query</span></code></pre></div>
+<p>And catch them wherever you call it:</p>
+<div class="sourceCode" id="cb38"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> get_query()</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> e:</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(e)</span></code></pre></div>
+<p>This is cleaner than printing inside the function and returning None
+— the function signals that something went wrong, and the caller decides
+what to do about it.</p>
+<h3 id="custom-exception-classes">Custom exception classes:</h3>
+<p>For bigger projects you can define your own:</p>
+<div class="sourceCode" id="cb39"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> APIError(<span class="pp">Exception</span>):</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NoResultsError(<span class="pp">Exception</span>):</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">pass</span></span></code></pre></div>
+<p>Then raise and catch them by name:</p>
+<div class="sourceCode" id="cb40"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="cf">raise</span> APIError(<span class="st">&quot;GitHub returned a 403.&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> APIError <span class="im">as</span> e:</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&quot;API problem: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+<p>This makes error handling much more readable — you can tell at a
+glance what kind of thing went wrong.</p>
+<p><code>raise</code> manually creates an error that can be used to
+validate data that does not violate Python’s rules. Execution stops at
+the raise line and Python unwinds up the call stack looking for an
+except block that matches. If it finds one, that code runs. If it never
+finds one, the program crashes with a traceback.</p>
+<h3 id="note-call-stack">Note “CALL STACK”:</h3>
+<p>A call stack is the chain of functions that got you to where you are.
+When your program runs, Python keeps track of every function that’s
+currently “in progress.” That list is the call stack. A simple
+example:</p>
+<div class="sourceCode" id="cb42"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> c():</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&quot;oops&quot;</span>)</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> b():</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    c()</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> a():</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    b()</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>a()</span></code></pre></div>
+<p>When c() raises the error, the call stack looks like this:</p>
+<div class="sourceCode" id="cb43"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>a()  ← called first</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  b()  ← called by a</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    c()  ← called by b, error happens here</span></code></pre></div>
+<p>Python prints this when your program crashes — you’ve seen it before,
+it’s the traceback:</p>
+<div class="sourceCode" id="cb44"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>Traceback (most recent call last):</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  File <span class="st">&quot;main.py&quot;</span>, line <span class="dv">10</span>, <span class="kw">in</span> <span class="op">&lt;</span>module<span class="op">&gt;</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    a()</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  File <span class="st">&quot;main.py&quot;</span>, line <span class="dv">7</span>, <span class="kw">in</span> a</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    b()</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  File <span class="st">&quot;main.py&quot;</span>, line <span class="dv">4</span>, <span class="kw">in</span> b</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    c()</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  File <span class="st">&quot;main.py&quot;</span>, line <span class="dv">2</span>, <span class="kw">in</span> c</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&quot;oops&quot;</span>)</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="pp">ValueError</span>: oops</span></code></pre></div>
+<p>Read it bottom to top — the bottom is where the error actually
+happened, the top is where your program started.</p>
+<h3 id="what-unwinds-up-the-call-stack-means">What “unwinds up the call
+stack” means:</h3>
+<p>When an exception is raised, Python backs out of each function one by
+one looking for a try/except block. If c() doesn’t catch it, it backs
+out to b(). If b() doesn’t catch it, it backs out to a(). If nothing
+catches it, the program crashes.</p>
+<div class="sourceCode" id="cb45"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> c():</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">&quot;oops&quot;</span>)  <span class="co"># raised here</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> b():</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    c()                        <span class="co"># no try/except, backs out to a()</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> a():</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>        b()</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> e:</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;Caught it: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">&quot;</span>)  <span class="co"># caught here</span></span></code></pre></div>
+<p>The exception “bubbles up” until something handles it.</p>
+<h3 id="python-built-in-exceptions">Python built-in exceptions</h3>
+<table>
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 64%" />
+</colgroup>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ValueError</code></td>
+<td>The value is the wrong type or out of range</td>
+</tr>
+<tr>
+<td><code>TypeError</code></td>
+<td>The wrong type was passed entirely</td>
+</tr>
+<tr>
+<td><code>ConnectionError</code></td>
+<td>Network/connection problemTimeoutErrorSomething took too long</td>
+</tr>
+<tr>
+<td><code>FileNotFoundError</code></td>
+<td>File doesn’t exist</td>
+</tr>
+<tr>
+<td><code>KeyError</code></td>
+<td>Dictionary key doesn’t exist</td>
+</tr>
+<tr>
+<td><code>IndexError</code></td>
+<td>List index out of range</td>
+</tr>
+<tr>
+<td><code>RuntimeErrorGeneral</code></td>
+<td>General “something went wrong” catch-all</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-full-structure-together">The full structure together:</h3>
+<div class="sourceCode" id="cb46"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># attempt this</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> SomeError:</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if this specific error occurs</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># if NO error occurred</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="cf">finally</span>:</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># always, no matter what</span></span></code></pre></div>
+<p>You’ll rarely use all four together — most real code uses just
+try/except, or try/except/finally. else is the least common of the
+four.</p>
+<h2 id="section-17-object-oriented-programming-oop">Section 17 — Object
+Oriented Programming (OOP)</h2>
+<p>Everything in Python is already an object — strings, lists,
+dictionaries, your exceptions. OOP is just the practice of creating your
+own object types to model your problem. You do that with a class.</p>
+<h3 id="the-four-concepts">The four concepts:</h3>
+<ol type="1">
+<li>Encapsulation — bundling data and behaviour together in one
+class</li>
+<li>Inheritance — one class building on another</li>
+<li>Polymorphism — different classes sharing the same interface</li>
+<li>Abstraction — hiding complexity behind a simple interface</li>
+</ol>
+<p>The four pillars of Object Oriented Programming, in the order to
+study them:</p>
+<ol type="1">
+<li>ENCAPSULATION
+<ul>
+<li>What a class is and how to define one</li>
+<li>The <strong>init</strong> method (constructor)</li>
+<li>Instance variables and methods</li>
+<li>The <code>self</code> keyword</li>
+<li>Bundling data and behaviour together</li>
+</ul></li>
+<li>INHERITANCE
+<ul>
+<li>How one class can build on another</li>
+<li>The <code>super()</code> function</li>
+<li>Overriding methods</li>
+<li>Parent and child classes</li>
+</ul></li>
+<li>POLYMORPHISM
+<ul>
+<li>Different classes sharing the same interface</li>
+<li>Method overriding in practice</li>
+<li>Why this makes code more flexible</li>
+</ul></li>
+<li>ABSTRACTION
+<ul>
+<li>Hiding complexity behind a simple interface</li>
+<li>Abstract base classes (abc module) (a way to define a class that
+cannot be instantiated directly, but can be subclassed. It allows us to
+define methods that must be implemented by any subclass, ensuring a
+consistent interface.)</li>
+<li>What the user of a class needs to know vs. what they don’t</li>
+</ul></li>
+</ol>
+<h3 id="in-the-github-search-example">In the GitHub Search Example:</h3>
+<ul>
+<li>Encapsulation — <code>Repo</code> bundles data and behaviour</li>
+<li>Inheritance — <code>Repo</code> builds on
+<code>GitHubResult</code></li>
+<li>Polymorphism — <code>display.py</code> and <code>to_csv_row</code>
+work across any subclass</li>
+<li>Abstraction — <code>GitHubResult</code> enforces the contract via
+ABC</li>
+</ul>
+<h2 id="section-18-generators">Section 18 — Generators</h2>
+<p>A generator is like a list comprehension, but instead of building the
+entire list in memory at once, it produces one item at a time as you
+need it.</p>
+<h3 id="the-difference">The difference:</h3>
+<div class="sourceCode" id="cb47"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list comprehension — builds everything in memory immediately</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [repo.name <span class="cf">for</span> repo <span class="kw">in</span> repos]</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="co"># generator — produces one name at a time, on demand</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> (repo.name <span class="cf">for</span> repo <span class="kw">in</span> repos)</span></code></pre></div>
+<p>Only difference in syntax is [ ] vs ( ). But what happens under the
+hood is completely different.</p>
+<h3 id="generator-functions">Generator functions:</h3>
+<p>You can also write a generator as a function using yield instead of
+return:</p>
+<div class="sourceCode" id="cb48"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_popular_repos(repos, min_stars):</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> repo <span class="kw">in</span> repos:</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> repo.stars <span class="op">&gt;</span> min_stars:</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">yield</span> repo   <span class="co"># pause here, hand back this value, resume next time</span></span></code></pre></div>
+<p><code>yield</code> is the key word. Every time the generator is asked
+for the next value, the function resumes from where it left off at the
+last yield. Compare to <code>return</code> — <code>return</code> exits
+the function completely. yield pauses it and resumes later.</p>
+<p>The generator approach makes sense in two specific situations: 1. You
+only need one pass — if you were only displaying results and not saving
+to CSV, the generator would work perfectly and save memory. 2. Early
+stopping — if you were searching through thousands of results and wanted
+to stop as soon as you found a match, a generator lets you do that
+without fetching everything first:</p>
+<div class="sourceCode" id="cb49"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> repo <span class="kw">in</span> fetch_all_pages(query):</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> repo.name <span class="op">==</span> <span class="st">&quot;redis&quot;</span>:</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">&quot;Found it!&quot;</span>)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span>   <span class="co"># stops fetching immediately — remaining pages never requested</span></span></code></pre></div>
+<p>With a list you’d fetch all pages first, then search. With a
+generator you stop the moment you find what you need.</p>
+<h2 id="section-19-decorators">Section 19 — Decorators</h2>
+<p>Example:</p>
+<div class="sourceCode" id="cb50"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> timer(func):              <span class="co"># 1. takes a function as argument</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> wrapper(<span class="op">*</span>args, <span class="op">**</span>kwargs):   <span class="co"># 2. defines a wrapper</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> time.time()</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> func(<span class="op">*</span>args, <span class="op">**</span>kwargs)  <span class="co"># 3. calls the original function</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>        end <span class="op">=</span> time.time()</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f&quot;</span><span class="sc">{</span>func<span class="sc">.</span><span class="va">__name__</span><span class="sc">}</span><span class="ss"> took </span><span class="sc">{</span>end <span class="op">-</span> start<span class="sc">:.2f}</span><span class="ss"> seconds&quot;</span>)</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> result         <span class="co"># 4. returns the original result</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> wrapper            <span class="co"># 5. returns the wrapper</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a><span class="at">@timer</span></span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch_repos(query):</span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;Fetching repos...&quot;</span>)</span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> []</span></code></pre></div>
+<p>You can also pass arguments to decorators:</p>
+<div class="sourceCode" id="cb51"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> retry(attempts<span class="op">=</span><span class="dv">3</span>):</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> decorator(func):</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> wrapper(<span class="op">*</span>args, <span class="op">**</span>kwargs):</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> attempt <span class="kw">in</span> <span class="bu">range</span>(attempts):</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>                <span class="cf">try</span>:</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">return</span> func(<span class="op">*</span>args, <span class="op">**</span>kwargs)</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>                <span class="cf">except</span> APIError:</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>                    <span class="bu">print</span>(<span class="ss">f&quot;Attempt </span><span class="sc">{</span>attempt <span class="op">+</span> <span class="dv">1</span><span class="sc">}</span><span class="ss"> failed, retrying...&quot;</span>)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>                    time.sleep(<span class="dv">1</span>)</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> APIError(<span class="st">&quot;All retry attempts failed.&quot;</span>)</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> wrapper</span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> decorator</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="at">@retry</span>(attempts<span class="op">=</span><span class="dv">5</span>)   <span class="co"># ← now configurable</span></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fetch_all_pages(query, pages<span class="op">=</span><span class="dv">5</span>):</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div>
+<h2 id="section-20-testing-with-pytest">Section 20 — Testing with
+pytest</h2>
+<p>What makes a good test: Each test should check one specific
+behaviour. Not “does the whole program work” but “does this one function
+do this one thing correctly.”</p>
+<p>Three parts to every good test — sometimes called AAA:</p>
+<div class="sourceCode" id="cb52"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_repo_description_fallback():</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Arrange — set up the data</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    repo <span class="op">=</span> Repo(name<span class="op">=</span><span class="st">&quot;redis&quot;</span>, stars<span class="op">=</span><span class="dv">74520</span>, description<span class="op">=</span><span class="va">None</span>, url<span class="op">=</span><span class="st">&quot;https://...&quot;</span>)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Act — do the thing</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> repo.description</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Assert — check the result</span></span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> result <span class="op">==</span> <span class="st">&quot;No description provided.&quot;</span></span></code></pre></div>
+<h2 id="section-21-structured-query-language-sql">Section 21 —
+Structured Query Language (SQL)</h2>
+<p>SQL is the language used to talk to databases. A database stores data
+in tables — think of them like spreadsheets:</p>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 33%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr>
+<th>id</th>
+<th>Query</th>
+<th>timestamp</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>redis</td>
+<td>2026-05-27 23:00</td>
+</tr>
+<tr>
+<td>2</td>
+<td>flask</td>
+<td>2026-05-27 23:05</td>
+</tr>
+</tbody>
+</table>
+<p>SQL lets you create tables, insert rows, and retrieve data:</p>
+<div class="sourceCode" id="cb53"><pre
+class="sourceCode sql"><code class="sourceCode sql"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- save a search</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="kw">INSERT</span> <span class="kw">INTO</span> searches (<span class="kw">query</span>, <span class="dt">timestamp</span>) <span class="kw">VALUES</span> (<span class="ot">&quot;redis&quot;</span>, <span class="ot">&quot;2026-05-27&quot;</span>);</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="co">-- get all searches</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> searches;</span></code></pre></div>
+<h3 id="sqlite-the-simplest-database">SQLite — the simplest
+database</h3>
+<p>SQLite is a database that lives in a single file on your computer —
+no setup, no server required. Perfect for learning and small projects.
+Python has it built in (no installation needed):</p>
+<div class="sourceCode" id="cb54"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span></code></pre></div>
+<h2 id="section-22-flask-html-render-website">Section 22 — Flask HTML
+&amp; Render website</h2>
+<p>Flask</p>
+<h3 id="pushing-to-render">Pushing to Render</h3>
+<div class="sourceCode" id="cb55"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>git add .</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>git commit <span class="op">-</span>m <span class="st">&quot;Add search history with SQLite&quot;</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>git push</span></code></pre></div>
+</body>
+</html>

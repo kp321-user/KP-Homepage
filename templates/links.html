@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KP URL Links Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='darkstyle.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="icon" href="{{ url_for('static', filename='favicon-32x32.png') }}" sizes="32x32" type="image/png">
+  <link rel="icon" href="{{ url_for('static', filename='favicon-16x16.png') }}" sizes="16x16" type="image/png">
+  <link rel="icon" href="{{ url_for('static', filename='favicon-256x256.png') }}" sizes="256x256" type="image/png">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+  <!-- <img src="../static/favicon-256x256.png" class="top-right-logo" alt="Logo"> -->
+  <h1>Welcome to the links page</h1>
+
+  <a href="/add" class="add-btn"><button>+ Add Link</button></a>
+
+  <h2>Useful Links:</h2>
+  <form class="filter-form" method="GET" action="/links">
+    <div class="filter-dropdowns">
+      <select name="category" onchange="this.form.submit()">
+        <option value="">All Categories</option>
+        {% for cat in categories %}
+          <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat }}</option>
+        {% endfor %}
+      </select>
+
+      <select name="type" onchange="this.form.submit()">
+        <option value="">All Types</option>
+        {% for t in types %}
+          <option value="{{ t }}" {% if t == selected_type %}selected{% endif %}>{{ t }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    {% if selected_category or selected_type %}
+      <div>
+        <a href="/links">Clear Filters</a><br>
+      </div>
+    {% endif %}
+  </form>
+
+  {% if links %}
+    <div class="link-list">
+      {% for link in links %}
+        <div class="link-item">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            {% if link.thumbnail %}
+              <a href="{{ link.url }}" target="_blank">
+                <img src="{{ link.thumbnail }}" style="width: 48px; height: 48px; object-fit: cover; border-radius: 4px; flex-shrink: 0;">
+              </a>
+            {% else %}
+              <a href="{{ link.url }}" target="_blank">
+                <div style="width: 48px; height: 48px; background-color: #161b22; border: 1px solid #30363d; border-radius: 4px; flex-shrink: 0;"></div>
+              </a>
+            {% endif %}
+            <p>
+              {% if link.title %}
+                <strong>{{ link.title }}</strong> — <a href="{{ link.url }}" target="_blank">{{ link.url }}</a><br>
+              {% else %}
+                <a href="{{ link.url }}" target="_blank">{{ link.url }}</a><br>
+              {% endif %}
+              <small>Category: {{ link.category }} | Type: {{ link.type }} | Added: {{ link.date_added.strftime('%Y-%m-%d') }}</small>
+            </p>
+          </div>
+          <form action="/delete/{{ link.id }}" method="POST">
+            <button type="submit">🗑 Delete</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No links yet — click "+ Add Link" to get started!</p>
+  {% endif %}
+
+</body>
+</html>

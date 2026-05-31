@@ -1,0 +1,271 @@
+/* ── Reset ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── Base ── */
+body {
+    font-family: Calibri, sans-serif;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
+/* ── Headings ── */
+h1 {
+    color: #e6edf3;
+    border-bottom: 1px solid #30363d;
+    padding-top: 32px;
+    padding-bottom: 12px;}
+
+h2 {
+    color: #e6edf3;
+    margin: 8px 0 4px 0;
+}
+
+h3 {
+    color: #cdd9e5;
+    margin: 24px 0 8px 0;
+}
+
+/* ── Paragraph ── */
+p {
+    line-height: 1.2;
+    color: #c9d1d9;
+}
+
+/* ── Small ── */
+small {
+    display: block;
+    line-height: 1.2;
+}
+
+/* ── Links ── */
+a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #79c0ff;
+    text-decoration: underline;
+}
+
+/* ── Horizontal rule ── */
+hr {
+    border: none;
+    border-top: 1px solid #30363d;
+}
+
+/* ── Lists ── */
+ul, ol {
+    padding-left: 24px;
+    line-height: 1.8;
+}
+
+li {
+    margin: 4px 0;
+    color: #c9d1d9;
+}
+
+/* ── Forms (global) ── */
+input, button, select {
+    font-family: inherit;
+}
+
+
+input[type="text"],
+input[type="url"],
+select {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    background-color: #161b22;
+    color: #c9d1d9;
+}
+.filter-dropdowns select {
+    flex: 0;        /* stop stretching */
+    width: 200px;   /* same fixed width for both */
+    height: 32px;  /* adjust this */
+    padding: 4px 10px;
+}
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    margin: 16px 0;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #238636;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+button:hover {
+    background-color: #2ea44f;
+}
+
+/* ── Add Link button ── */
+.add-btn {
+    display: inline-block;
+    margin: 8px 0;
+}
+
+/* ── Navigation bar ── */
+nav {
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d;
+    padding: 12px 20px;
+    margin: 0 -20px 32px -20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+nav a {
+    color: #58a6ff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+nav a:hover {
+    color: #79c0ff;
+    text-decoration: underline;
+}
+
+nav .site-title {
+    color: #8b949e;
+    font-size: 14px;
+    margin-left: auto;
+}
+
+/* ── Tables ── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 15px;
+}
+
+th {
+    background-color: #161b22;
+    color: #e6edf3;
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid #30363d;
+}
+
+td {
+    padding: 10px 14px;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+}
+
+tr:nth-child(even) {
+    background-color: #161b22;
+}
+
+/* ── Code blocks ── */
+div.sourceCode {
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    margin: 16px 0;
+    overflow: hidden;
+}
+
+div.sourceCode code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+}
+
+pre.sourceCode {
+    margin: 0;
+    padding: 16px;
+    overflow-x: auto;
+}
+
+/* ── Blockquotes ── */
+blockquote {
+    border-left: 3px solid #58a6ff;
+    margin: 16px 0;
+    padding: 8px 16px;
+    background-color: #161b22;
+    border-radius: 0 6px 6px 0;
+    color: #8b949e;
+}
+
+/* ── Utility classes ── */
+.error {
+    color: #f85149;
+    background: #21262d;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #f8514940;
+}
+
+.back-link {
+    display: inline-block;
+    margin: 10px 0 20px 0;
+    color: #58a6ff;
+}
+
+/* ── Link list ── */
+.link-list {
+    margin-top: 2px;
+}
+
+.link-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #30363d;
+}
+
+.link-item p {
+    line-height: 1.2;
+}
+
+.link-item small {
+    display: block;
+    line-height: 1.2;
+    color: #8b949e;
+}
+
+.link-item form {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 0;
+    flex-shrink: 0;
+}
+
+.link-item button {
+    font-size: 12px;
+    padding: 4px 8px;
+}
+.top-right-logo {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    width: 60px;
+    height: auto;
+}

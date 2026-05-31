@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Link</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/darkstyle.css">
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../static/favicon-32x32.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="../static/favicon-16x16.png" sizes="16x16" type="image/png">
+    <link rel="icon" href="../static/favicon-256x256.png" sizes="256x256" type="image/png">
+    <link rel="shortcut icon" href="../static/favicon.ico">
+</head>
+<body>
+
+  <h1>Add a New Link</h1>
+
+  <form action="/add" method="POST">
+
+    <label>URL</label><br>
+    <input type="url" id="url" name="url" placeholder="https://example.com" required><br><br>
+
+    <label>Title <small>(auto-fills when URL is entered)</small></label><br>
+    <input type="text" id="title" name="title" placeholder="Auto-filling..."><br><br>
+
+    <label>Thumbnail</label><br>
+    <input type="text" id="thumbnail" name="thumbnail" placeholder="Auto-fills from og:image"><br><br>
+    <div id="thumbnail-preview"></div><br>
+
+    <label>Category</label><br>
+    <select name="category">
+      <option value="current events">Current Events</option>
+      <option value="historical docs">Historical Docs</option>
+      <option value="entertainment">Entertainment</option>
+      <option value="scientific research">Scientific Research</option>
+      <option value="education">Education</option>
+    </select><br><br>
+
+    <label>Type</label><br>
+    <select name="type">
+      <option value="webpage">Webpage</option>
+      <option value="video">Video</option>
+      <option value="ebook">eBook</option>
+      <option value="podcast">Podcast</option>
+      <option value="local file">Local File</option>
+    </select><br><br>
+
+    <button type="submit">Save Link</button>
+    <a href="/"><button type="button">Cancel</button></a>
+
+  </form>
+
+  <script>
+    document.getElementById("url").addEventListener("blur", function() {
+      const url = this.value;
+      if (!url) return;
+
+      // Show loading state
+      document.getElementById("title").placeholder = "Fetching...";
+
+      fetch("/fetch-metadata", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: "url=" + encodeURIComponent(url)
+      })
+      .then(res => res.json())
+      .then(data => {
+        // Fill title
+        if (data.title) {
+          document.getElementById("title").value = data.title;
+        }
+        document.getElementById("title").placeholder = "Auto-fills when URL is entered";
+
+        // Fill thumbnail
+        if (data.thumbnail) {
+          document.getElementById("thumbnail").value = data.thumbnail;
+
+          // Show thumbnail preview
+          document.getElementById("thumbnail-preview").innerHTML =
+            '<img src="' + data.thumbnail + '" style="max-width: 200px; max-height: 120px; border-radius: 4px; border: 1px solid #30363d;">';
+        }
+      })
+      .catch(() => {
+        document.getElementById("title").placeholder = "Could not fetch — enter manually";
+      });
+    });
+  </script>
+
+</body>
+</html>
