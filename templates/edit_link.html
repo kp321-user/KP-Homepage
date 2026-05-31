@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Link</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='darkstyle.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon-32x32.png') }}" sizes="32x32" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='favicon-16x16.png') }}" sizes="16x16" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='favicon-256x256.png') }}" sizes="256x256" type="image/png">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+
+
+<body>
+
+  <h1>Edit Link</h1>
+
+  <form action="/edit/{{ link.id }}" method="POST">
+
+    <label>URL</label><br>
+    <input type="url" id="url" name="url" value="{{ link.url }}" required><br><br>
+
+    <label>Title</label><br>
+    <input type="text" id="title" name="title" value="{{ link.title }}"><br><br>
+
+    <label>Thumbnail</label><br>
+    <input type="text" id="thumbnail" name="thumbnail" value="{{ link.thumbnail }}"><br><br>
+    <div id="thumbnail-preview">
+      {% if link.thumbnail %}
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <div style="border: 2px solid #58a6ff; border-radius: 6px; padding: 4px;">
+            <img src="{{ link.thumbnail }}" style="max-width: 120px; max-height: 80px; border-radius: 4px; display: block;">
+            <small style="color: #8b949e;">current</small>
+          </div>
+        </div>
+      {% endif %}
+    </div><br>
+
+    <label>Category</label><br>
+    <select name="category">
+      <option value="current events" {% if link.category == "current events" %}selected{% endif %}>Current Events</option>
+      <option value="historical docs" {% if link.category == "historical docs" %}selected{% endif %}>Historical Docs</option>
+      <option value="entertainment" {% if link.category == "entertainment" %}selected{% endif %}>Entertainment</option>
+      <option value="scientific research" {% if link.category == "scientific research" %}selected{% endif %}>Scientific Research</option>
+      <option value="education" {% if link.category == "education" %}selected{% endif %}>Education</option>
+    </select><br><br>
+
+    <label>Type</label><br>
+    <select name="type">
+      <option value="webpage" {% if link.type == "webpage" %}selected{% endif %}>Webpage</option>
+      <option value="video" {% if link.type == "video" %}selected{% endif %}>Video</option>
+      <option value="ebook" {% if link.type == "ebook" %}selected{% endif %}>eBook</option>
+      <option value="podcast" {% if link.type == "podcast" %}selected{% endif %}>Podcast</option>
+      <option value="local file" {% if link.type == "local file" %}selected{% endif %}>Local File</option>
+    </select><br><br>
+
+    <button type="submit">Save Changes</button>
+    <a href="/links"><button type="button">Cancel</button></a>
+
+  </form>
+
+<script>
+  document.getElementById("url").addEventListener("blur", function() {
+    const url = this.value;
+    if (!url) return;
+
+    fetch("/fetch-metadata", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "url=" + encodeURIComponent(url)
+    })
+    .then(res => res.json())
+    .then(data => {
+      let optionsHtml = '<p style="margin: 8px 0 4px 0; color: #8b949e; font-size: 14px;">Select thumbnail:</p><div style="display: flex; gap: 12px; flex-wrap: wrap;">';
+
+      if (data.thumbnail) {
+        optionsHtml += `
+          <div onclick="selectThumbnail('${data.thumbnail}', this)" 
+              style="cursor: pointer; border: 2px solid #30363d; border-radius: 6px; padding: 4px;">
+            <img src="${data.thumbnail}" style="max-width: 120px; max-height: 80px; border-radius: 4px; display: block;">
+            <small style="color: #8b949e;">og:image</small>
+          </div>`;
+      }
+
+      if (data.favicon) {
+        optionsHtml += `
+          <div onclick="selectThumbnail('${data.favicon}', this)" 
+              style="cursor: pointer; border: 2px solid #30363d; border-radius: 6px; padding: 4px;">
+            <img src="${data.favicon}" style="width: 64px; height: 64px; border-radius: 4px; display: block;">
+            <small style="color: #8b949e;">favicon</small>
+          </div>`;
+      }
+
+      if (data.favicon_direct) {
+        optionsHtml += `
+          <div onclick="selectThumbnail('${data.favicon_direct}', this)" 
+              style="cursor: pointer; border: 2px solid #30363d; border-radius: 6px; padding: 4px;">
+            <img src="${data.favicon_direct}" style="width: 64px; height: 64px; object-fit: contain; border-radius: 4px; display: block;">
+            <small style="color: #8b949e;">site icon</small>
+          </div>`;
+      }
+
+      optionsHtml += '</div>';
+      document.getElementById("thumbnail-preview").innerHTML = optionsHtml;
+
+      if (data.thumbnail) {
+        document.getElementById("thumbnail").value = data.thumbnail;
+      } else if (data.favicon) {
+        document.getElementById("thumbnail").value = data.favicon;
+      }
+    })
+    .catch(() => {
+      console.log("Could not fetch metadata");
+    });
+  });
+
+  function selectThumbnail(url, element) {
+    document.getElementById("thumbnail").value = url;
+    document.querySelectorAll("#thumbnail-preview div").forEach(div => {
+      div.style.borderColor = "#30363d";
+    });
+    element.style.borderColor = "#58a6ff";
+  }
+</script>
+
+
+</body>
+</html>

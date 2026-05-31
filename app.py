@@ -106,6 +106,20 @@ def delete_link(id):
     return redirect("/links")
 
 
+@app.route("/edit/<int:id>", methods=["GET", "POST"])
+def edit_link(id):
+    link = Link.query.get(id)
+    if request.method == "POST":
+        link.url = request.form.get("url")
+        link.title = request.form.get("title")
+        link.thumbnail = request.form.get("thumbnail")
+        link.category = request.form.get("category")
+        link.type = request.form.get("type")
+        db.session.commit()
+        return redirect("/links")
+    return render_template("edit_link.html", link=link)
+
+
 @app.route("/fetch-metadata", methods=["POST"])
 def fetch_metadata():
     url = request.form.get("url")

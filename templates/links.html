@@ -67,15 +67,41 @@
               <small>Category: {{ link.category }} | Type: {{ link.type }} | Added: {{ link.date_added.strftime('%Y-%m-%d') }}</small>
             </p>
           </div>
-          <form action="/delete/{{ link.id }}" method="POST">
-            <button type="submit">🗑 Delete</button>
-          </form>
+          <div class="actions-menu">
+            <button class="more-btn" title="More actions (Alt-A)" onclick="toggleMenu(event, this)">⋮</button>
+            <div class="dropdown">
+              <a href="/edit/{{ link.id }}">✏️ Edit</a>
+              <form action="/delete/{{ link.id }}" method="POST">
+                <button type="submit">🗑 Delete</button>
+              </form>
+            </div>
+          </div>  
         </div>
       {% endfor %}
     </div>
   {% else %}
     <p>No links yet — click "+ Add Link" to get started!</p>
   {% endif %}
+  <script>
+    function toggleMenu(event, btn) {
+      event.stopPropagation();
+      const dropdown = btn.nextElementSibling;
+      dropdown.classList.toggle("open");
+    }
 
+    document.addEventListener("click", function() {
+      document.querySelectorAll(".dropdown.open").forEach(d => d.classList.remove("open"));
+    });
+
+    document.addEventListener("keydown", function(e) {
+      if (e.altKey && e.key === "a") {
+        const items = document.querySelectorAll(".link-item");
+        items.forEach(item => {
+          const btn = item.querySelector(".more-btn");
+          if (btn) btn.click();
+        });
+      }
+    });
+  </script>
 </body>
 </html>
