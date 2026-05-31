@@ -114,6 +114,8 @@ def fetch_metadata():
         url = "https://" + url
 
     try:
+        from urllib.parse import urlparse, urljoin
+
         response = requests.get(url, timeout=5)
         soup = BeautifulSoup(response.text, "html.parser")
 
@@ -123,11 +125,37 @@ def fetch_metadata():
         og_image = soup.find("meta", property="og:image")
         thumbnail = og_image["content"] if og_image else ""
 
+        # Google favicon service
+        domain = urlparse(url).netloc
+        favicon_google = f"https://www.google.com/s2/favicons?domain={domain}&sz=64"
+
+        # Direct favicon from page HTML
+        favicon_tag = soup.find("link", rel=lambda r: r and "icon" in r)
+        favicon_direct = ""
+        if favicon_tag and favicon_tag.get("href"):
+            href = favicon_tag["href"]
+            if href.startswith("http"):
+                favicon_direct = href
+            elif href.startswith("//"):
+                favicon_direct = "https:" + href
+            else:
+                favicon_direct = urljoin(url, href)
+
     except:
         title = ""
         thumbnail = ""
+        favicon_google = ""
+        favicon_direct = ""
 
-    return jsonify({"title": title, "thumbnail": thumbnail, "url": url})
+    return jsonify(
+        {
+            "title": title,
+            "thumbnail": thumbnail,
+            "favicon": favicon_google,
+            "favicon_direct": favicon_direct,
+            "url": url,
+        }
+    )
 
 
 if __name__ == "__main__":

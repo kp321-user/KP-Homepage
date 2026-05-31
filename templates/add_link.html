@@ -8,12 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../static/darkstyle.css">
-    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="../static/favicon-32x32.png" sizes="32x32" type="image/png">
-    <link rel="icon" href="../static/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="icon" href="../static/favicon-256x256.png" sizes="256x256" type="image/png">
-    <link rel="shortcut icon" href="../static/favicon.ico">
+    <link rel="stylesheet" href="{{ url_for('static', filename='darkstyle.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon-32x32.png') }}" sizes="32x32" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='favicon-16x16.png') }}" sizes="16x16" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='favicon-256x256.png') }}" sizes="256x256" type="image/png">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
 
@@ -50,45 +50,78 @@
     </select><br><br>
 
     <button type="submit">Save Link</button>
-    <a href="/"><button type="button">Cancel</button></a>
+    <a href="/links"><button type="button">Cancel</button></a>
 
   </form>
 
   <script>
-    document.getElementById("url").addEventListener("blur", function() {
-      const url = this.value;
-      if (!url) return;
+  document.getElementById("url").addEventListener("blur", function() {
+    const url = this.value;
+    if (!url) return;
 
-      // Show loading state
-      document.getElementById("title").placeholder = "Fetching...";
+    document.getElementById("title").placeholder = "Fetching...";
 
-      fetch("/fetch-metadata", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: "url=" + encodeURIComponent(url)
-      })
-      .then(res => res.json())
-      .then(data => {
-        // Fill title
-        if (data.title) {
-          document.getElementById("title").value = data.title;
-        }
-        document.getElementById("title").placeholder = "Auto-fills when URL is entered";
+    fetch("/fetch-metadata", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "url=" + encodeURIComponent(url)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.title) {
+        document.getElementById("title").value = data.title;
+      }
+      document.getElementById("title").placeholder = "Auto-fills when URL is entered";
 
-        // Fill thumbnail
-        if (data.thumbnail) {
-          document.getElementById("thumbnail").value = data.thumbnail;
+      let optionsHtml = '<p style="margin: 8px 0 4px 0; color: #8b949e; font-size: 14px;">Select thumbnail:</p><div style="display: flex; gap: 12px; flex-wrap: wrap;">';
 
-          // Show thumbnail preview
-          document.getElementById("thumbnail-preview").innerHTML =
-            '<img src="' + data.thumbnail + '" style="max-width: 200px; max-height: 120px; border-radius: 4px; border: 1px solid #30363d;">';
-        }
-      })
-      .catch(() => {
-        document.getElementById("title").placeholder = "Could not fetch — enter manually";
-      });
+      if (data.thumbnail) {
+        optionsHtml += `
+          <div onclick="selectThumbnail('${data.thumbnail}', this)" 
+              style="cursor: pointer; border: 2px solid #30363d; border-radius: 6px; padding: 4px;">
+            <img src="${data.thumbnail}" style="max-width: 120px; max-height: 80px; border-radius: 4px; display: block;">
+            <small style="color: #8b949e;">og:image</small>
+          </div>`;
+      }
+
+      if (data.favicon) {
+        optionsHtml += `
+          <div onclick="selectThumbnail('${data.favicon}', this)" 
+              style="cursor: pointer; border: 2px solid #30363d; border-radius: 6px; padding: 4px;">
+            <img src="${data.favicon}" style="width: 64px; height: 64px; border-radius: 4px; display: block;">
+            <small style="color: #8b949e;">favicon</small>
+          </div>`;
+      }
+      if (data.favicon_direct) {
+        optionsHtml += `
+          <div onclick="selectThumbnail('${data.favicon_direct}', this)" 
+              style="cursor: pointer; border: 2px solid #30363d; border-radius: 6px; padding: 4px;">
+            <img src="${data.favicon_direct}" style="width: 64px; height: 64px; object-fit: contain; border-radius: 4px; display: block;">
+            <small style="color: #8b949e;">site icon</small>
+          </div>`;
+      }
+      optionsHtml += '</div>';
+      document.getElementById("thumbnail-preview").innerHTML = optionsHtml;
+
+      if (data.thumbnail) {
+        document.getElementById("thumbnail").value = data.thumbnail;
+      } else if (data.favicon) {
+        document.getElementById("thumbnail").value = data.favicon;
+      }
+    })
+    .catch(() => {
+      document.getElementById("title").placeholder = "Could not fetch — enter manually";
     });
-  </script>
+  });
+
+  function selectThumbnail(url, element) {
+    document.getElementById("thumbnail").value = url;
+    document.querySelectorAll("#thumbnail-preview div").forEach(div => {
+      div.style.borderColor = "#30363d";
+    });
+    element.style.borderColor = "#58a6ff";
+  }
+</script>
 
 </body>
 </html>
