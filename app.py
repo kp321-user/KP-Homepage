@@ -33,7 +33,7 @@ def home():
     return render_template("home.html")
 
 
-@app.route("/python-notes")
+@app.route("/python_notes")
 def python_notes():
     return render_template("python_notes.html")
 
@@ -56,7 +56,7 @@ def links():
     types = [r[0] for r in db.session.query(Link.type).distinct().all()]
 
     return render_template(
-        "index.html",
+        "links.html",
         links=links,
         categories=categories,
         types=types,
