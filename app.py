@@ -68,6 +68,11 @@ def python_notes():
     return render_template("python_notes.html")
 
 
+@app.route("/another")
+def another():
+    return render_template("another.html")
+
+
 @app.route("/llms")
 def llms():
     return render_template("llms_explained.html")

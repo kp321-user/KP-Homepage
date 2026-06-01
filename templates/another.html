@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta property="og:image" content="{{ url_for('static', filename='favicon-256x256.png', _external=True) }}">
-  <title>KP Home Page</title>
+  <title>News Page</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -17,22 +17,19 @@
 </head>
 <body>
   <img src="static/favicon-256x256.png" class="top-right-logo" alt="Logo">
-  <!-- <img src="static/favicon-256x256.png" class="top-right-logo" alt="Logo">
-  -- The above line adds a logo to the top right corner of the page. You can replace "static/favicon-256x256.png" with the path to your desired image file. -->
-  <h1>Welcome to the home page</h1>
+  <!-- The above line adds a logo to the top right corner of the page. You can replace "static/favicon-256x256.png" with the path to your desired image file. -->
+  <h1>Another Page</h1>
+  <a href="/" class="back-link">← Back Home</a><br>
+  <h2>Subheading 1</h2>
+  <p>Hello! This is my first paragraph.</p>
   <br>
 <!-- Links to other pages-->
-  <b>
-    <a href="/links">Links Page</a><br>
-    <a href="/python_notes">Python Notes</a><br>
-    <a href="/llms">LLMs Explained</a><br>
-    <a href="/another">Another Page</a><br>
-  </b>
-  <!-- Testing adding a imgfile
+  <a href="/python_notes">Python Notes</a><br>
+  <a href="/links">Links Page</a><br>
+  <a href="/llms">LLMs Explained</a><br>
   <figure class="opener">
     <img class="opener1" src="static/KP logo.png" role="presentation" alt="" />
   </figure>
-  -->
   <br>
 <!-- commented out the button and JavaScript for now, as it may not be necessary for the index page
   <button>Python Notes</button>

@@ -59,6 +59,14 @@ a:hover {
     color: #79c0ff;
     text-decoration: underline;
 }
+b {
+    color: #58a6ff;
+    text-decoration: none;
+    margin: 24px 0 8px 0;
+    font-size: 18px;
+    line-height: 1.4;
+    
+}
 
 /* ── Horizontal rule ── */
 hr {
