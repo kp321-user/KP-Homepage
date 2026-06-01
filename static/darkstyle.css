@@ -8,7 +8,7 @@
 /* ── Base ── */
 body {
     font-family: Calibri, sans-serif;
-    max-width: 800px;
+    max-width: 1000px;
     margin: 40px auto;
     padding: 0 20px;
     background-color: #0d1117;
@@ -240,8 +240,29 @@ blockquote {
     border-bottom: 1px solid #30363d;
 }
 
-.link-item p {
-    line-height: 1.2;
+.link-info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.link-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #e6edf3;
+}
+
+.link-url {
+    font-size: 14px;
+    color: #58a6ff;
+}
+
+.link-meta {
+    font-size: 12px;
+    color: #8b949e;
+    flex-basis: 100%;
 }
 
 .link-item small {
@@ -258,10 +279,6 @@ blockquote {
     flex-shrink: 0;
 }
 
-.link-item button {
-    font-size: 12px;
-    padding: 4px 8px;
-}
 .top-right-logo {
     position: absolute;
     top: 2px;

@@ -24,12 +24,12 @@
       <a href="/login" style="font-size: 14px; color: #8b949e;">Login</a>
     {% endif %}
   </div>
-
+  <a href="/" class="back-link">← Back Home</a><br>
   {% if current_user.is_authenticated %}
     <a href="/add" class="add-btn"><button>+ Add Link</button></a>
   {% endif %}
   
-  <h2>Useful Links:</h2>
+  <!--<h2>Useful Links:</h2>-->
   <form class="filter-form" method="GET" action="/links">
     <div class="filter-dropdowns">
       <select name="category" onchange="this.form.submit()">
@@ -67,20 +67,20 @@
                 <div style="width: 48px; height: 48px; background-color: #161b22; border: 1px solid #30363d; border-radius: 4px; flex-shrink: 0;"></div>
               </a>
             {% endif %}
-            <p>
+            <div class="link-info">
               {% if link.title %}
-                <strong>{{ link.title }}</strong> — <a href="{{ link.url }}" target="_blank">{{ link.url }}</a><br>
+                <span class="link-title">{{ link.title }}</span> — <a class="link-url" href="{{ link.url }}" target="_blank">{{ link.url }}</a>
               {% else %}
-                <a href="{{ link.url }}" target="_blank">{{ link.url }}</a><br>
+                <a class="link-url" href="{{ link.url }}" target="_blank">{{ link.url }}</a>
               {% endif %}
-              <small>Category: {{ link.category }} | Type: {{ link.type }} | Added: {{ link.date_added.strftime('%Y-%m-%d') }}</small>
-            </p>
+              <small class="link-meta">Category: {{ link.category }} | Type: {{ link.type }} | Added: {{ link.date_added.strftime('%Y-%m-%d') }}</small>
+            </div>
           </div>
           {% if current_user.is_authenticated %}
             <div class="actions-menu">
               <button class="more-btn" title="More actions (Alt-A)" onclick="toggleMenu(event, this)">⋮</button>
               <div class="dropdown">
-                <a href="/edit/{{ link.id }}">✏️ Edit</a>
+                <a href="/edit/{{ link.id }}"> ✏️ Edit</a>
                 <form action="/delete/{{ link.id }}" method="POST">
                   <button type="submit">🗑 Delete</button>
                 </form>

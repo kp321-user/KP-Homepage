@@ -63,9 +63,14 @@ def home():
     return render_template("home.html")
 
 
-@app.route("/python-notes")
+@app.route("/python_notes")
 def python_notes():
     return render_template("python_notes.html")
+
+
+@app.route("/llms")
+def llms():
+    return render_template("llms_explained.html")
 
 
 @app.route("/links")
