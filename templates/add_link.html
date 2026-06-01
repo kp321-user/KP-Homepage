@@ -32,22 +32,23 @@
     <div id="thumbnail-preview"></div><br>
 
     <label>Category</label><br>
-    <select name="category">
-      <option value="current events">Current Events</option>
-      <option value="historical docs">Historical Docs</option>
-      <option value="entertainment">Entertainment</option>
-      <option value="scientific research">Scientific Research</option>
-      <option value="education">Education</option>
-    </select><br><br>
-
+    <select name="category" id="category-select" onchange="handleNewOption(this, 'category')">
+      {% for cat in categories %}
+        <option value="{{ cat }}" {% if link is defined and link.category == cat %}selected{% endif %}>{{ cat }}</option>
+      {% endfor %}
+      <option value="__new__">+ Add new category...</option>
+    </select>
+    <input type="text" id="category-new" name="category-new" placeholder="New category name" style="display:none; margin-top: 6px;"><br><br>
+    
     <label>Type</label><br>
-    <select name="type">
-      <option value="webpage">Webpage</option>
-      <option value="video">Video</option>
-      <option value="ebook">eBook</option>
-      <option value="podcast">Podcast</option>
-      <option value="local file">Local File</option>
-    </select><br><br>
+    <select name="type" id="type-select" onchange="handleNewOption(this, 'type')">
+      {% for t in types %}
+        <option value="{{ t }}" {% if link is defined and link.type == t %}selected{% endif %}>{{ t }}</option>
+      {% endfor %}
+      <option value="__new__">+ Add new type...</option>
+    </select>
+    <input type="text" id="type-new" name="type-new" placeholder="New type name" style="display:none; margin-top: 6px;"><br><br>
+    
 
     <button type="submit">Save Link</button>
     <a href="/links"><button type="button">Cancel</button></a>
@@ -121,6 +122,32 @@
     });
     element.style.borderColor = "#58a6ff";
   }
+</script>
+
+<script>
+  function handleNewOption(select, field) {
+    const newInput = document.getElementById(field + "-new");
+    if (select.value === "__new__") {
+      newInput.style.display = "block";
+      newInput.required = true;
+      newInput.focus();
+    } else {
+      newInput.style.display = "none";
+      newInput.required = false;
+    }
+  }
+
+  // Before form submits, replace __new__ with the typed value
+  document.querySelector("form").addEventListener("submit", function() {
+    ["category", "type"].forEach(function(field) {
+      const select = document.getElementById(field + "-select");
+      const newInput = document.getElementById(field + "-new");
+      if (select.value === "__new__" && newInput.value.trim()) {
+        select.innerHTML += `<option value="${newInput.value}" selected>${newInput.value}</option>`;
+        select.value = newInput.value;
+      }
+    });
+  });
 </script>
 
 </body>

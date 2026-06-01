@@ -132,7 +132,10 @@ def add_link():
         db.session.add(new_link)
         db.session.commit()
         return redirect("/links")
-    return render_template("add_link.html")
+
+    categories = [r[0] for r in db.session.query(Link.category).distinct().all()]
+    types = [r[0] for r in db.session.query(Link.type).distinct().all()]
+    return render_template("add_link.html", categories=categories, types=types)
 
 
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
@@ -147,7 +150,11 @@ def edit_link(id):
         link.type = request.form.get("type")
         db.session.commit()
         return redirect("/links")
-    return render_template("edit_link.html", link=link)
+    categories = [r[0] for r in db.session.query(Link.category).distinct().all()]
+    types = [r[0] for r in db.session.query(Link.type).distinct().all()]
+    return render_template(
+        "edit_link.html", link=link, categories=categories, types=types
+    )
 
 
 @app.route("/delete/<int:id>", methods=["POST"])
