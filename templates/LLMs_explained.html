@@ -15,6 +15,7 @@
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
+<h1>LLM Information and Physical Reality</h1>
 <a href="/" class="back-link">← Back Home</a>
 <nav>
 <a href="#section-1">1. Sources of Information</a>
@@ -25,461 +26,233 @@
 <a href="#section-6">6. Statistical Bias</a>
 <a href="#section-7">7. What an LLM Is</a>
 <a href="#section-8">8. Token Generation</a>
-<span class="site-title">LLMs Explained 2026</span>
+<span class="site-title">llms_explained.html</span>
 </nav>
-<h1 id="llm-information-and-physical-reality">LLM Information and
-Physical Reality</h1>
+
 <h2 id="overview">Overview</h2>
-<p>This document contains a structured discussion about: - where LLM
-knowledge comes from - who owns the information - transformative-use
-arguments - how information becomes mathematics - statistical bias in AI
-systems - what an LLM physically is - how token generation works on
-GPUs</p>
-<hr />
-<details>
-<summary>
-<strong>1. Sources of Information and Physical Storage</strong>
-</summary>
-<h2 id="user">User</h2>
-<p>explain the sources of information of the LLM you are using and where
-the information resides physically</p>
-<h2 id="assistant">Assistant</h2>
-<p>The model you’re talking to is a large language model (LLM) trained
-by OpenAI. Its “knowledge” comes from several broad categories of data
-and infrastructure.</p>
-<h3 id="main-sources-of-information">Main Sources of Information</h3>
-<p>An LLM is trained on huge collections of text and other data,
-including:</p>
-<ul>
-<li>Public websites</li>
-<li>Books</li>
-<li>Reference material</li>
-<li>Documentation</li>
-<li>Academic papers</li>
-<li>Licensed datasets</li>
-<li>Code repositories</li>
-<li>Conversations and examples created by trainers</li>
-</ul>
-<p>Examples: - encyclopedic content - programming documentation - news
-articles - public forums - scientific literature - educational
-material</p>
-<p>The training process does not work like storing copies of web pages
-in a searchable database. Instead, the model learns statistical patterns
-in language.</p>
-<hr />
-<h3 id="physical-storage">Physical Storage</h3>
-<p>Physically, the model exists as: - massive numerical parameter files
-(“weights”) - GPU memory tensors - distributed datacenter storage</p>
-<p>The knowledge is encoded mathematically inside: - floating-point
-tensors - neural network parameters - optimizer states during
-training</p>
-<p>The data is distributed across: - SSD arrays - high-speed networking
-systems - GPU VRAM - backup storage systems</p>
-<hr />
-<h3 id="what-knowledge-looks-like-internally">What Knowledge Looks Like
-Internally</h3>
-<p>The model does not contain: - explicit encyclopedia entries -
-symbolic fact tables - neat databases of sentences</p>
-<p>Instead it contains: - statistical relationships - semantic structure
-- conceptual correlations - probability distributions</p>
-<p>For example:</p>
+<p>This document contains a structured discussion about where LLM knowledge comes from, who owns the information, transformative-use arguments, how information becomes mathematics, statistical bias in AI systems, what an LLM physically is, and how token generation works on GPUs.</p>
+<hr>
+
+<h2 id="section-1">1. Sources of Information and Physical Storage</h2>
+
+<p>An LLM is trained on huge collections of text and other data, including public websites, books, reference material, documentation, academic papers, licensed datasets, code repositories, and conversations created by trainers.</p>
+
+<p>The training process does not work like storing copies of web pages in a searchable database. Instead, the model learns statistical patterns in language.</p>
+
+<h3>Physical Storage</h3>
+<p>Physically, the model exists as massive numerical parameter files ("weights"), GPU memory tensors, and distributed datacenter storage. The knowledge is encoded mathematically inside floating-point tensors and neural network parameters distributed across SSD arrays, high-speed networking systems, GPU VRAM, and backup storage systems.</p>
+
+<h3>What Knowledge Looks Like Internally</h3>
+<p>The model does not contain explicit encyclopedia entries, symbolic fact tables, or neat databases of sentences. Instead it contains statistical relationships, semantic structure, conceptual correlations, and probability distributions.</p>
+
 <blockquote>
-<p>“Paris” becomes strongly associated with “France,” “capital city,”
-and “Eiffel Tower” through distributed mathematical relationships.</p>
+<p>"Paris" becomes strongly associated with "France," "capital city," and "Eiffel Tower" through distributed mathematical relationships.</p>
 </blockquote>
-<hr />
-<h3 id="training-vs-live-information">Training vs Live Information</h3>
-<h4 id="base-training-knowledge">Base Training Knowledge</h4>
-<p>Embedded into model weights during training.</p>
-<h4 id="live-external-information">Live External Information</h4>
-<p>May come from: - search engines - APIs - live webpages - external
-databases</p>
-<hr />
-<h3 id="memory-vs-training">Memory vs Training</h3>
-<h4 id="training-data">Training Data</h4>
-<p>Used during training and converted into weights.</p>
-<h4 id="conversation-memory">Conversation Memory</h4>
-<p>Stored separately in conventional databases.</p>
-<hr />
-<h3 id="physical-scale">Physical Scale</h3>
-<p>Large frontier models may involve: - tens of thousands of GPUs -
-petabytes of training data - multi-megawatt power consumption -
-terabytes of parameter storage</p>
-<hr />
-<h3 id="useful-analogy">Useful Analogy</h3>
-<p>A search engine is like: &gt; a librarian retrieving documents</p>
-<p>An LLM is more like: &gt; a brain compressing statistical patterns
-into neural connections</p>
-</details>
-<hr />
-<details>
-<summary>
-<strong>2. Ownership of LLM Information</strong>
-</summary>
-<h2 id="user-1">User</h2>
-<p>who owns the LLM information?</p>
-<h2 id="assistant-1">Assistant</h2>
+
+<h3>Training vs Live Information</h3>
+<p><strong>Base Training Knowledge</strong> — embedded into model weights during training.</p>
+<p><strong>Live External Information</strong> — may come from search engines, APIs, live webpages, or external databases.</p>
+
+<h3>Physical Scale</h3>
+<p>Large frontier models may involve tens of thousands of GPUs, petabytes of training data, multi-megawatt power consumption, and terabytes of parameter storage.</p>
+
+<blockquote>
+<p>A search engine is like a librarian retrieving documents. An LLM is more like a brain compressing statistical patterns into neural connections.</p>
+</blockquote>
+<hr>
+
+<h2 id="section-2">2. Ownership of LLM Information</h2>
+
 <p>Ownership depends on which layer you mean.</p>
-<h3 id="original-source-material">Original Source Material</h3>
-<p>Usually owned by: - authors - publishers - websites - organizations -
-software developers - licensing partners</p>
-<p>Examples: - books - news articles - software code</p>
-<p>An AI company does not automatically own original source material
-simply because it trained on it.</p>
-<hr />
-<h3 id="model-weights">Model Weights</h3>
-<p>The trained neural network weights are usually owned by the company
-that trained the model.</p>
-<p>These weights are proprietary intellectual property unless openly
-released.</p>
-<hr />
-<h3 id="user-conversations">User Conversations</h3>
-<p>Ownership depends on: - platform policies - regional laws -
-enterprise agreements - terms of service</p>
-<hr />
-<h3 id="generated-outputs">Generated Outputs</h3>
-<p>The legal status of AI-generated output is still evolving.</p>
-<p>Different jurisdictions treat: - copyrightability - authorship -
-commercial rights</p>
-<p>differently.</p>
-<hr />
-<h3 id="public-vs-licensed-data">Public vs Licensed Data</h3>
-<p>Training data may include: - public internet material - licensed
-datasets - public domain works - synthetic data - annotated datasets</p>
-<hr />
-<h3 id="legal-distinction">Legal Distinction</h3>
-<p>An unresolved question:</p>
+
+<h3>Original Source Material</h3>
+<p>Usually owned by authors, publishers, websites, organizations, software developers, and licensing partners. An AI company does not automatically own original source material simply because it trained on it.</p>
+
+<h3>Model Weights</h3>
+<p>The trained neural network weights are usually owned by the company that trained the model. These weights are proprietary intellectual property unless openly released.</p>
+
+<h3>User Conversations</h3>
+<p>Ownership depends on platform policies, regional laws, enterprise agreements, and terms of service.</p>
+
+<h3>Generated Outputs</h3>
+<p>The legal status of AI-generated output is still evolving. Different jurisdictions treat copyrightability, authorship, and commercial rights differently.</p>
+
+<h3>Legal Distinction</h3>
 <blockquote>
 <p>Does training on copyrighted material create infringement?</p>
 </blockquote>
-<p>Courts and regulators debate: - fair use - transformative use - data
-mining rights - compensation systems - licensing models</p>
-</details>
-<hr />
-<details>
-<summary>
-<strong>3. Public Information vs Public Domain</strong>
-</summary>
-<h2 id="user-2">User</h2>
-<p>original source material that LLM can access is now public infomation
-in a sense unless the LLM acknowledges the source</p>
-<h2 id="assistant-2">Assistant</h2>
-<p>Not necessarily.</p>
-<p>Public accessibility and legal ownership are different things.</p>
-<p>Something can be: - publicly viewable - still copyrighted - still
-licensed - still restricted</p>
-<p>Examples: - newspaper articles - forum posts - software documentation
-- books online</p>
-<hr />
-<h3 id="publicly-accessible">Publicly Accessible</h3>
-<p>Means: &gt; people can access it</p>
-<p>But the creator may still retain: - copyright - redistribution rights
-- licensing control</p>
-<hr />
-<h3 id="public-domain">Public Domain</h3>
-<p>Means: &gt; no exclusive copyright ownership remains</p>
-<p>Examples: - expired copyrights - some government works - explicitly
-released material</p>
-<hr />
-<h3 id="attribution">Attribution</h3>
-<p>An LLM may: - summarize - paraphrase - synthesize</p>
-<p>without citing a source.</p>
-<p>That does not place the original material into the public domain.</p>
-<hr />
-<h3 id="why-this-is-controversial">Why This Is Controversial</h3>
-<p>Critics argue: - AI may economically substitute creators - creators
-may not be compensated - attribution may be insufficient</p>
-<p>Supporters argue: - training is transformative - models learn
-patterns rather than storing copies - training resembles learning or
-indexing</p>
-<hr />
-<h3 id="memorization-risk">Memorization Risk</h3>
-<p>LLMs can sometimes regenerate: - memorized snippets - copyrighted
-passages - code fragments</p>
-<p>especially when: - content is highly duplicated - prompts strongly
-target the material</p>
-</details>
-<hr />
-<details>
-<summary>
-<strong>4. Steelman: “Training Is Transformative”</strong>
-</summary>
-<h2 id="user-3">User</h2>
-<p>steelman the argument that “training is transformative”</p>
-<h2 id="assistant-3">Assistant</h2>
-<h3 id="core-claim">Core Claim</h3>
+<p>Courts and regulators debate fair use, transformative use, data mining rights, compensation systems, and licensing models.</p>
+<hr>
+
+<h2 id="section-3">3. Public Information vs Public Domain</h2>
+
+<p>Public accessibility and legal ownership are different things. Something can be publicly viewable and still copyrighted, licensed, or restricted.</p>
+
+<h3>Publicly Accessible</h3>
+<p>Means people can access it — but the creator may still retain copyright, redistribution rights, and licensing control.</p>
+
+<h3>Public Domain</h3>
+<p>Means no exclusive copyright ownership remains — such as expired copyrights, some government works, or explicitly released material.</p>
+
+<h3>Attribution</h3>
+<p>An LLM may summarize, paraphrase, or synthesize without citing a source. That does not place the original material into the public domain.</p>
+
+<h3>Why This Is Controversial</h3>
+<p>Critics argue AI may economically substitute creators, creators may not be compensated, and attribution may be insufficient. Supporters argue training is transformative, models learn patterns rather than storing copies, and training resembles learning or indexing.</p>
+
+<h3>Memorization Risk</h3>
+<p>LLMs can sometimes regenerate memorized snippets, copyrighted passages, or code fragments — especially when content is highly duplicated or prompts strongly target the material.</p>
+<hr>
+
+<h2 id="section-4">4. Steelman: "Training Is Transformative"</h2>
+
 <blockquote>
-<p>Training transforms source material into abstract mathematical
-representations rather than redistributing the original works.</p>
+<p>Training transforms source material into abstract mathematical representations rather than redistributing the original works.</p>
 </blockquote>
-<hr />
-<h3 id="human-learning-analogy">Human Learning Analogy</h3>
-<p>Humans can: - read books - absorb writing styles - learn facts -
-later create original writing</p>
-<p>without violating copyright merely by learning.</p>
-<p>The argument claims LLMs are analogous.</p>
-<hr />
-<h3 id="novel-outputs">Novel Outputs</h3>
-<p>Most outputs are: - newly generated token sequences - context
-dependent - synthesized from many influences</p>
-<p>The model generates rather than retrieves.</p>
-<hr />
-<h3 id="compression-argument">Compression Argument</h3>
-<p>Models train on: - petabytes of text</p>
-<p>yet weights are vastly smaller than the source corpus.</p>
-<p>This suggests: - abstraction - compression - statistical
-representation</p>
-<p>rather than literal storage.</p>
-<hr />
-<h3 id="functional-transformation">Functional Transformation</h3>
-<p>Original works are transformed into: - gradients - tensors - vector
-relationships - numerical parameters</p>
-<p>The resulting system serves: - prediction - summarization - reasoning
-assistance - generation</p>
-<p>rather than direct reading consumption.</p>
-<hr />
-<h3 id="search-engine-analogy">Search Engine Analogy</h3>
-<p>Supporters compare training to: - indexing - caching - thumbnail
-generation</p>
-<p>which courts have sometimes treated as transformative.</p>
-<hr />
-<h3 id="public-benefit-argument">Public Benefit Argument</h3>
-<p>Restricting training too aggressively could: - slow research -
-entrench incumbents - reduce educational access - limit open AI
-development</p>
-<hr />
-<h3 id="statistical-learning-vs-retrieval">Statistical Learning vs
-Retrieval</h3>
-<p>LLMs usually cannot: - reproduce books reliably - retrieve exact
-pages - function as clean archives</p>
-<p>Instead they: - predict likely continuations - blend influences -
-generate abstractions</p>
-<hr />
-<h3 id="strongest-counterargument">Strongest Counterargument</h3>
-<p>Critics argue: - training still requires copying - outputs may
-substitute creators - scale changes the ethical landscape - models
-sometimes reproduce copyrighted material</p>
-</details>
-<hr />
-<details>
-<summary>
-<strong>5. How Information Becomes Mathematics</strong>
-</summary>
-<h2 id="user-4">User</h2>
-<p>explain how the information is converted into math in the LLM</p>
-<h2 id="assistant-4">Assistant</h2>
-<p>Text becomes numbers which are transformed through large mathematical
-systems.</p>
-<hr />
-<h3 id="tokenization">1. Tokenization</h3>
-<p>Example:</p>
-<pre class="text"><code>&quot;The cat sat.&quot;</code></pre>
-<p>becomes:</p>
-<pre class="text"><code>[&quot;The&quot;, &quot; cat&quot;, &quot; sat&quot;, &quot;.&quot;]</code></pre>
-<p>with integer IDs:</p>
-<pre class="text"><code>&quot;The&quot;  -&gt; 1045
-&quot; cat&quot; -&gt; 8921
-&quot; sat&quot; -&gt; 4410
-&quot;.&quot;    -&gt; 13</code></pre>
-<hr />
-<h3 id="embeddings">2. Embeddings</h3>
-<p>Each token becomes a vector:</p>
-<pre class="text"><code>&quot;cat&quot; →
-[0.182, -0.044, 1.203, ..., -0.551]</code></pre>
+
+<h3>Human Learning Analogy</h3>
+<p>Humans can read books, absorb writing styles, learn facts, and later create original writing without violating copyright merely by learning. The argument claims LLMs are analogous.</p>
+
+<h3>Compression Argument</h3>
+<p>Models train on petabytes of text yet weights are vastly smaller than the source corpus. This suggests abstraction, compression, and statistical representation rather than literal storage.</p>
+
+<h3>Functional Transformation</h3>
+<p>Original works are transformed into gradients, tensors, vector relationships, and numerical parameters. The resulting system serves prediction, summarization, reasoning assistance, and generation — rather than direct reading consumption.</p>
+
+<h3>Strongest Counterargument</h3>
+<p>Critics argue training still requires copying, outputs may substitute creators, scale changes the ethical landscape, and models sometimes reproduce copyrighted material.</p>
+<hr>
+
+<h2 id="section-5">5. How Information Becomes Mathematics</h2>
+
+<p>Text becomes numbers which are transformed through large mathematical systems.</p>
+
+<h3>1. Tokenization</h3>
+<p>Example: <code>"The cat sat."</code> becomes tokens <code>["The", " cat", " sat", "."]</code> with integer IDs:</p>
+<pre><code>"The"  -> 1045
+" cat" -> 8921
+" sat" -> 4410
+"."    -> 13</code></pre>
+
+<h3>2. Embeddings</h3>
+<p>Each token becomes a vector: <code>"cat" → [0.182, -0.044, 1.203, ..., -0.551]</code></p>
 <p>Words with related meanings become geometrically close.</p>
-<hr />
-<h3 id="neural-network-layers">3. Neural Network Layers</h3>
+
+<h3>3. Neural Network Layers</h3>
 <p>Core equation:</p>
-<pre class="math"><code>y = f(Wx + b)</code></pre>
-<p>Where: - <code>x</code> = input vector - <code>W</code> = weight
-matrix - <code>b</code> = bias - <code>f</code> = nonlinear function</p>
-<hr />
-<h3 id="attention-mechanism">4. Attention Mechanism</h3>
-<pre class="math"><code>Attention(Q,K,V)
-=
-softmax(QK^T / sqrt(d))V</code></pre>
+<pre><code>y = f(Wx + b)</code></pre>
+<p>Where <code>x</code> = input vector, <code>W</code> = weight matrix, <code>b</code> = bias, <code>f</code> = nonlinear function.</p>
+
+<h3>4. Attention Mechanism</h3>
+<pre><code>Attention(Q,K,V) = softmax(QK^T / sqrt(d))V</code></pre>
 <p>This computes relationships between tokens.</p>
-<hr />
-<h3 id="training-via-error-correction">5. Training via Error
-Correction</h3>
+
+<h3>5. Training via Error Correction</h3>
 <p>Weights update using gradient descent:</p>
-<pre class="math"><code>W_new = W_old - η∇L</code></pre>
-<hr />
-<h3 id="meaning-as-geometry">6. Meaning as Geometry</h3>
+<pre><code>W_new = W_old - η∇L</code></pre>
+
+<h3>6. Meaning as Geometry</h3>
 <p>Relationships emerge such as:</p>
-<pre class="math"><code>king - man + woman ≈ queen</code></pre>
+<pre><code>king - man + woman ≈ queen</code></pre>
 <p>Concepts become directions in vector space.</p>
-<hr />
-<h3 id="where-knowledge-lives">7. Where Knowledge Lives</h3>
-<p>Knowledge is distributed across: - billions/trillions of numerical
-weights</p>
-<p>rather than explicit symbolic facts.</p>
-<hr />
-<h3 id="compression-analogy">8. Compression Analogy</h3>
-<p>Training compresses statistical structure into multidimensional
-mathematical relationships.</p>
-<hr />
-<h3 id="limitation">9. Limitation</h3>
-<p>The model manipulates patterns extremely effectively but does not
-consciously understand mathematics.</p>
-</details>
-<hr />
-<details>
-<summary>
-<strong>6. Statistical Bias and New Discoveries</strong>
-</summary>
-<h2 id="user-5">User</h2>
-<p>the statitical nature of the end result could be misleading if new
-discoveries are less popular?</p>
-<h2 id="assistant-5">Assistant</h2>
-<p>Yes.</p>
-<p>Statistical learning systems inherit popularity bias.</p>
-<hr />
-<h3 id="why-popularity-matters">Why Popularity Matters</h3>
-<p>LLMs learn from frequency: - repeated patterns become dominant - rare
-patterns contribute less</p>
-<p>This can underrepresent: - new discoveries - niche findings -
-frontier research</p>
-<p>even if they are correct.</p>
-<hr />
-<h3 id="consequences">Consequences</h3>
-<h4 id="lagging-knowledge">Lagging Knowledge</h4>
-<p>Models may reflect older consensus.</p>
-<h4 id="majority-vote-distortion">Majority-Vote Distortion</h4>
-<p>Popular narratives may dominate newer findings.</p>
-<h4 id="academic-shadowing">Academic Shadowing</h4>
-<p>Established fields dominate the training distribution.</p>
-<hr />
-<h3 id="mathematical-reason">Mathematical Reason</h3>
-<p>The model approximates:</p>
-<pre class="math"><code>P(word | context)</code></pre>
-<p>based on: - frequency - co-occurrence - dataset weighting</p>
-<hr />
-<h3 id="mitigations">Mitigations</h3>
-<p>Modern systems use: - retrieval-augmented generation (RAG) - live
-search - expert fine-tuning - curated datasets</p>
-<p>to reduce these limitations.</p>
-<hr />
-<h3 id="philosophical-tension">Philosophical Tension</h3>
-<p>LLMs are optimized for: &gt; what is commonly said</p>
-<p>Science advances through: &gt; what is newly discovered and not yet
-commonly repeated</p>
-</details>
-<hr />
-<details>
-<summary>
-<strong>7. What an LLM Physically Is</strong>
-</summary>
-<h2 id="user-6">User</h2>
-<p>what is meant by LLM in the physical world right now?</p>
-<h2 id="assistant-6">Assistant</h2>
-<p>An LLM is physically: - large numerical parameter files - running
-across GPU clusters - distributed through datacenters</p>
-<hr />
-<h3 id="model-weights-1">Model Weights</h3>
-<p>The model exists as: - floating-point tensors - stored on SSDs and
-distributed storage</p>
-<hr />
-<h3 id="hardware">Hardware</h3>
-<p>Inference runs on: - GPUs - TPUs - AI accelerators</p>
-<p>inside industrial datacenters.</p>
-<hr />
-<h3 id="distributed-computation">Distributed Computation</h3>
-<p>Modern models are: - sharded across GPUs - parallelized across
-servers - coordinated through distributed systems</p>
-<hr />
-<h3 id="supporting-infrastructure">Supporting Infrastructure</h3>
-<p>Datacenters include: - networking hardware - cooling systems -
-storage arrays - power infrastructure - routing systems</p>
-<hr />
-<h3 id="physical-meaning-of-thinking">Physical Meaning of
-“Thinking”</h3>
-<p>Physically: &gt; “thinking” is large-scale matrix multiplication
-executed on GPUs</p>
-<hr />
-<h3 id="key-takeaway">Key Takeaway</h3>
-<p>An LLM is: &gt; a distributed cloud-based computational system
-executing massive real-time tensor algebra operations</p>
-</details>
-<hr />
-<details>
-<summary>
-<strong>8. One Token Generation Step on a GPU</strong>
-</summary>
-<h2 id="user-7">User</h2>
-<p>Show me what one token generation step looks like mathematically on a
-GPU</p>
-<h2 id="assistant-7">Assistant</h2>
-<p>A token generation step computes probabilities for the next
-token.</p>
-<hr />
-<h3 id="input-embeddings">Input Embeddings</h3>
-<p>Tokens become vectors:</p>
-<pre class="math"><code>X ∈ ℝ^(n × d)</code></pre>
-<hr />
-<h3 id="linear-projections">Linear Projections</h3>
-<pre class="math"><code>Q = XW_Q
+
+<h3>7. Where Knowledge Lives</h3>
+<p>Knowledge is distributed across billions or trillions of numerical weights rather than explicit symbolic facts.</p>
+
+<h3>8. Limitation</h3>
+<p>The model manipulates patterns extremely effectively but does not consciously understand mathematics.</p>
+<hr>
+
+<h2 id="section-6">6. Statistical Bias and New Discoveries</h2>
+
+<p>Statistical learning systems inherit popularity bias. LLMs learn from frequency — repeated patterns become dominant, rare patterns contribute less.</p>
+
+<p>This can underrepresent new discoveries, niche findings, and frontier research even if they are correct.</p>
+
+<h3>Consequences</h3>
+<p><strong>Lagging Knowledge</strong> — models may reflect older consensus.</p>
+<p><strong>Majority-Vote Distortion</strong> — popular narratives may dominate newer findings.</p>
+<p><strong>Academic Shadowing</strong> — established fields dominate the training distribution.</p>
+
+<h3>Mathematical Reason</h3>
+<p>The model approximates <code>P(word | context)</code> based on frequency, co-occurrence, and dataset weighting.</p>
+
+<h3>Mitigations</h3>
+<p>Modern systems use retrieval-augmented generation (RAG), live search, expert fine-tuning, and curated datasets to reduce these limitations.</p>
+
+<h3>Philosophical Tension</h3>
+<blockquote>
+<p>LLMs are optimized for what is commonly said. Science advances through what is newly discovered and not yet commonly repeated.</p>
+</blockquote>
+<hr>
+
+<h2 id="section-7">7. What an LLM Physically Is</h2>
+
+<p>An LLM is physically large numerical parameter files running across GPU clusters distributed through datacenters.</p>
+
+<h3>Hardware</h3>
+<p>Inference runs on GPUs, TPUs, and AI accelerators inside industrial datacenters. Modern models are sharded across GPUs, parallelized across servers, and coordinated through distributed systems.</p>
+
+<h3>Supporting Infrastructure</h3>
+<p>Datacenters include networking hardware, cooling systems, storage arrays, power infrastructure, and routing systems.</p>
+
+<blockquote>
+<p>"Thinking" is large-scale matrix multiplication executed on GPUs.</p>
+</blockquote>
+
+<blockquote>
+<p>An LLM is a distributed cloud-based computational system executing massive real-time tensor algebra operations.</p>
+</blockquote>
+<hr>
+
+<h2 id="section-8">8. One Token Generation Step on a GPU</h2>
+
+<p>A token generation step computes probabilities for the next token.</p>
+
+<h3>Input Embeddings</h3>
+<pre><code>X ∈ ℝ^(n × d)</code></pre>
+
+<h3>Linear Projections</h3>
+<pre><code>Q = XW_Q
 K = XW_K
 V = XW_V</code></pre>
-<p>Large matrix multiplications create: - queries - keys - values</p>
-<hr />
-<h3 id="attention-scores">Attention Scores</h3>
-<pre class="math"><code>A = QK^T / sqrt(d_k)</code></pre>
-<p>This computes token relationships.</p>
-<hr />
-<h3 id="softmax-normalization">Softmax Normalization</h3>
-<pre class="math"><code>P = softmax(A)</code></pre>
-<p>producing attention probabilities.</p>
-<hr />
-<h3 id="weighted-mixing">Weighted Mixing</h3>
-<pre class="math"><code>Z = PV</code></pre>
+<p>Large matrix multiplications create queries, keys, and values.</p>
+
+<h3>Attention Scores</h3>
+<pre><code>A = QK^T / sqrt(d_k)</code></pre>
+
+<h3>Softmax Normalization</h3>
+<pre><code>P = softmax(A)</code></pre>
+
+<h3>Weighted Mixing</h3>
+<pre><code>Z = PV</code></pre>
 <p>Each token becomes a weighted combination of others.</p>
-<hr />
-<h3 id="feedforward-network">Feedforward Network</h3>
-<pre class="math"><code>F(x) = W_2σ(W_1x + b_1) + b_2</code></pre>
-<p>adds nonlinear transformation power.</p>
-<hr />
-<h3 id="residual-connections">Residual Connections</h3>
-<pre class="math"><code>x&#39; = x + Attention(x)</code></pre>
-<pre class="math"><code>x&#39;&#39; = x&#39; + MLP(x&#39;)</code></pre>
-<hr />
-<h3 id="final-logits">Final Logits</h3>
-<pre class="math"><code>logits = h_nW_vocab</code></pre>
-<p>Each value corresponds to a vocabulary token score.</p>
-<hr />
-<h3 id="probability-distribution">Probability Distribution</h3>
-<pre class="math"><code>P(token) = softmax(logits)</code></pre>
-<p>Example:</p>
-<ul>
-<li><code>"cat"</code> → 0.12</li>
-<li><code>"dog"</code> → 0.09</li>
-<li><code>"."</code> → 0.30</li>
-</ul>
-<hr />
-<h3 id="sampling">Sampling</h3>
-<p>The next token is selected using: - argmax - temperature sampling -
-top-k/top-p sampling</p>
-<hr />
-<h3 id="gpu-reality">GPU Reality</h3>
-<p>The GPU mainly performs: - matrix multiplications - tensor operations
-- exponentials - reductions - vector additions</p>
-<p>Thousands of parallel threads execute these operations
-simultaneously.</p>
-<hr />
-<h3 id="key-insight">Key Insight</h3>
-<p>A token generation step is:</p>
+
+<h3>Feedforward Network</h3>
+<pre><code>F(x) = W_2σ(W_1x + b_1) + b_2</code></pre>
+
+<h3>Residual Connections</h3>
+<pre><code>x' = x + Attention(x)
+x'' = x' + MLP(x')</code></pre>
+
+<h3>Final Logits and Probability Distribution</h3>
+<pre><code>logits = h_nW_vocab
+P(token) = softmax(logits)</code></pre>
+<p>Example: <code>"cat"</code> → 0.12, <code>"dog"</code> → 0.09, <code>"."</code> → 0.30</p>
+
+<h3>Sampling</h3>
+<p>The next token is selected using argmax, temperature sampling, or top-k/top-p sampling.</p>
+
+<h3>GPU Reality</h3>
+<p>The GPU mainly performs matrix multiplications, tensor operations, exponentials, reductions, and vector additions — with thousands of parallel threads executing simultaneously.</p>
+
 <blockquote>
-<p>a forward pass through a giant differentiable mathematical function
-producing a probability distribution over vocabulary space</p>
+<p>A token generation step is a forward pass through a giant differentiable mathematical function producing a probability distribution over vocabulary space.</p>
 </blockquote>
-</details>
-<hr />
-<h1 id="final-summary">Final Summary</h1>
-<p>An LLM is fundamentally: - a statistical learning system - encoded as
-large numerical tensors - trained on massive corpora - executed through
-GPU matrix algebra</p>
-<p>Its “knowledge” exists as distributed mathematical relationships
-across billions or trillions of parameters rather than explicit symbolic
-facts.</p>
+<hr>
+
+<h1>Final Summary</h1>
+<p>An LLM is fundamentally a statistical learning system encoded as large numerical tensors, trained on massive corpora, and executed through GPU matrix algebra. Its "knowledge" exists as distributed mathematical relationships across billions or trillions of parameters rather than explicit symbolic facts.</p>
+
 </body>
 </html>
