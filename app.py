@@ -72,6 +72,8 @@ def python_notes():
 def links():
     category = request.args.get("category", "")
     link_type = request.args.get("type", "")
+    page = request.args.get("page", 1, type=int)
+    per_page = 20  # <--- number of links displayed per page
 
     query = Link.query
 
@@ -80,7 +82,10 @@ def links():
     if link_type:
         query = query.filter_by(type=link_type)
 
-    links = query.order_by(Link.date_added.desc()).all()
+    pagination = query.order_by(Link.date_added.desc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+    links = pagination.items
 
     categories = [r[0] for r in db.session.query(Link.category).distinct().all()]
     types = [r[0] for r in db.session.query(Link.type).distinct().all()]
@@ -92,6 +97,7 @@ def links():
         types=types,
         selected_category=category,
         selected_type=link_type,
+        pagination=pagination,
     )
 
 
