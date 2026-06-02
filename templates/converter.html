@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube to MP3 Converter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='darkstyle.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="icon" href="{{ url_for('static', filename='favicon-32x32.png') }}" sizes="32x32" type="image/png">
+  <link rel="icon" href="{{ url_for('static', filename='favicon-16x16.png') }}" sizes="16x16" type="image/png">
+  <link rel="icon" href="{{ url_for('static', filename='favicon-256x256.png') }}" sizes="256x256" type="image/png">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+  <style>
+    .converter-box {
+      max-width: 600px;
+      margin: 60px auto;
+      padding: 30px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      box-sizing: border-box;
+    }
+    .folder-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    #folder-display {
+      flex: 1;
+      padding: 10px;
+      opacity: 0.7;
+    }
+    button {
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    #status {
+      margin-top: 20px;
+      font-style: italic;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+  <img src="static/favicon-256x256.png" class="top-right-logo" alt="Logo">
+    <div class="converter-box">
+    <h1>YouTube to MP3</h1>
+    <a href="/" class="back-link">← Back Home</a>
+    <hr>
+
+    <label>YouTube URL</label>
+    <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=..." />
+
+    <label>Save to folder</label>
+    <div class="folder-row">
+      <input type="text" id="folder-display" value="{{ folder }}" readonly />
+      <button onclick="pickFolder()">Browse...</button>
+    </div>
+
+    <button onclick="convertVideo()">Download MP3</button>
+
+    <div id="status"></div>
+  </div>
+
+  <script>
+    async function pickFolder() {
+      document.getElementById("status").textContent = "Opening folder picker...";
+      const res = await fetch("/pick-folder");
+      const data = await res.json();
+      document.getElementById("folder-display").value = data.folder;
+      document.getElementById("status").textContent = "Folder selected.";
+    }
+
+    async function convertVideo() {
+      const url = document.getElementById("url").value.trim();
+      if (!url) {
+        document.getElementById("status").textContent = "Please enter a URL.";
+        return;
+      }
+
+      document.getElementById("status").textContent = "Converting... please wait.";
+
+      const formData = new FormData();
+      formData.append("url", url);
+
+      const res = await fetch("/convert", {
+        method: "POST",
+        body: formData
+      });
+
+      if (res.ok) {
+        document.getElementById("status").textContent = "Done! File saved to folder.";
+      } else {
+      document.getElementById("status").textContent = "Something went wrong. Check the Flask console.";
+      }
+      /* this part is for downloading the file directly.
+      if (res.ok) {
+        const blob = await res.blob();
+        const downloadUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = downloadUrl;
+        a.download = "";
+        a.click();
+        document.getElementById("status").textContent = "Done! Check your downloads.";
+      } else {
+        document.getElementById("status").textContent = "Something went wrong. Check the Flask console.";
+      } */
+    }
+  </script>
+</body>
+</html>

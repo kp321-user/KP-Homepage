@@ -17,32 +17,17 @@
 </head>
 <body>
   <img src="static/favicon-256x256.png" class="top-right-logo" alt="Logo">
-  <!-- <img src="static/favicon-256x256.png" class="top-right-logo" alt="Logo">
-  -- The above line adds a logo to the top right corner of the page. You can replace "static/favicon-256x256.png" with the path to your desired image file. -->
   <h1>Welcome to the home page</h1>
   <br>
-<!-- Links to other pages-->
   <b>
     <a href="/links">Links Page</a><br>
     <a href="/python_notes">Python Notes</a><br>
     <a href="/llms">LLMs Explained</a><br>
-    <a href="/another">Another Page</a><br>
+    <a href="/history">History Page</a><br>
+    {% if not render_env %}
+    <a href="/converter">YouTube to MP3</a><br>
+    <a href="/import">Import Page</a><br>
+    {% endif %}
   </b>
-  <!-- Testing adding a imgfile
-  <figure class="opener">
-    <img class="opener1" src="static/KP logo.png" role="presentation" alt="" />
-  </figure>
-  -->
-  <br>
-<!-- commented out the button and JavaScript for now, as it may not be necessary for the index page
-  <button>Python Notes</button>
-  <br>
-<script>
-  document.querySelector('button')
-    .addEventListener('click', function() {
-      alert('You clicked the button!');
-    });
-</script>
--->
 </body>
 </html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='darkstyle.css') }}">
+</head>
+<body>
+  <h1>Import New Page</h1>
+  <a href="/" class="back-link">← Back Home</a>
+
+  <form action="/import" method="POST">
+    <label>Page Title</label><br>
+    <input type="text" name="title" placeholder="e.g. Seven Years War" required><br><br>
+
+    <label>Content (Markdown)</label><br>
+    <textarea name="content" rows="20" style="width: 100%; font-family: monospace; background-color: #161b22; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px; padding: 10px; font-size: 14px;" placeholder="Paste markdown here..."></textarea><br><br>
+
+    <button type="submit">Create Page</button>
+    <a href="/"><button type="button">Cancel</button></a>
+  </form>
+</body>
+</html>

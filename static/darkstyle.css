@@ -13,7 +13,7 @@ body {
     padding: 0 20px;
     background-color: #0d1117;
     color: #c9d1d9;
-    font-size: 16px;  /* regular text */
+    font-size: 18px;  /* regular text */
 }
 
 /* ── Headings ── */
@@ -21,14 +21,14 @@ h1 {
     color: #e6edf3;
     border-bottom: 1px solid #30363d;
     padding-top: 32px;
-    padding-bottom: 12px;
-    font-size: 28px;
+    padding-bottom: 18px;
+    font-size: 32px;
 }
 
 h2 {
     color: #e6edf3;
     margin: 8px 0 4px 0;
-    font-size: 24px;
+    font-size: 28px;
 }
 
 h3 {
@@ -39,14 +39,18 @@ h3 {
 
 /* ── Paragraph ── */
 p {
-    line-height: 1.4;
+    line-height: 1.6;
     color: #c9d1d9;
+    font-size: 18px;
+}
 }
 
 /* ── Small ── */
 small {
     display: block;
     line-height: 1.2;
+    font-size: 14px;
+    color: #8b949e;
 }
 
 /* ── Links ── */
@@ -64,7 +68,7 @@ b {
     text-decoration: none;
     margin: 24px 0 8px 0;
     font-size: 18px;
-    line-height: 1.4;
+    line-height: 1.6;
     
 }
 
@@ -95,7 +99,7 @@ input[type="url"],
 select {
     flex: 1;
     padding: 8px;
-    font-size: 16px;
+    font-size: 18px;
     border: 1px solid #30363d;
     border-radius: 4px;
     background-color: #161b22;
@@ -104,7 +108,7 @@ select {
 .filter-dropdowns select {
     flex: 0;        /* stop stretching */
     width: 200px;   /* same fixed width for both */
-    height: 32px;  /* adjust this */
+    height: 38px;  /* adjust this */
     padding: 4px 10px;
 }
 .filter-form {
@@ -112,7 +116,7 @@ select {
     flex-direction: column;
     align-items: flex-end;
     gap: 8px;
-    margin: 16px 0;
+    margin: 18px 0;
 }
 
 button {
@@ -121,7 +125,7 @@ button {
     color: white;
     border: none;
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 18px;
     cursor: pointer;
     white-space: nowrap;
 }
@@ -152,7 +156,7 @@ nav {
 nav a {
     color: #58a6ff;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 nav a:hover {
@@ -162,7 +166,7 @@ nav a:hover {
 
 nav .site-title {
     color: #8b949e;
-    font-size: 16px;
+    font-size: 18px;
     margin-left: auto;
 }
 
@@ -170,8 +174,8 @@ nav .site-title {
 table {
     width: 100%;
     border-collapse: collapse;
-    margin: 16px 0;
-    font-size: 16px;
+    margin: 18px 0;
+    font-size: 18px;
 }
 
 th {
@@ -229,7 +233,7 @@ tr:nth-child(even) {
 }
 
 .link-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     color: #e6edf3;
 }
@@ -240,7 +244,7 @@ tr:nth-child(even) {
 }
 
 .link-meta {
-    font-size: 12px;
+    font-size: 14px;
     color: #8b949e;
     flex-basis: 100%;
 }
@@ -335,10 +339,10 @@ tr:nth-child(even) {
 div.sourceCode {
     border-radius: 8px;
     border: 1px solid #30363d;
-    margin: 16px 0;
+    margin: 18px 0;
     overflow: hidden;
     background-color: #161b22;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 div.sourceCode code {
@@ -351,16 +355,16 @@ div.sourceCode code {
 
 pre.sourceCode {
     margin: 0;
-    padding: 16px;
+    padding: 18px;
     overflow-x: auto;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 /* ── Blockquotes ── */
 blockquote {
     border-left: 3px solid #58a6ff;
-    margin: 16px 0;
-    padding: 8px 16px;
+    margin: 18px 0;
+    padding: 8px 18px;
     background-color: #161b22;
     border-radius: 0 6px 6px 0;
     color: #8b949e;

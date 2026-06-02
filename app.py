@@ -1,4 +1,5 @@
 import os
+import markdown
 from flask import Flask, redirect, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
@@ -13,6 +14,11 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
+import threading
+import tkinter as tk
+from tkinter import filedialog
+from flask import send_file
+import yt_dlp
 
 load_dotenv()
 
@@ -60,7 +66,7 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    return render_template("home.html", render_env=os.getenv("RENDER"))
 
 
 @app.route("/python_notes")
@@ -68,9 +74,9 @@ def python_notes():
     return render_template("python_notes.html")
 
 
-@app.route("/another")
-def another():
-    return render_template("another.html")
+@app.route("/history")
+def history():
+    return render_template("history.html")
 
 
 @app.route("/llms")
@@ -228,6 +234,112 @@ def fetch_metadata():
             "url": url,
         }
     )
+
+
+@app.route("/import", methods=["GET", "POST"])
+@login_required
+def import_page():
+    if request.method == "POST":
+        title = request.form.get("title")
+        slug = title.lower().replace(" ", "-")
+        md_content = request.form.get("content")
+
+        # convert markdown to HTML
+        html_content = markdown.markdown(
+            md_content, extensions=["tables", "fenced_code"]
+        )
+
+        # build the full page using your template
+        page = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{{{ url_for('static', filename='darkstyle.css') }}}}">
+</head>
+<body>
+<h1>{title}</h1>
+<a href="/" class="back-link">← Back Home</a>
+<hr>
+{html_content}
+</body>
+</html>"""
+
+        # save to templates folder
+        filepath = os.path.join("templates", f"{slug}.html")
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(page)
+
+        # add route dynamically
+        return redirect(f"/pages/{slug}")
+
+    return render_template("import.html")
+
+
+@app.route("/pages/<slug>")
+def view_page(slug):
+    return render_template(f"{slug}.html")
+
+
+download_folder = {"path": os.path.expanduser("~\\Music")}
+
+
+@app.route("/pick-folder")
+@login_required
+def pick_folder():
+    folder = {"path": None}
+
+    def open_picker():
+        root = tk.Tk()
+        root.withdraw()
+        root.wm_attributes("-topmost", 1)
+        selected = filedialog.askdirectory()
+        if selected:
+            folder["path"] = selected
+        root.destroy()
+
+    thread = threading.Thread(target=open_picker)
+    thread.start()
+    thread.join()
+
+    if folder["path"]:
+        download_folder["path"] = folder["path"]
+
+    return jsonify({"folder": download_folder["path"]})
+
+
+@app.route("/converter")
+@login_required
+def converter():
+    return render_template("converter.html", folder=download_folder["path"])
+
+
+@app.route("/convert", methods=["POST"])
+@login_required
+def convert():
+    url = request.form.get("url")
+    folder = download_folder["path"]
+
+    ydl_opts = {
+        "format": "bestaudio/best",
+        "outtmpl": os.path.join(folder, "%(title)s.%(ext)s"),
+        "postprocessors": [
+            {
+                "key": "FFmpegExtractAudio",
+                "preferredcodec": "mp3",
+                "preferredquality": "192",
+            }
+        ],
+    }
+
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        ydl.extract_info(url, download=True)
+
+    return jsonify({"status": "ok"})
 
 
 if __name__ == "__main__":
