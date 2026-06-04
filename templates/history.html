@@ -17,19 +17,97 @@
 </head>
 <body>
   <img src="static/favicon-256x256.png" class="top-right-logo" alt="Logo">
-  <!-- The above line adds a logo to the top right corner of the page. You can replace "static/favicon-256x256.png" with the path to your desired image file. -->
   <h1>History Page</h1>
-  <a href="/" class="back-link">← Back Home</a><br>
-  <a href="/history" class="back-link">← Back History</a><br>
-  <a href="/import" class="back-link">Add History Item</a><br>
-  <h2>Period: Mid-18th Century</h2>
-  <br>
-  <a href="/links">Links Page</a><br>
-  <figure class="opener">
-    <img class="opener1" src="static/KP logo.png" role="presentation" alt="" />
-  </figure>
-  <br>
-<h2>History</h2>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+  <a href="/" class="back-link">← Back Home</a>
+    {% if current_user.is_authenticated %}
+      <a href="/logout" style="font-size: 14px; color: #8b949e;">Logout</a>
+    {% else %}
+      <a href="/login?next=/history" style="font-size: 14px; color: #8b949e;">Login</a>
+    {% endif %}
+  </div>
+
+  {% if not render_env %}
+    <a href="/import" class="add-btn"><button>+ Add Article</button></a>
+  {% endif %}
+
+  <nav>
+    <a href="#articles">Articles</a>
+    <a href="/links">Links Page</a>
+    <span class="site-title">History Page</span>
+  </nav>
+
+  <h2 id="articles">Articles</h2>
+
+  <form class="filter-form" method="GET" action="/history">
+    <div class="filter-dropdowns">
+      <select name="sort" onchange="this.form.submit()">
+        <option value="date_added" {% if selected_sort == "date_added" %}selected{% endif %}>Date Added</option>
+        <option value="title" {% if selected_sort == "title" %}selected{% endif %}>Title</option>
+        <option value="last_modified" {% if selected_sort == "last_modified" %}selected{% endif %}>Last Modified</option>
+      </select>
+
+      <select name="period" onchange="this.form.submit()">
+        <option value="">All Periods</option>
+        {% for p in periods %}
+          {% if p %}
+            <option value="{{ p }}" {% if selected_period == p %}selected{% endif %}>{{ p }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </div>
+
+    {% if selected_period %}
+      <div>
+        <a href="/history">Clear Filters</a>
+      </div>
+    {% endif %}
+  </form>
+
+  {% if history_pages %}
+    <div class="link-list">
+      {% for page in history_pages %}
+        <div class="link-item">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="link-info">
+              <span class="link-title">
+                <a href="/pages/{{ page.slug }}">{{ page.title }}</a>
+              </span>
+              <small class="link-meta">
+                Period: {{ page.period or "—" }} | Added: {{ page.date_added.strftime('%Y-%m-%d') }}
+              </small>
+            </div>
+          </div>
+          {% if not render_env %}
+            <div class="actions-menu">
+              <button class="more-btn" onclick="toggleMenu(event, this)">⋮</button>
+              <div class="dropdown">
+                <a href="/edit-page/{{ page.id }}">✏️ Edit</a>
+                <form action="/delete-page/{{ page.id }}" method="POST">
+                  <button type="submit">🗑 Delete</button>
+                </form>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p>No articles yet — click "+ Add Article" to get started!</p>
+  {% endif %}
+
+  <script>
+    function toggleMenu(event, btn) {
+      event.stopPropagation();
+      const dropdown = btn.nextElementSibling;
+      dropdown.classList.toggle("open");
+    }
+
+    document.addEventListener("click", function() {
+      document.querySelectorAll(".dropdown.open").forEach(d => d.classList.remove("open"));
+    });
+  </script>
 
 </body>
 </html>

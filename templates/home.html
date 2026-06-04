@@ -18,7 +18,15 @@
 <body>
   <img src="static/favicon-256x256.png" class="top-right-logo" alt="Logo">
   <h1>Welcome to the home page</h1>
-  <br>
+  <div style="display: flex; justify-content: right; align-items: center; margin-bottom: 8px;">
+    <br>
+    {% if current_user.is_authenticated %}
+      <a href="/logout" style="font-size: 14px; color: #8b949e;">Logout</a>
+    {% else %}
+      <a href="/login" style="font-size: 14px; color: #8b949e;">Login</a>
+    {% endif %}
+  </div>
+<br>
   <b>
     <a href="/links">Links Page</a><br>
     <a href="/python_notes">Python Notes</a><br>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='darkstyle.css') }}">
+</head>
+<body>
+  <h1>Edit Page</h1>
+  <a href="/history" class="back-link">← Back History</a>
+
+  <form action="/edit-page/{{ page.id }}" method="POST">
+    <label>Page Title</label><br>
+    <input type="text" name="title" value="{{ page.title }}" required><br><br>
+
+    <label>Historical Period</label><br>
+    <input type="text" name="period" value="{{ page.period or '' }}"><br><br>
+
+    <label>Content (Markdown)</label><br>
+    <textarea name="content" rows="20" style="width: 100%; font-family: monospace; background-color: #161b22; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px; padding: 10px; font-size: 14px;">{{ raw_html }}</textarea><br><br>
+
+    <button type="submit">Save Changes</button>
+    <a href="/history"><button type="button">Cancel</button></a>
+  </form>
+</body>
+</html>

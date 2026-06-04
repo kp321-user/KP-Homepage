@@ -92,21 +92,108 @@ def python_notes():
 
 @app.route("/history")
 def history():
+    import re
+
     sort = request.args.get("sort", "date_added")
+    selected_period = request.args.get("period", "")
+
+    query = HistoryPage.query
+    if selected_period:
+        query = query.filter_by(period=selected_period)
 
     if sort == "title":
-        pages = HistoryPage.query.order_by(HistoryPage.title.asc()).all()
+        pages = query.order_by(HistoryPage.title.asc()).all()
     elif sort == "last_modified":
-        pages = HistoryPage.query.order_by(HistoryPage.last_modified.desc()).all()
+        pages = query.order_by(HistoryPage.last_modified.desc()).all()
     else:
-        pages = HistoryPage.query.order_by(HistoryPage.date_added.desc()).all()
+        pages = query.order_by(HistoryPage.date_added.desc()).all()
+
+    def period_sort_key(period):
+        if period:
+            match = re.search(r"\d+", period)
+            if match:
+                return int(match.group())
+        return 9999
+
+    periods = [
+        r[0] for r in db.session.query(HistoryPage.period).distinct().all() if r[0]
+    ]
+    periods.sort(key=period_sort_key)
 
     return render_template(
         "history.html",
         render_env=os.getenv("RENDER"),
         history_pages=pages,
         selected_sort=sort,
+        selected_period=selected_period,
+        periods=periods,
     )
+
+
+@app.route("/edit-page/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_page(id):
+    page = HistoryPage.query.get(id)
+
+    if request.method == "POST":
+        title = request.form.get("title")
+        slug = title.lower().replace(" ", "-")
+        md_content = request.form.get("content")
+        period = request.form.get("period")
+
+        # convert markdown to HTML
+        html_content = markdown.markdown(
+            md_content, extensions=["tables", "fenced_code"]
+        )
+
+        # build the full page
+        html_page = f"""<!DOCTYPE html>
+            <html lang="en">
+            <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>{title}</title>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="{{{{ url_for('static', filename='darkstyle.css') }}}}">
+            </head>
+            <body>
+            <h1>{title}</h1>
+            <a href="/history" class="back-link">← Back History</a>
+            <hr>
+            {html_content}
+            </body>
+            </html>"""
+
+        # delete old file if slug changed
+        if slug != page.slug:
+            old_filepath = os.path.join(
+                "templates", "history_pages", f"{page.slug}.html"
+            )
+            if os.path.exists(old_filepath):
+                os.remove(old_filepath)
+
+        # save updated file
+        filepath = os.path.join("templates", "history_pages", f"{slug}.html")
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(html_page)
+
+        # update database
+        page.title = title
+        page.slug = slug
+        page.period = period
+        page.last_modified = datetime.now(timezone.utc)
+        db.session.commit()
+
+        return redirect(f"/pages/{slug}")
+
+    # GET — load existing page content for editing
+    filepath = os.path.join("templates", "history_pages", f"{page.slug}.html")
+    with open(filepath, "r", encoding="utf-8") as f:
+        raw_html = f.read()
+
+    return render_template("edit_page.html", page=page, raw_html=raw_html)
 
 
 @app.route("/llms")
@@ -154,7 +241,8 @@ def login():
         password = request.form.get("password")
         if username == User.username and password == User.password:
             login_user(User())
-            return redirect("/links")
+            next_page = request.args.get("next")
+            return redirect(next_page or "/")
         return render_template("login.html", error="Invalid credentials")
     return render_template("login.html")
 
@@ -163,7 +251,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect("/links")
+    return redirect("/home")
 
 
 @app.route("/add", methods=["GET", "POST"])
@@ -275,6 +363,7 @@ def import_page():
         title = request.form.get("title")
         slug = title.lower().replace(" ", "-")
         md_content = request.form.get("content")
+        period = request.form.get("period")
 
         # convert markdown to HTML
         html_content = markdown.markdown(
@@ -309,7 +398,7 @@ def import_page():
         # save to database
         existing = HistoryPage.query.filter_by(slug=slug).first()
         if not existing:
-            new_page = HistoryPage(title=title, slug=slug)
+            new_page = HistoryPage(title=title, slug=slug, period=period)
             db.session.add(new_page)
             db.session.commit()
 
