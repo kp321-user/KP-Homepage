@@ -11,7 +11,6 @@ from flask_login import (
     current_user,
 )
 from datetime import datetime
-from matplotlib.pyplot import title
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
