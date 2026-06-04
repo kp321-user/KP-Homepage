@@ -95,6 +95,8 @@ input, button, select {
 
 input[type="text"],
 input[type="url"],
+input[type="number"],
+input[type="password"],
 select {
     flex: 1;
     padding: 8px;
@@ -368,7 +370,13 @@ blockquote {
     border-radius: 0 6px 6px 0;
     color: #8b949e;
 }
-
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #161b22 inset;
+    -webkit-text-fill-color: #c9d1d9;
+    border: 1px solid #30363d;
+}
 
 /* ── Syntax highlighting (Pandoc) ── */
 pre > code.sourceCode { white-space: pre; position: relative; }

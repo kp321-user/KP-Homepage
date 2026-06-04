@@ -14,8 +14,36 @@
     <label>Page Title</label><br>
     <input type="text" name="title" value="{{ page.title }}" required><br><br>
 
-    <label>Historical Period</label><br>
-    <input type="text" name="period" value="{{ page.period or '' }}"><br><br>
+    <label>Era</label><br>
+    <select id="era" name="era" onchange="updatePeriods()">
+      <option value="">— Select Era —</option>
+      {% for era in periods %}
+        <option value="{{ era }}" {% if page.era == era %}selected{% endif %}>{{ era }}</option>
+      {% endfor %}
+    </select><br><br>
+
+    <label>Period</label><br>
+    <select id="period" name="period" onchange="updatePhases()">
+      <option value="">— Select Period —</option>
+      {% if page.era %}
+        {% for period in periods[page.era] %}
+          <option value="{{ period }}" {% if page.period == period %}selected{% endif %}>{{ period }}</option>
+        {% endfor %}
+      {% endif %}
+    </select><br><br>
+
+    <label>Phase</label><br>
+    <select id="phase" name="phase">
+      <option value="">— Select Phase —</option>
+      {% if page.era and page.period %}
+        {% for phase in periods[page.era][page.period] %}
+          <option value="{{ phase }}" {% if page.phase == phase %}selected{% endif %}>{{ phase }}</option>
+        {% endfor %}
+      {% endif %}
+    </select><br><br>
+
+    <label>Start Year (negative for BCE, e.g. -500 for 500 BCE)</label><br>
+    <input type="number" name="start_year" value="{{ page.start_year or '' }}" placeholder="e.g. 1789"><br><br>
 
     <label>Content (Markdown)</label><br>
     <textarea name="content" rows="20" style="width: 100%; font-family: monospace; background-color: #161b22; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px; padding: 10px; font-size: 14px;">{{ raw_html }}</textarea><br><br>
@@ -23,5 +51,45 @@
     <button type="submit">Save Changes</button>
     <a href="/history"><button type="button">Cancel</button></a>
   </form>
+
+  <script>
+    const periodsData = {{ periods | tojson }};
+
+    function updatePeriods() {
+      const era = document.getElementById("era").value;
+      const periodSel = document.getElementById("period");
+      const phaseSel = document.getElementById("phase");
+
+      periodSel.innerHTML = '<option value="">— Select Period —</option>';
+      phaseSel.innerHTML = '<option value="">— Select Phase —</option>';
+
+      if (!era) return;
+
+      for (const period in periodsData[era]) {
+        const opt = document.createElement("option");
+        opt.value = period;
+        opt.textContent = period;
+        periodSel.appendChild(opt);
+      }
+    }
+
+    function updatePhases() {
+      const era = document.getElementById("era").value;
+      const period = document.getElementById("period").value;
+      const phaseSel = document.getElementById("phase");
+
+      phaseSel.innerHTML = '<option value="">— Select Phase —</option>';
+
+      if (!period) return;
+
+      periodsData[era][period].forEach(phase => {
+        const opt = document.createElement("option");
+        opt.value = phase;
+        opt.textContent = phase;
+        phaseSel.appendChild(opt);
+      });
+    }
+  </script>
+
 </body>
 </html>

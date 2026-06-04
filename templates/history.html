@@ -40,30 +40,47 @@
 
   <h2 id="articles">Articles</h2>
 
-  <form class="filter-form" method="GET" action="/history">
-    <div class="filter-dropdowns">
-      <select name="sort" onchange="this.form.submit()">
-        <option value="date_added" {% if selected_sort == "date_added" %}selected{% endif %}>Date Added</option>
-        <option value="title" {% if selected_sort == "title" %}selected{% endif %}>Title</option>
-        <option value="last_modified" {% if selected_sort == "last_modified" %}selected{% endif %}>Last Modified</option>
-      </select>
+<form class="filter-form" method="GET" action="/history">
+  <div class="filter-dropdowns">
+    <select name="sort" onchange="this.form.submit()">
+      <option value="date_added" {% if selected_sort == "date_added" %}selected{% endif %}>Date Added</option>
+      <option value="title" {% if selected_sort == "title" %}selected{% endif %}>Title</option>
+      <option value="last_modified" {% if selected_sort == "last_modified" %}selected{% endif %}>Last Modified</option>
+      <option value="chronological" {% if selected_sort == "chronological" %}selected{% endif %}>Chronological</option>
+    </select>
 
-      <select name="period" onchange="this.form.submit()">
-        <option value="">All Periods</option>
-        {% for p in periods %}
-          {% if p %}
-            <option value="{{ p }}" {% if selected_period == p %}selected{% endif %}>{{ p }}</option>
-          {% endif %}
+    <select name="era" id="era-filter" onchange="this.form.submit()">
+      <option value="">All Eras</option>
+      {% for era in periods %}
+        <option value="{{ era }}" {% if selected_era == era %}selected{% endif %}>{{ era }}</option>
+      {% endfor %}
+    </select>
+
+    <select name="period" id="period-filter" onchange="this.form.submit()">
+      <option value="">All Periods</option>
+      {% if selected_era %}
+        {% for period in periods[selected_era] %}
+          <option value="{{ period }}" {% if selected_period == period %}selected{% endif %}>{{ period }}</option>
         {% endfor %}
-      </select>
-    </div>
+      {% endif %}
+    </select>
 
-    {% if selected_period %}
-      <div>
-        <a href="/history">Clear Filters</a>
-      </div>
-    {% endif %}
-  </form>
+    <select name="phase" id="phase-filter" onchange="this.form.submit()">
+      <option value="">All Phases</option>
+      {% if selected_era and selected_period %}
+        {% for phase in periods[selected_era][selected_period] %}
+          <option value="{{ phase }}" {% if selected_phase == phase %}selected{% endif %}>{{ phase }}</option>
+        {% endfor %}
+      {% endif %}
+    </select>
+  </div>
+
+  {% if selected_era or selected_period or selected_phase %}
+    <div>
+      <a href="/history">Clear Filters</a>
+    </div>
+  {% endif %}
+</form>
 
   {% if history_pages %}
     <div class="link-list">
@@ -75,8 +92,14 @@
                 <a href="/pages/{{ page.slug }}">{{ page.title }}</a>
               </span>
               <small class="link-meta">
-                Period: {{ page.period or "—" }} | Added: {{ page.date_added.strftime('%Y-%m-%d') }}
-              </small>
+                {{ page.era or "—" }}
+                {% if page.period %} → {{ page.period }}{% endif %}
+                {% if page.phase %} → {{ page.phase }}{% endif %}
+                {% if page.start_year %}
+                  | {{ page.start_year }} {% if page.start_year < 0 %}BCE{% else %}CE{% endif %}
+                {% endif %}
+                | Added: {{ page.date_added.strftime('%Y-%m-%d') }}
+            </small>
             </div>
           </div>
           {% if not render_env %}

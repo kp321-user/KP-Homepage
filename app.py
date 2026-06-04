@@ -17,6 +17,7 @@ from dotenv import load_dotenv
 import threading
 from flask import send_file
 import yt_dlp
+from history_periods import HISTORY_PERIODS
 
 load_dotenv()
 
@@ -66,7 +67,10 @@ class HistoryPage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200))
     slug = db.Column(db.String(200), unique=True)
+    era = db.Column(db.String(200))
     period = db.Column(db.String(200))
+    phase = db.Column(db.String(200))
+    start_year = db.Column(db.Integer)
     date_added = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     last_modified = db.Column(
         db.DateTime,
@@ -92,41 +96,37 @@ def python_notes():
 
 @app.route("/history")
 def history():
-    import re
-
     sort = request.args.get("sort", "date_added")
+    selected_era = request.args.get("era", "")
     selected_period = request.args.get("period", "")
+    selected_phase = request.args.get("phase", "")
 
     query = HistoryPage.query
+    if selected_era:
+        query = query.filter_by(era=selected_era)
     if selected_period:
         query = query.filter_by(period=selected_period)
+    if selected_phase:
+        query = query.filter_by(phase=selected_phase)
 
     if sort == "title":
         pages = query.order_by(HistoryPage.title.asc()).all()
     elif sort == "last_modified":
         pages = query.order_by(HistoryPage.last_modified.desc()).all()
+    elif sort == "chronological":
+        pages = query.order_by(HistoryPage.start_year.asc()).all()
     else:
         pages = query.order_by(HistoryPage.date_added.desc()).all()
-
-    def period_sort_key(period):
-        if period:
-            match = re.search(r"\d+", period)
-            if match:
-                return int(match.group())
-        return 9999
-
-    periods = [
-        r[0] for r in db.session.query(HistoryPage.period).distinct().all() if r[0]
-    ]
-    periods.sort(key=period_sort_key)
 
     return render_template(
         "history.html",
         render_env=os.getenv("RENDER"),
         history_pages=pages,
         selected_sort=sort,
+        selected_era=selected_era,
         selected_period=selected_period,
-        periods=periods,
+        selected_phase=selected_phase,
+        periods=HISTORY_PERIODS,
     )
 
 
@@ -182,7 +182,11 @@ def edit_page(id):
         # update database
         page.title = title
         page.slug = slug
-        page.period = period
+        page.era = request.form.get("era")
+        page.period = request.form.get("period")
+        page.phase = request.form.get("phase")
+        start_year = request.form.get("start_year")
+        page.start_year = int(start_year) if start_year else None
         page.last_modified = datetime.now(timezone.utc)
         db.session.commit()
 
@@ -190,10 +194,15 @@ def edit_page(id):
 
     # GET — load existing page content for editing
     filepath = os.path.join("templates", "history_pages", f"{page.slug}.html")
-    with open(filepath, "r", encoding="utf-8") as f:
-        raw_html = f.read()
+    if os.path.exists(filepath):
+        with open(filepath, "r", encoding="utf-8") as f:
+            raw_html = f.read()
+    else:
+        raw_html = ""
 
-    return render_template("edit_page.html", page=page, raw_html=raw_html)
+    return render_template(
+        "edit_hpage.html", page=page, raw_html=raw_html, periods=HISTORY_PERIODS
+    )
 
 
 @app.route("/llms")
@@ -363,14 +372,15 @@ def import_page():
         title = request.form.get("title")
         slug = title.lower().replace(" ", "-")
         md_content = request.form.get("content")
+        era = request.form.get("era")
         period = request.form.get("period")
+        phase = request.form.get("phase")
+        start_year = request.form.get("start_year")
 
-        # convert markdown to HTML
         html_content = markdown.markdown(
             md_content, extensions=["tables", "fenced_code"]
         )
 
-        # build the full page using your template
         page = f"""<!DOCTYPE html>
             <html lang="en">
             <head>
@@ -390,21 +400,26 @@ def import_page():
             </body>
             </html>"""
 
-        # save to templates folder
         filepath = os.path.join("templates", "history_pages", f"{slug}.html")
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(page)
 
-        # save to database
         existing = HistoryPage.query.filter_by(slug=slug).first()
         if not existing:
-            new_page = HistoryPage(title=title, slug=slug, period=period)
+            new_page = HistoryPage(
+                title=title,
+                slug=slug,
+                era=era,
+                period=period,
+                phase=phase,
+                start_year=int(start_year) if start_year else None,
+            )
             db.session.add(new_page)
             db.session.commit()
 
         return redirect(f"/pages/{slug}")
 
-    return render_template("import.html")
+    return render_template("import.html", periods=HISTORY_PERIODS)
 
 
 @app.route("/pages/<slug>")
