@@ -15,8 +15,6 @@ import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import threading
-import tkinter as tk
-from tkinter import filedialog
 from flask import send_file
 import yt_dlp
 
@@ -292,6 +290,9 @@ download_history = []
 @app.route("/pick-folder")
 @login_required
 def pick_folder():
+    import tkinter as tk
+    from tkinter import filedialog
+
     folder = {"path": None}
 
     def open_picker():
