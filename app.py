@@ -251,7 +251,7 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect("/home")
+    return redirect("/")
 
 
 @app.route("/add", methods=["GET", "POST"])
