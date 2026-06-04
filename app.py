@@ -62,6 +62,19 @@ class Link(db.Model):
     )
 
 
+class HistoryPage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200))
+    slug = db.Column(db.String(200), unique=True)
+    period = db.Column(db.String(200))
+    date_added = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    last_modified = db.Column(
+        db.DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+
+
 with app.app_context():
     db.create_all()
     print("Created at:", os.path.abspath("links.db"))
@@ -79,7 +92,21 @@ def python_notes():
 
 @app.route("/history")
 def history():
-    return render_template("history.html")
+    sort = request.args.get("sort", "date_added")
+
+    if sort == "title":
+        pages = HistoryPage.query.order_by(HistoryPage.title.asc()).all()
+    elif sort == "last_modified":
+        pages = HistoryPage.query.order_by(HistoryPage.last_modified.desc()).all()
+    else:
+        pages = HistoryPage.query.order_by(HistoryPage.date_added.desc()).all()
+
+    return render_template(
+        "history.html",
+        render_env=os.getenv("RENDER"),
+        history_pages=pages,
+        selected_sort=sort,
+    )
 
 
 @app.route("/llms")
@@ -279,7 +306,13 @@ def import_page():
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(page)
 
-        # add route dynamically
+        # save to database
+        existing = HistoryPage.query.filter_by(slug=slug).first()
+        if not existing:
+            new_page = HistoryPage(title=title, slug=slug)
+            db.session.add(new_page)
+            db.session.commit()
+
         return redirect(f"/pages/{slug}")
 
     return render_template("import.html")
