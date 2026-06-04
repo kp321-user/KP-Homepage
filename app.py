@@ -10,7 +10,7 @@ from flask_login import (
     login_required,
     current_user,
 )
-from datetime import datetime
+from datetime import datetime, timezone
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
@@ -55,6 +55,11 @@ class Link(db.Model):
     category = db.Column(db.String(100))
     type = db.Column(db.String(50))
     date_added = db.Column(db.DateTime)
+    last_modified = db.Column(
+        db.DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
 
 
 with app.app_context():
@@ -147,7 +152,8 @@ def add_link():
             thumbnail=request.form.get("thumbnail"),
             category=request.form.get("category"),
             type=request.form.get("type"),
-            date_added=datetime.utcnow(),
+            date_added=datetime.now(timezone.utc),
+            last_modified=datetime.now(timezone.utc),
         )
         db.session.add(new_link)
         db.session.commit()
@@ -168,6 +174,7 @@ def edit_link(id):
         link.thumbnail = request.form.get("thumbnail")
         link.category = request.form.get("category")
         link.type = request.form.get("type")
+        link.last_modified = datetime.now(timezone.utc)
         db.session.commit()
         return redirect("/links")
     categories = [r[0] for r in db.session.query(Link.category).distinct().all()]
@@ -249,26 +256,26 @@ def import_page():
 
         # build the full page using your template
         page = f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{title}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{{{ url_for('static', filename='darkstyle.css') }}}}">
-</head>
-<body>
-<h1>{title}</h1>
-<a href="/" class="back-link">← Back Home</a>
-<hr>
-{html_content}
-</body>
-</html>"""
+            <html lang="en">
+            <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>{title}</title>
+            <link rel="preconnect" href="https://fonts.googleapis.com">
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+            <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+            <link rel="stylesheet" href="{{{{ url_for('static', filename='darkstyle.css') }}}}">
+            </head>
+            <body>
+            <h1>{title}</h1>
+            <a href="/history" class="back-link">← Back History</a>
+            <hr>
+            {html_content}
+            </body>
+            </html>"""
 
         # save to templates folder
-        filepath = os.path.join("templates", f"{slug}.html")
+        filepath = os.path.join("templates", "history_pages", f"{slug}.html")
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(page)
 
@@ -280,7 +287,7 @@ def import_page():
 
 @app.route("/pages/<slug>")
 def view_page(slug):
-    return render_template(f"{slug}.html")
+    return render_template(f"history_pages/{slug}.html")
 
 
 download_folder = {"path": os.path.expanduser("~\\Music")}
@@ -347,7 +354,6 @@ def convert():
         }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.extract_info(url, download=True)
         info = ydl.extract_info(url, download=True)
         title = info.get("title", "Unknown")
 
