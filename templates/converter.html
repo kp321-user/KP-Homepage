@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YouTube to MP3 Converter</title>
+  <title>YouTube Video Converter</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -29,8 +29,8 @@
     .folder-row {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin: 10px 0;
+      gap: 16px;
+      margin: 1px 0;
     }
     #folder-display {
       flex: 1;
@@ -51,24 +51,33 @@
 <body>
   <img src="static/favicon-256x256.png" class="top-right-logo" alt="Logo">
     <div class="converter-box">
-    <h1>YouTube to MP3</h1>
-    <a href="/" class="back-link">← Back Home</a>
-    <hr>
+      <h1>YouTube Video Converter</h1>
+      <a href="/" class="back-link">← Back Home</a>
+      <hr>
 
-    <label>YouTube URL</label>
-    <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=..." />
+      <input type="text" id="url" placeholder="https://www.youtube.com/watch?v=..." />
 
-    <label>Save to folder</label>
-    <div class="folder-row">
-      <input type="text" id="folder-display" value="{{ folder }}" readonly />
-      <button onclick="pickFolder()">Browse...</button>
+      <label>Format</label><br>
+      <div class="folder-row"></div>
+      <select id="format">
+          <option value="mp3">MP3 (audio only)</option>
+          <option value="mp4">MP4 (video)</option>
+      </select>
+      <br><br>
+      <label>Save to folder</label>
+      <div class="folder-row">
+        <input type="text" id="folder-display" value="{{ folder }}" readonly />
+        <button onclick="pickFolder()">Browse...</button>
+      </div>
+
+      <button onclick="convertVideo()">Download</button>
+
+      <div id="status"></div>
+    
+      <h3>Download History</h3>
+      <ul id="history-list"></ul>
     </div>
-
-    <button onclick="convertVideo()">Download MP3</button>
-
-    <div id="status"></div>
-  </div>
-
+  
   <script>
     async function pickFolder() {
       document.getElementById("status").textContent = "Opening folder picker...";
@@ -88,6 +97,8 @@
       document.getElementById("status").textContent = "Converting... please wait.";
 
       const formData = new FormData();
+      const format = document.getElementById("format").value;
+      formData.append("format", format);  
       formData.append("url", url);
 
       const res = await fetch("/convert", {
@@ -97,22 +108,37 @@
 
       if (res.ok) {
         document.getElementById("status").textContent = "Done! File saved to folder.";
+        loadHistory(); // refresh history after conversion
       } else {
       document.getElementById("status").textContent = "Something went wrong. Check the Flask console.";
       }
-      /* this part is for downloading the file directly.
-      if (res.ok) {
-        const blob = await res.blob();
-        const downloadUrl = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = downloadUrl;
-        a.download = "";
-        a.click();
-        document.getElementById("status").textContent = "Done! Check your downloads.";
-      } else {
-        document.getElementById("status").textContent = "Something went wrong. Check the Flask console.";
-      } */
+            /* this part is for downloading the file directly.
+            if (res.ok) {
+              const blob = await res.blob();
+              const downloadUrl = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = downloadUrl;
+              a.download = "";
+              a.click();
+              document.getElementById("status").textContent = "Done! Check your downloads.";
+            } else {
+              document.getElementById("status").textContent = "Something went wrong. Check the Flask console.";
+            } */
     }
+    async function loadHistory() {
+      const res = await fetch("/download-history");
+      const data = await res.json();
+      const list = document.getElementById("history-list");
+      list.innerHTML = "";
+      for (const title of data.history) {
+          const li = document.createElement("li");
+          li.textContent = title;
+          list.appendChild(li);
+      }
+    }
+
+    // load history when page opens
+    loadHistory();
   </script>
 </body>
 </html>

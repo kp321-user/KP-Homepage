@@ -11,6 +11,7 @@ from flask_login import (
     current_user,
 )
 from datetime import datetime
+from matplotlib.pyplot import title
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
@@ -286,6 +287,7 @@ def view_page(slug):
 
 
 download_folder = {"path": os.path.expanduser("~\\Music")}
+download_history = []
 
 
 @app.route("/pick-folder")
@@ -323,23 +325,40 @@ def converter():
 def convert():
     url = request.form.get("url")
     folder = download_folder["path"]
+    format = request.form.get("format", "mp3")
 
-    ydl_opts = {
-        "format": "bestaudio/best",
-        "outtmpl": os.path.join(folder, "%(title)s.%(ext)s"),
-        "postprocessors": [
-            {
-                "key": "FFmpegExtractAudio",
-                "preferredcodec": "mp3",
-                "preferredquality": "192",
-            }
-        ],
-    }
+    if format == "mp4":
+        ydl_opts = {
+            "format": "bestvideo+bestaudio/best",
+            "outtmpl": os.path.join(folder, "%(title)s.%(ext)s"),
+            "merge_output_format": "mp4",
+        }
+    else:
+        ydl_opts = {
+            "format": "bestaudio/best",
+            "outtmpl": os.path.join(folder, "%(title)s.%(ext)s"),
+            "postprocessors": [
+                {
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "192",
+                }
+            ],
+        }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         ydl.extract_info(url, download=True)
+        info = ydl.extract_info(url, download=True)
+        title = info.get("title", "Unknown")
 
-    return jsonify({"status": "ok"})
+    download_history.append(title)
+    return jsonify({"status": "ok", "title": title})
+
+
+@app.route("/download-history")
+@login_required
+def get_history():
+    return jsonify({"history": download_history})
 
 
 if __name__ == "__main__":
