@@ -1,5 +1,6 @@
 import os
 import markdown
+import re
 from flask import Flask, redirect, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
@@ -18,6 +19,7 @@ import threading
 from flask import send_file
 import yt_dlp
 from history_periods import HISTORY_PERIODS
+from urllib.parse import urlparse
 
 load_dotenv()
 
@@ -129,15 +131,21 @@ def history():
         periods=HISTORY_PERIODS,
     )
 
+def make_slug(title):
+      title = title.lower().strip()
+      title = re.sub(r"[^\w\s-]", "", title)   # remove special chars
+      title = re.sub(r"\s+", "-", title)        # spaces to dashes
+      title = re.sub(r"-+", "-", title)         # collapse multiple dashes
+      return title
 
 @app.route("/edit-page/<int:id>", methods=["GET", "POST"])
 @login_required
 def edit_page(id):
-    page = HistoryPage.query.get(id)
+    page = HistoryPage.query.get_or_404(id)
 
     if request.method == "POST":
         title = request.form.get("title")
-        slug = title.lower().replace(" ", "-")
+        slug = make_slug(title)
         md_content = request.form.get("content")
         period = request.form.get("period")
 
@@ -210,6 +218,11 @@ def llms():
     return render_template("llms_explained.html")
 
 
+@app.route("/java-notes")
+def java_notes():
+    return render_template("java_notes.html")
+
+
 @app.route("/links")
 def links():
     category = request.args.get("category", "")
@@ -251,6 +264,8 @@ def login():
         if username == User.username and password == User.password:
             login_user(User())
             next_page = request.args.get("next")
+            if next_page and urlparse(next_page).netloc:
+                next_page = None  # reject absolute URLs (they have a netloc like "evil.com")
             return redirect(next_page or "/")
         return render_template("login.html", error="Invalid credentials")
     return render_template("login.html")
@@ -291,9 +306,12 @@ def add_link():
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 @login_required
 def edit_link(id):
-    link = Link.query.get(id)
+    link = Link.query.get_or_404(id)
     if request.method == "POST":
-        link.url = request.form.get("url")
+        url = request.form.get("url")
+        if not url.startswith("http://") and not url.startswith("https://"):
+            url = "https://" + url
+        link.url = url
         link.title = request.form.get("title")
         link.thumbnail = request.form.get("thumbnail")
         link.category = request.form.get("category")
@@ -311,7 +329,7 @@ def edit_link(id):
 @app.route("/delete/<int:id>", methods=["POST"])
 @login_required
 def delete_link(id):
-    link = Link.query.get(id)
+    link = Link.query.get_or_404(id)
     db.session.delete(link)
     db.session.commit()
     return redirect("/links")
@@ -348,7 +366,8 @@ def fetch_metadata():
             else:
                 favicon_direct = urljoin(url, href)
 
-    except:
+    except Exception as e:
+        app.logger.warning(f"fetch_metadata failed: {e}")
         title = ""
         thumbnail = ""
         favicon_google = ""
@@ -370,7 +389,7 @@ def fetch_metadata():
 def import_page():
     if request.method == "POST":
         title = request.form.get("title")
-        slug = title.lower().replace(" ", "-")
+        slug = make_slug(title)
         md_content = request.form.get("content")
         era = request.form.get("era")
         period = request.form.get("period")
@@ -405,17 +424,20 @@ def import_page():
             f.write(page)
 
         existing = HistoryPage.query.filter_by(slug=slug).first()
-        if not existing:
+        if existing:
+            existing.title = title
+            existing.era = era
+            existing.period = period
+            existing.phase = phase
+            existing.start_year = int(start_year) if start_year else None
+        else:
             new_page = HistoryPage(
-                title=title,
-                slug=slug,
-                era=era,
-                period=period,
-                phase=phase,
-                start_year=int(start_year) if start_year else None,
+                title=title, slug=slug, era=era, period=period,
+                phase=phase, start_year=int(start_year) if start_year else None,
             )
             db.session.add(new_page)
-            db.session.commit()
+
+        db.session.commit()
 
         return redirect(f"/pages/{slug}")
 
@@ -469,9 +491,9 @@ def converter():
 def convert():
     url = request.form.get("url")
     folder = download_folder["path"]
-    format = request.form.get("format", "mp3")
+    frmt = request.form.get("format", "mp3")
 
-    if format == "mp4":
+    if frmt == "mp4":
         ydl_opts = {
             "format": "bestvideo+bestaudio/best",
             "outtmpl": os.path.join(folder, "%(title)s.%(ext)s"),
