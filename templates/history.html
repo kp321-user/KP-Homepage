@@ -27,18 +27,17 @@
       <a href="/login?next=/history" style="font-size: 14px; color: #8b949e;">Login</a>
     {% endif %}
   </div>
-
   {% if not render_env %}
     <a href="/import" class="add-btn"><button>+ Add Article</button></a>
   {% endif %}
 
-  <nav>
-    <a href="#articles">Articles</a>
-    <a href="/links">Links Page</a>
-    <span class="site-title">History Page</span>
-  </nav>
 
+<!--  <nav>
+  <a href="/links">Links Page</a>
+  <div style="font-size: 14px; color: #8b949e; align-self: flex-end">history.html</div>
+  </nav>
   <h2 id="articles">Articles</h2>
+-->
 
 <form class="filter-form" method="GET" action="/history">
   <div class="filter-dropdowns">

@@ -29,7 +29,7 @@
     <a href="/add" class="add-btn"><button>+ Add Link</button></a>
   {% endif %}
   
-  <!--<h2>Useful Links:</h2>-->
+  <!--<h2>Useful Links:</h2>
   <form class="filter-form" method="GET" action="/links">
     <div class="filter-dropdowns">
       <select name="category" onchange="this.form.submit()">
@@ -37,7 +37,7 @@
         {% for cat in categories %}
           <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat }}</option>
         {% endfor %}
-      </select>
+      </select>-->
 
       <select name="type" onchange="this.form.submit()">
         <option value="">All Types</option>

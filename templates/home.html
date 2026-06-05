@@ -27,15 +27,15 @@
     {% endif %}
   </div>
 <br>
-  <b>
-    <a href="/links">Links Page</a><br>
-    <a href="/python_notes">Python Notes</a><br>
-    <a href="/llms">LLMs Explained</a><br>
-    <a href="/history">History Page</a><br>
-    {% if not render_env %}
-    <a href="/converter">YouTube to MP3</a><br>
-    <a href="/import">Import Page</a><br>
-    {% endif %}
-  </b>
+  <b><a href="/links">Links Page</a></b><br>
+  <b><a href="/history">History Page</a></b><br>
+  <b><a href="/python_notes">Python Notes</a></b><br>
+  <b><a href="/llms">LLMs Explained</a></b><br>
+  <b><a href="/java-notes">Java Notes</a></b><br>
+  {% if not render_env %}
+    <b><a href="/converter">YouTube to MP3</a></b><br>
+    <b><a href="/import">Import Page</a></b><br>
+  {% endif %}
+  
 </body>
 </html>
