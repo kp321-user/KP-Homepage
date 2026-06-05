@@ -91,16 +91,6 @@ li {
     color: #c9d1d9;
 }
 
-c {
-    padding: 10px 20px;
-    background-color: #30363d;
-    color: white;
-    border: none;
-    font-size: 18px;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
 
 /* ── Forms (global) ── */
 input, button, select {
