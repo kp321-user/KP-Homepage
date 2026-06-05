@@ -1,7 +1,7 @@
 import os
 import markdown
 import re
-from flask import Flask, redirect, render_template, request, jsonify
+from flask import Flask, redirect, render_template, request, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import (
     LoginManager,
@@ -446,7 +446,11 @@ def import_page():
 
 @app.route("/pages/<slug>")
 def view_page(slug):
-    return render_template(f"history_pages/{slug}.html")
+    from jinja2 import TemplateNotFound
+    try:
+        return render_template(f"history_pages/{slug}.html")
+    except TemplateNotFound:
+        abort(404)
 
 
 download_folder = {"path": os.path.expanduser("~\\Music")}
