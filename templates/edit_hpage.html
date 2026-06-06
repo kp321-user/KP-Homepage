@@ -19,6 +19,7 @@
   <a href="/history" class="back-link">← Back History</a>
 
   <form action="/edit-page/{{ page.id }}" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <label>Page Title</label><br>
     <input type="text" name="title" value="{{ page.title }}" required><br><br>
 

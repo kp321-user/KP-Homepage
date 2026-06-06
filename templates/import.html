@@ -19,6 +19,7 @@
   <a href="/" class="back-link">← Back Home</a>
 
   <form action="/import" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <label>Page Title</label><br>
     <input type="text" name="title" placeholder="e.g. Seven Years War" required><br><br>
 

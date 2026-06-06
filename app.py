@@ -3,6 +3,7 @@ import markdown
 import re
 from flask import Flask, redirect, render_template, request, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf.csrf import CSRFProtect
 from flask_login import (
     LoginManager,
     UserMixin,
@@ -23,6 +24,8 @@ from urllib.parse import urlparse
 
 load_dotenv()
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key")
 
@@ -33,6 +36,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
+csrf = CSRFProtect(app)
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
 
@@ -133,16 +137,17 @@ def history():
     )
 
 def make_slug(title):
-      title = title.lower().strip()
-      title = re.sub(r"[^\w\s-]", "", title)   # remove special chars
-      title = re.sub(r"\s+", "-", title)        # spaces to dashes
-      title = re.sub(r"-+", "-", title)         # collapse multiple dashes
-      return title
+    title = title.lower().strip()
+    title = re.sub(r"[^\w\s-]", "", title)
+    title = re.sub(r"_", "-", title)
+    title = re.sub(r"\s+", "-", title)
+    title = re.sub(r"-+", "-", title)
+    return title
 
 @app.route("/edit-page/<int:id>", methods=["GET", "POST"])
 @login_required
 def edit_page(id):
-    page = HistoryPage.query.get_or_404(id)
+    page = db.get_or_404(HistoryPage, id)
 
     if request.method == "POST":
         title = request.form.get("title")
@@ -178,13 +183,13 @@ def edit_page(id):
         # delete old file if slug changed
         if slug != page.slug:
             old_filepath = os.path.join(
-                "templates", "history_pages", f"{page.slug}.html"
+                BASE_DIR, "templates", "history_pages", f"{page.slug}.html"
             )
             if os.path.exists(old_filepath):
                 os.remove(old_filepath)
 
         # save updated file
-        filepath = os.path.join("templates", "history_pages", f"{slug}.html")
+        filepath = os.path.join(BASE_DIR, "templates", "history_pages", f"{slug}.html")
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(html_page)
 
@@ -202,7 +207,7 @@ def edit_page(id):
         return redirect(f"/pages/{slug}")
 
     # GET — load existing page content for editing
-    filepath = os.path.join("templates", "history_pages", f"{page.slug}.html")
+    filepath = os.path.join(BASE_DIR, "templates", "history_pages", f"{page.slug}.html")
     if os.path.exists(filepath):
         with open(filepath, "r", encoding="utf-8") as f:
             raw_html = f.read()
@@ -212,6 +217,18 @@ def edit_page(id):
     return render_template(
         "edit_hpage.html", page=page, raw_html=raw_html, periods=HISTORY_PERIODS
     )
+
+
+@app.route("/delete-page/<int:id>", methods=["POST"])
+@login_required
+def delete_page(id):
+    page = db.get_or_404(HistoryPage, id)
+    filepath = os.path.join(BASE_DIR, "templates", "history_pages", f"{page.slug}.html")
+    if os.path.exists(filepath):
+        os.remove(filepath)
+    db.session.delete(page)
+    db.session.commit()
+    return redirect("/history")
 
 
 @app.route("/llms")
@@ -307,7 +324,7 @@ def add_link():
 @app.route("/edit/<int:id>", methods=["GET", "POST"])
 @login_required
 def edit_link(id):
-    link = Link.query.get_or_404(id)
+    link = db.get_or_404(Link, id)
     if request.method == "POST":
         url = request.form.get("url")
         if not url.startswith("http://") and not url.startswith("https://"):
@@ -330,13 +347,14 @@ def edit_link(id):
 @app.route("/delete/<int:id>", methods=["POST"])
 @login_required
 def delete_link(id):
-    link = Link.query.get_or_404(id)
+    link = db.get_or_404(Link, id)
     db.session.delete(link)
     db.session.commit()
     return redirect("/links")
 
 
 @app.route("/fetch-metadata", methods=["POST"])
+@csrf.exempt
 def fetch_metadata():
     url = request.form.get("url")
     if not url.startswith("http://") and not url.startswith("https://"):
@@ -420,7 +438,7 @@ def import_page():
             </body>
             </html>"""
 
-        filepath = os.path.join("templates", "history_pages", f"{slug}.html")
+        filepath = os.path.join(BASE_DIR, "templates", "history_pages", f"{slug}.html")
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(page)
 

@@ -97,7 +97,7 @@
                 {% if page.start_year %}
                   | {{ page.start_year }} {% if page.start_year < 0 %}BCE{% else %}CE{% endif %}
                 {% endif %}
-                | Added: {{ page.date_added.strftime('%Y-%m-%d') }}
+                {% if page.date_added %}| Added: {{ page.date_added.strftime('%Y-%m-%d') }}{% endif %}
             </small>
             </div>
           </div>
@@ -107,6 +107,7 @@
               <div class="dropdown">
                 <a href="/edit-page/{{ page.id }}">✏️ Edit</a>
                 <form action="/delete-page/{{ page.id }}" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <button type="submit">🗑 Delete</button>
                 </form>
               </div>

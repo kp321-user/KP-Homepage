@@ -97,8 +97,9 @@
 
       const formData = new FormData();
       const format = document.getElementById("format").value;
-      formData.append("format", format);  
+      formData.append("format", format);
       formData.append("url", url);
+      formData.append("csrf_token", "{{ csrf_token() }}");
 
       const res = await fetch("/convert", {
         method: "POST",

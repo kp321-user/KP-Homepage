@@ -82,6 +82,7 @@
               <div class="dropdown">
                 <a href="/edit/{{ link.id }}"> ✏️ Edit</a>
                 <form action="/delete/{{ link.id }}" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <button type="submit">🗑 Delete</button>
                 </form>
               </div>
