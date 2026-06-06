@@ -58,7 +58,7 @@
     <select name="period" id="period-filter" onchange="this.form.submit()">
       <option value="">All Periods</option>
       {% if selected_era %}
-        {% for period in periods[selected_era] %}
+        {% for period in periods.get(selected_era, {}) %}
           <option value="{{ period }}" {% if selected_period == period %}selected{% endif %}>{{ period }}</option>
         {% endfor %}
       {% endif %}
@@ -67,7 +67,7 @@
     <select name="phase" id="phase-filter" onchange="this.form.submit()">
       <option value="">All Phases</option>
       {% if selected_era and selected_period %}
-        {% for phase in periods[selected_era][selected_period] %}
+        {% for phase in periods.get(selected_era, {}).get(selected_period, []) %}
           <option value="{{ phase }}" {% if selected_phase == phase %}selected{% endif %}>{{ phase }}</option>
         {% endfor %}
       {% endif %}
