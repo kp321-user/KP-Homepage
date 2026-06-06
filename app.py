@@ -161,24 +161,7 @@ def edit_hpage(id):
         )
 
         # build the full page
-        html_page = f"""<!DOCTYPE html>
-            <html lang="en">
-            <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>{title}</title>
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-            <link rel="stylesheet" href="{{{{ url_for('static', filename='darkstyle.css') }}}}">
-            </head>
-            <body>
-            <h1>{title}</h1>
-            <a href="/history" class="back-link">← Back History</a>
-            <hr>
-            {html_content}
-            </body>
-            </html>"""
+        html_page = render_template("hpage_base.html", title=title, content=html_content)
 
         # delete old file if slug changed
         if slug != page.slug:
@@ -419,28 +402,11 @@ def add_hpage():
             md_content, extensions=["tables", "fenced_code"]
         )
 
-        page = f"""<!DOCTYPE html>
-            <html lang="en">
-            <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>{title}</title>
-            <link rel="preconnect" href="https://fonts.googleapis.com">
-            <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-            <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-            <link rel="stylesheet" href="{{{{ url_for('static', filename='darkstyle.css') }}}}">
-            </head>
-            <body>
-            <h1>{title}</h1>
-            <a href="/history" class="back-link">← Back History</a>
-            <hr>
-            {html_content}
-            </body>
-            </html>"""
+        html_page = render_template("hpage_base.html", title=title, content=html_content)
 
         filepath = os.path.join(BASE_DIR, "templates", "history_pages", f"{slug}.html")
         with open(filepath, "w", encoding="utf-8") as f:
-            f.write(page)
+            f.write(html_page)
 
         existing = HistoryPage.query.filter_by(slug=slug).first()
         if existing:
