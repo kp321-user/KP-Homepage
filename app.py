@@ -144,9 +144,9 @@ def make_slug(title):
     title = re.sub(r"-+", "-", title)
     return title
 
-@app.route("/edit-page/<int:id>", methods=["GET", "POST"])
+@app.route("/edit-hpage/<int:id>", methods=["GET", "POST"])
 @login_required
-def edit_page(id):
+def edit_hpage(id):
     page = db.get_or_404(HistoryPage, id)
 
     if request.method == "POST":
@@ -219,9 +219,9 @@ def edit_page(id):
     )
 
 
-@app.route("/delete-page/<int:id>", methods=["POST"])
+@app.route("/delete-hpage/<int:id>", methods=["POST"])
 @login_required
-def delete_page(id):
+def delete_hpage(id):
     page = db.get_or_404(HistoryPage, id)
     filepath = os.path.join(BASE_DIR, "templates", "history_pages", f"{page.slug}.html")
     if os.path.exists(filepath):
@@ -403,9 +403,9 @@ def fetch_metadata():
     )
 
 
-@app.route("/import", methods=["GET", "POST"])
+@app.route("/add-hpage", methods=["GET", "POST"])
 @login_required
-def import_page():
+def add_hpage():
     if request.method == "POST":
         title = request.form.get("title")
         slug = make_slug(title)

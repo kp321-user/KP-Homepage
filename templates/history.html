@@ -28,7 +28,7 @@
     {% endif %}
   </div>
   {% if not render_env %}
-    <a href="/import" class="add-btn"><button>+ Add Article</button></a>
+    <a href="/add-hpage" class="add-btn"><button>+ Add Article</button></a>
   {% endif %}
 
 
@@ -105,8 +105,8 @@
             <div class="actions-menu">
               <button class="more-btn" onclick="toggleMenu(event, this)">⋮</button>
               <div class="dropdown">
-                <a href="/edit-page/{{ page.id }}">✏️ Edit</a>
-                <form action="/delete-page/{{ page.id }}" method="POST">
+                <a href="/edit-hpage/{{ page.id }}">✏️ Edit</a>
+                <form action="/delete-hpage/{{ page.id }}" method="POST">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <button type="submit">🗑 Delete</button>
                 </form>
