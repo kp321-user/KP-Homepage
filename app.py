@@ -3,6 +3,7 @@ import markdown
 import re
 from flask import Flask, redirect, render_template, request, jsonify, abort
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 from flask_wtf.csrf import CSRFProtect
 from flask_login import (
     LoginManager,
@@ -78,6 +79,7 @@ class HistoryPage(db.Model):
     period = db.Column(db.String(200))
     phase = db.Column(db.String(200))
     start_year = db.Column(db.Integer)
+    content = db.Column(db.Text)
     date_added = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     last_modified = db.Column(
         db.DateTime,
@@ -88,6 +90,11 @@ class HistoryPage(db.Model):
 
 with app.app_context():
     db.create_all()
+    with db.engine.connect() as conn:
+        cols = [row[1] for row in conn.execute(text("PRAGMA table_info(history_page)"))]
+        if "content" not in cols:
+            conn.execute(text("ALTER TABLE history_page ADD COLUMN content TEXT"))
+            conn.commit()
     print("Created at:", os.path.abspath("links.db"))
 
 
@@ -152,31 +159,7 @@ def edit_hpage(id):
     if request.method == "POST":
         title = request.form.get("title")
         slug = make_slug(title)
-        md_content = request.form.get("content")
-        period = request.form.get("period")
 
-        # convert markdown to HTML
-        html_content = markdown.markdown(
-            md_content, extensions=["tables", "fenced_code"]
-        )
-
-        # build the full page
-        html_page = render_template("hpage_base.html", title=title, content=html_content)
-
-        # delete old file if slug changed
-        if slug != page.slug:
-            old_filepath = os.path.join(
-                BASE_DIR, "templates", "history_pages", f"{page.slug}.html"
-            )
-            if os.path.exists(old_filepath):
-                os.remove(old_filepath)
-
-        # save updated file
-        filepath = os.path.join(BASE_DIR, "templates", "history_pages", f"{slug}.html")
-        with open(filepath, "w", encoding="utf-8") as f:
-            f.write(html_page)
-
-        # update database
         page.title = title
         page.slug = slug
         page.era = request.form.get("era")
@@ -184,21 +167,14 @@ def edit_hpage(id):
         page.phase = request.form.get("phase")
         start_year = request.form.get("start_year")
         page.start_year = int(start_year) if start_year else None
+        page.content = request.form.get("content")
         page.last_modified = datetime.now(timezone.utc)
         db.session.commit()
 
         return redirect(f"/pages/{slug}")
 
-    # GET — load existing page content for editing
-    filepath = os.path.join(BASE_DIR, "templates", "history_pages", f"{page.slug}.html")
-    if os.path.exists(filepath):
-        with open(filepath, "r", encoding="utf-8") as f:
-            raw_html = f.read()
-    else:
-        raw_html = ""
-
     return render_template(
-        "edit_hpage.html", page=page, raw_html=raw_html, periods=HISTORY_PERIODS
+        "edit_hpage.html", page=page, periods=HISTORY_PERIODS
     )
 
 
@@ -206,9 +182,6 @@ def edit_hpage(id):
 @login_required
 def delete_hpage(id):
     page = db.get_or_404(HistoryPage, id)
-    filepath = os.path.join(BASE_DIR, "templates", "history_pages", f"{page.slug}.html")
-    if os.path.exists(filepath):
-        os.remove(filepath)
     db.session.delete(page)
     db.session.commit()
     return redirect("/history")
@@ -398,16 +371,6 @@ def add_hpage():
         phase = request.form.get("phase")
         start_year = request.form.get("start_year")
 
-        html_content = markdown.markdown(
-            md_content, extensions=["tables", "fenced_code"]
-        )
-
-        html_page = render_template("hpage_base.html", title=title, content=html_content)
-
-        filepath = os.path.join(BASE_DIR, "templates", "history_pages", f"{slug}.html")
-        with open(filepath, "w", encoding="utf-8") as f:
-            f.write(html_page)
-
         existing = HistoryPage.query.filter_by(slug=slug).first()
         if existing:
             existing.title = title
@@ -415,10 +378,12 @@ def add_hpage():
             existing.period = period
             existing.phase = phase
             existing.start_year = int(start_year) if start_year else None
+            existing.content = md_content
         else:
             new_page = HistoryPage(
                 title=title, slug=slug, era=era, period=period,
                 phase=phase, start_year=int(start_year) if start_year else None,
+                content=md_content,
             )
             db.session.add(new_page)
 
@@ -432,6 +397,10 @@ def add_hpage():
 @app.route("/pages/<slug>")
 def view_page(slug):
     from jinja2 import TemplateNotFound
+    page = HistoryPage.query.filter_by(slug=slug).first()
+    if page and page.content is not None:
+        html_content = markdown.markdown(page.content, extensions=["tables", "fenced_code"])
+        return render_template("view_hpage.html", page=page, content=html_content)
     try:
         return render_template(f"history_pages/{slug}.html")
     except TemplateNotFound:

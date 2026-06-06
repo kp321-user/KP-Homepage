@@ -55,7 +55,7 @@
     <input type="number" name="start_year" value="{{ page.start_year or '' }}" placeholder="e.g. 1789"><br><br>
 
     <label>Content (Markdown)</label><br>
-    <textarea name="content" rows="20" style="width: 100%; font-family: monospace; background-color: #161b22; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px; padding: 10px; font-size: 14px;">{{ raw_html }}</textarea><br><br>
+    <textarea name="content" rows="20" style="width: 100%; font-family: monospace; background-color: #161b22; color: #c9d1d9; border: 1px solid #30363d; border-radius: 4px; padding: 10px; font-size: 14px;">{{ page.content or '' }}</textarea><br><br>
 
     <button type="submit">Save Changes</button>
     <a href="/history"><button type="button">Cancel</button></a>
