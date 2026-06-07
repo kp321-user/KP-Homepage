@@ -102,6 +102,11 @@ def python_notes():
     return render_template("python_notes.html")
 
 
+@app.route("/github_notes")
+def github_notes():
+    return render_template("github_notes.html")
+
+
 @app.route("/beautifulsoup_notes")
 def beautifulsoup_notes():
     return render_template("beautifulsoup_notes.html")
@@ -219,7 +224,7 @@ def logout():
     return redirect("/")
 
 
-@app.route("/add", methods=["GET", "POST"])
+@app.route("/add-link", methods=["GET", "POST"])
 @login_required
 def add_link():
     if request.method == "POST":
@@ -244,7 +249,7 @@ def add_link():
     return render_template("add_link.html", categories=categories, types=types)
 
 
-@app.route("/edit/<int:id>", methods=["GET", "POST"])
+@app.route("/edit-link/<int:id>", methods=["GET", "POST"])
 @login_required
 def edit_link(id):
     link = db.get_or_404(Link, id)
@@ -267,7 +272,7 @@ def edit_link(id):
     )
 
 
-@app.route("/delete/<int:id>", methods=["POST"])
+@app.route("/delete-link/<int:id>", methods=["POST"])
 @login_required
 def delete_link(id):
     link = db.get_or_404(Link, id)
@@ -360,7 +365,7 @@ def add_hpage():
 
         db.session.commit()
 
-        return redirect(f"/pages/{slug}")
+        return redirect(f"/hpages/{slug}")
 
     return render_template("add_hpage.html", periods=HISTORY_PERIODS)
 
@@ -385,7 +390,7 @@ def edit_hpage(id):
         page.last_modified = datetime.now(timezone.utc)
         db.session.commit()
 
-        return redirect(f"/pages/{slug}")
+        return redirect(f"/hpages/{slug}")
 
     return render_template("edit_hpage.html", page=page, periods=HISTORY_PERIODS)
 
@@ -399,7 +404,7 @@ def delete_hpage(id):
     return redirect("/history")
 
 
-@app.route("/pages/<slug>")
+@app.route("/hpages/<slug>")
 def view_page(slug):
     from jinja2 import TemplateNotFound
 

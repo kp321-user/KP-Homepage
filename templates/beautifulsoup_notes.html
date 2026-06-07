@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta property="og:image" content="{{ url_for('static', filename='favicon-256x256.png', _external=True) }}">
-  <title></title>
+  <title>BeautifulSoup Methods</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -66,6 +66,120 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a hr
 <p><code>find()</code>, <code>get()</code>, and
 <code>select_one()</code> with a CSS selector cover about 80% of real
 scraping work.</p>
+<h1 id="when-to-use-beautifulsoup-for-complex-html-combination">When to
+Use BeautifulSoup for Complex HTML Combination</h1>
+<p>String concatenation is dumb — it just pastes text. BeautifulSoup
+lets you read, inspect, and conditionally act on what’s actually in the
+files before combining them. Use it when the combination requires
+<strong>decisions based on content</strong> rather than just
+position.</p>
+<hr />
+<h2 id="useful-scenarios">Useful Scenarios</h2>
+<h3 id="deduplicating-elements-across-files">Deduplicating Elements
+Across Files</h3>
+<p>You have two HTML files that both contain navigation links and want
+to merge them without duplicates:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># collect all existing hrefs from file 1</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>existing_links <span class="op">=</span> {a.get(<span class="st">&quot;href&quot;</span>) <span class="cf">for</span> a <span class="kw">in</span> soup1.find_all(<span class="st">&quot;a&quot;</span>)}</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># only add links from file 2 that aren&#39;t already there</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> soup2.find_all(<span class="st">&quot;a&quot;</span>):</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> a.get(<span class="st">&quot;href&quot;</span>) <span class="kw">not</span> <span class="kw">in</span> existing_links:</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        nav.append(a)</span></code></pre></div>
+<hr />
+<h3 id="merging-two-tables-into-one">Merging Two Tables Into One</h3>
+<p>You have two HTML files each with a <code>&lt;table&gt;</code> and
+want all the rows combined:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>table1 <span class="op">=</span> soup1.find(<span class="st">&quot;table&quot;</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>rows_from_file2 <span class="op">=</span> soup2.find_all(<span class="st">&quot;tr&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> rows_from_file2:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    table1.append(row)</span></code></pre></div>
+<hr />
+<h3 id="selectively-pulling-sections-by-heading">Selectively Pulling
+Sections by Heading</h3>
+<p>You have several HTML files and want only the sections under a
+specific <code>&lt;h2&gt;</code>:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> h2 <span class="kw">in</span> soup.find_all(<span class="st">&quot;h2&quot;</span>):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="st">&quot;Installation&quot;</span> <span class="kw">in</span> h2.text:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># grab everything until the next h2</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        section_content <span class="op">=</span> []</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> sibling <span class="kw">in</span> h2.next_siblings:</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> sibling.name <span class="op">==</span> <span class="st">&quot;h2&quot;</span>:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>                <span class="cf">break</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>            section_content.append(sibling)</span></code></pre></div>
+<hr />
+<h3 id="building-a-single-page-reference-from-multiple-files">Building a
+Single-Page Reference From Multiple Files</h3>
+<p>You have 60 separate HTML files and want to combine them into one
+long page with a generated table of contents:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>toc <span class="op">=</span> soup_base.new_tag(<span class="st">&quot;ul&quot;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> filepath <span class="kw">in</span> all_article_files:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(filepath, <span class="st">&quot;r&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-8&quot;</span>) <span class="im">as</span> f:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        article_soup <span class="op">=</span> BeautifulSoup(f, <span class="st">&quot;html.parser&quot;</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># grab the h1 for the table of contents</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    h1 <span class="op">=</span> article_soup.find(<span class="st">&quot;h1&quot;</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    article_id <span class="op">=</span> filepath.stem        <span class="co"># e.g. &quot;01_paleolithic&quot;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add toc entry</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    li <span class="op">=</span> soup_base.new_tag(<span class="st">&quot;li&quot;</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    a <span class="op">=</span> soup_base.new_tag(<span class="st">&quot;a&quot;</span>, href<span class="op">=</span><span class="ss">f&quot;#</span><span class="sc">{</span>article_id<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    a.string <span class="op">=</span> h1.text</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    li.append(a)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    toc.append(li)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># add id anchor to the article heading</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    h1[<span class="st">&quot;id&quot;</span>] <span class="op">=</span> article_id</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># append article to main content</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    main.append(article_soup)</span></code></pre></div>
+<p>This is impossible with string concatenation because you need to read
+the <code>&lt;h1&gt;</code> of each file to build the TOC, and inject an
+<code>id</code> attribute into each heading so the TOC links work.</p>
+<hr />
+<h2 id="the-general-rule">The General Rule</h2>
+<p>Use BeautifulSoup when combining requires any of:</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Need</th>
+<th>Why BS4</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reading content to make decisions</td>
+<td>Can inspect tags and text</td>
+</tr>
+<tr>
+<td>Avoiding duplicates</td>
+<td>Can check what already exists</td>
+</tr>
+<tr>
+<td>Injecting attributes</td>
+<td>Can set <code>id</code>, <code>class</code>, <code>href</code> on
+existing tags</td>
+</tr>
+<tr>
+<td>Targeting specific sections</td>
+<td>Can navigate by tag, class, id, text</td>
+</tr>
+<tr>
+<td>Merging lists or tables</td>
+<td>Can append rows/items selectively</td>
+</tr>
+</tbody>
+</table>
 
 </body>
 </html>
