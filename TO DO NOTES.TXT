@@ -1,0 +1,7 @@
+In APP.PY:
+rename /add to /add-weblink
+rename /edit to /edit-weblink
+rename /delete to /delete-weblink
+rename /pages to /hpages
+
+learn beautifulsoup and how to write templates from python to html

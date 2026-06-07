@@ -102,6 +102,11 @@ def python_notes():
     return render_template("python_notes.html")
 
 
+@app.route("/beautifulsoup_notes")
+def beautifulsoup_notes():
+    return render_template("beautifulsoup_notes.html")
+
+
 @app.route("/history")
 def history():
     sort = request.args.get("sort", "date_added")
@@ -137,6 +142,7 @@ def history():
         periods=HISTORY_PERIODS,
     )
 
+
 def make_slug(title):
     title = title.lower().strip()
     title = re.sub(r"[^\w\s-]", "", title)
@@ -144,41 +150,6 @@ def make_slug(title):
     title = re.sub(r"\s+", "-", title)
     title = re.sub(r"-+", "-", title)
     return title
-
-@app.route("/edit-hpage/<int:id>", methods=["GET", "POST"])
-@login_required
-def edit_hpage(id):
-    page = db.get_or_404(HistoryPage, id)
-
-    if request.method == "POST":
-        title = request.form.get("title")
-        slug = make_slug(title)
-
-        page.title = title
-        page.slug = slug
-        page.era = request.form.get("era")
-        page.period = request.form.get("period")
-        page.phase = request.form.get("phase")
-        start_year = request.form.get("start_year")
-        page.start_year = int(start_year) if start_year else None
-        page.content = request.form.get("content")
-        page.last_modified = datetime.now(timezone.utc)
-        db.session.commit()
-
-        return redirect(f"/pages/{slug}")
-
-    return render_template(
-        "edit_hpage.html", page=page, periods=HISTORY_PERIODS
-    )
-
-
-@app.route("/delete-hpage/<int:id>", methods=["POST"])
-@login_required
-def delete_hpage(id):
-    page = db.get_or_404(HistoryPage, id)
-    db.session.delete(page)
-    db.session.commit()
-    return redirect("/history")
 
 
 @app.route("/llms")
@@ -233,7 +204,9 @@ def login():
             login_user(User())
             next_page = request.args.get("next")
             if next_page and urlparse(next_page).netloc:
-                next_page = None  # reject absolute URLs (they have a netloc like "evil.com")
+                next_page = (
+                    None  # reject absolute URLs (they have a netloc like "evil.com")
+                )
             return redirect(next_page or "/")
         return render_template("login.html", error="Invalid credentials")
     return render_template("login.html")
@@ -375,8 +348,12 @@ def add_hpage():
             existing.content = md_content
         else:
             new_page = HistoryPage(
-                title=title, slug=slug, era=era, period=period,
-                phase=phase, start_year=int(start_year) if start_year else None,
+                title=title,
+                slug=slug,
+                era=era,
+                period=period,
+                phase=phase,
+                start_year=int(start_year) if start_year else None,
                 content=md_content,
             )
             db.session.add(new_page)
@@ -388,12 +365,49 @@ def add_hpage():
     return render_template("add_hpage.html", periods=HISTORY_PERIODS)
 
 
+@app.route("/edit-hpage/<int:id>", methods=["GET", "POST"])
+@login_required
+def edit_hpage(id):
+    page = db.get_or_404(HistoryPage, id)
+
+    if request.method == "POST":
+        title = request.form.get("title")
+        slug = make_slug(title)
+
+        page.title = title
+        page.slug = slug
+        page.era = request.form.get("era")
+        page.period = request.form.get("period")
+        page.phase = request.form.get("phase")
+        start_year = request.form.get("start_year")
+        page.start_year = int(start_year) if start_year else None
+        page.content = request.form.get("content")
+        page.last_modified = datetime.now(timezone.utc)
+        db.session.commit()
+
+        return redirect(f"/pages/{slug}")
+
+    return render_template("edit_hpage.html", page=page, periods=HISTORY_PERIODS)
+
+
+@app.route("/delete-hpage/<int:id>", methods=["POST"])
+@login_required
+def delete_hpage(id):
+    page = db.get_or_404(HistoryPage, id)
+    db.session.delete(page)
+    db.session.commit()
+    return redirect("/history")
+
+
 @app.route("/pages/<slug>")
 def view_page(slug):
     from jinja2 import TemplateNotFound
+
     page = HistoryPage.query.filter_by(slug=slug).first()
     if page and page.content is not None:
-        html_content = markdown.markdown(page.content, extensions=["tables", "fenced_code"])
+        html_content = markdown.markdown(
+            page.content, extensions=["tables", "fenced_code"]
+        )
         return render_template("view_hpage.html", page=page, content=html_content)
     try:
         return render_template(f"history_pages/{slug}.html")

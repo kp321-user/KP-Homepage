@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta property="og:image" content="{{ url_for('static', filename='favicon-256x256.png', _external=True) }}">
-  <title>KP Home Page</title>
+  <title></title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
@@ -17,26 +17,11 @@
 </head>
 <body>
   <img src="{{ url_for('static', filename='favicon-256x256.png') }}" class="top-right-logo" alt="Logo">
-  <h1>Welcome to the home page</h1>
-  <div style="display: flex; justify-content: right; align-items: center; margin-bottom: 8px;">
-    <br>
-    {% if current_user.is_authenticated %}
-      <a href="/logout" style="font-size: 14px; color: #8b949e;">Logout</a>
-    {% else %}
-      <a href="/login" style="font-size: 14px; color: #8b949e;">Login</a>
-    {% endif %}
+  <h1></h1>
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    <a href="/" class="back-link">← Back Home</a>
   </div>
-<br>
-  <b><a href="/links">Links Page</a></b><br>
-  <b><a href="/history">History Page</a></b><br>
-  <b><a href="/python_notes">Python Notes</a></b><br>
-  <b><a href="/llms">LLMs Explained</a></b><br>
-  <b><a href="/java-notes">Java Notes</a></b><br>
-  <b><a href="/beautifulsoup_notes">BeautifulSoup Notes</a></b><br>
-  {% if not render_env %}
-    <b><a href="/converter">YouTube to MP3</a></b><br>
-    <b><a href="/add-hpage">Import Page</a></b><br>
-  {% endif %}
-  
+  <div class="new content">
+  </div>
 </body>
 </html>
