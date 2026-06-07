@@ -30,7 +30,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key")
 
-database_url = os.environ.get("DATABASE_URL", "sqlite:///links.db")
+database_url = os.environ.get("DATABASE_URL", "sqlite:///kp_db_2026.db")
 if database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
@@ -95,7 +95,7 @@ with app.app_context():
         if "content" not in cols:
             conn.execute(text("ALTER TABLE history_page ADD COLUMN content TEXT"))
             conn.commit()
-    print("Created at:", os.path.abspath("links.db"))
+    print("Created at:", os.path.abspath("kp_db_2026.db"))
 
 
 @app.route("/")
@@ -391,7 +391,7 @@ def add_hpage():
 
         return redirect(f"/pages/{slug}")
 
-    return render_template("import.html", periods=HISTORY_PERIODS)
+    return render_template("add_hpage.html", periods=HISTORY_PERIODS)
 
 
 @app.route("/pages/<slug>")

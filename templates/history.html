@@ -27,10 +27,14 @@
       <a href="/login?next=/history" style="font-size: 14px; color: #8b949e;">Login</a>
     {% endif %}
   </div>
-  {% if not render_env %}
-    <a href="/add-hpage" class="add-btn"><button>+ Add Article</button></a>
-  {% endif %}
-
+  <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+    {% if not render_env %}
+      <a href="/add-hpage" class="add-btn"><button>+ Add Article</button></a>
+    {% else %}
+      <div></div>
+    {% endif %}
+    <input type="text" id="search-bar" placeholder="Search articles..." oninput="filterArticles()" style="width: 50%; padding: 8px 12px; margin-left: 16px; background: #1c2128; color: #cdd9e5; border: 1px solid #444c56; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+  </div>
 
 <!--  <nav>
   <a href="/links">Links Page</a>
@@ -121,6 +125,14 @@
   {% endif %}
 
   <script>
+    function filterArticles() {
+      const query = document.getElementById("search-bar").value.toLowerCase();
+      document.querySelectorAll(".link-item").forEach(item => {
+        const text = item.querySelector(".link-title").textContent.toLowerCase();
+        item.style.display = text.includes(query) ? "" : "none";
+      });
+    }
+
     function toggleMenu(event, btn) {
       event.stopPropagation();
       const dropdown = btn.nextElementSibling;
