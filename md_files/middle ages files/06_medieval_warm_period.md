@@ -1,0 +1,42 @@
+# Medieval Warm Period
+### High Middle Ages · Middle Ages (~950–1250 CE)
+
+The Medieval Warm Period is the climatic foundation that makes the High Middle Ages possible — and understanding it reframes the entire period. The cathedrals, the universities, the Crusades, the population surge: all of these are downstream of a climate anomaly that made northern Europe temporarily more productive than it had been in centuries or would be again for several hundred years.
+
+---
+
+### What happened climatically
+
+Between roughly 950 and 1250 CE, average temperatures across the North Atlantic region — Europe, Greenland, and parts of North America — were approximately 0.5–1°C warmer than the preceding and following centuries. This sounds trivial but has enormous agricultural consequences. Growing seasons lengthen by weeks. The tree line and viable crop boundary move northward and to higher altitudes. Vineyards appear in England. Norse settlers colonize Greenland (Erik the Red, 985 CE) and briefly establish a settlement in North America at L'Anse aux Meadows in Newfoundland (~1000 CE) — the first known European contact with the Americas, made possible by ice-free North Atlantic sailing conditions.
+
+The warmth is not uniform or continuous — there are cold years and local variations — but the sustained multi-century trend toward warmth underwrites the population growth, agricultural expansion, and economic revival that define the High Middle Ages.
+
+---
+
+### Three key developments
+
+**1. The cathedral building boom**
+
+Medieval cathedrals are often discussed in purely theological or artistic terms. They are also economic barometers. Building a Gothic cathedral — Chartres, Notre-Dame de Paris, Canterbury, Cologne — requires sustained surplus over decades: surplus food to feed the workers, surplus timber and stone from expanding production, surplus wealth to pay the skilled craftsmen, and a population large and confident enough to invest in multi-generational projects. The cathedral building boom of the 12th and 13th centuries, which produces some of the most technically ambitious structures in human history, is only possible because the Medieval Warm Period has generated the agricultural surplus that makes discretionary investment possible.
+
+The Gothic style itself — pointed arches, flying buttresses, vast stained glass windows — is an engineering solution to the problem of building tall thin walls that can bear enormous loads while admitting maximum light. It is high-medieval structural engineering as much as it is theology in stone.
+
+**2. The Norse expansion**
+
+The warmth enables one of the period's most remarkable stories of exploration and settlement. Norse settlers reach Iceland (~870 CE), Greenland (~985 CE), and briefly North America (~1000 CE). The Greenland settlements — at their peak housing several thousand people, supporting cattle farming and exporting walrus ivory to Europe — persist for nearly 500 years before the onset of the Little Ice Age makes them unviable. The North American settlement at Vinland is abandoned after conflicts with indigenous inhabitants, but its existence — confirmed archaeologically at L'Anse aux Meadows — establishes that sustained contact with the Americas was possible and briefly achieved, 500 years before Columbus.
+
+**3. Agricultural innovation compounds**
+
+The warm period amplifies the effects of the agricultural innovations already underway. More reliable harvests reduce the frequency and severity of famines. Surplus production per acre increases. Lords invest in mills — wind and water — that multiply the productivity of grain processing. Markets thicken as transport of surplus becomes worthwhile over longer distances. The cumulative effect, across three centuries, is a sustained improvement in average European material conditions that directly funds the cultural flourishing of the High Middle Ages.
+
+---
+
+### The warning embedded in the warm
+
+The Medieval Warm Period contains its own cautionary lesson. The civilization it enables is, without knowing it, built on a climatic foundation that will be withdrawn. When temperatures begin declining after ~1250 CE and the Little Ice Age begins its onset, the consequences are catastrophic — crop failures, famines, and a weakened population that will be uniquely vulnerable when the Black Death arrives in 1347. The very success of the warm period — the population it supports, the economic complexity it enables — makes the subsequent cooling more destructive than it would otherwise have been. Prosperity built on conditions you don't control and cannot predict carries embedded fragility.
+
+---
+
+### Why it matters
+
+The Medieval Warm Period is a reminder that human history is always embedded in natural history. The institutional, intellectual, and cultural achievements of the High Middle Ages have human authors — the scholars, architects, rulers, and farmers who made specific choices. But those choices were made possible by climatic conditions that no one understood, no one chose, and no one could sustain. Climate is not destiny, but it is a constant and powerful constraint on what human civilizations can achieve and how long they can sustain it. The medieval warm-to-cold transition is the earliest well-documented case study in how climate change — even relatively modest change by geological standards — can destabilize a sophisticated human civilization.

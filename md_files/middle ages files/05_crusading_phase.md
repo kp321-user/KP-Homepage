@@ -1,0 +1,38 @@
+# Crusading Phase
+### High Middle Ages · Middle Ages (~1095–1291 CE)
+
+The Crusades are among the most written-about events in medieval history and among the most misunderstood. They are not a simple story of Christian aggression against Islam, nor a heroic defense of the faith, nor a purely cynical land grab — though they contain elements of all three. They are, more than anything, a window into how medieval Latin Christendom understood itself, its enemies, and its place in a world it was only beginning to re-engage with after centuries of contraction.
+
+---
+
+### The context and the call
+
+By 1095, the conditions for the Crusades are assembled. The Seljuk Turks have decisively defeated the Byzantine Empire at Manzikert (1071 CE), overrunning Anatolia and cutting off the pilgrimage routes to Jerusalem. The Byzantine Emperor Alexios I sends an appeal to Pope Urban II for military assistance. Urban, at the Council of Clermont in November 1095, transforms this diplomatic request into something far larger: a holy war to liberate Jerusalem and the Christian holy sites from Muslim control, with the promise of spiritual reward for participants.
+
+The response exceeds anything Urban expected. A wave of popular enthusiasm sweeps Europe — the People's Crusade, led by Peter the Hermit, sets out before the main armies and is largely massacred in Anatolia. The First Crusade proper, led by French and Norman nobility, is more organized and, improbably, succeeds: Jerusalem falls to the Crusaders in July 1099 CE. The massacre that follows — of Muslim, Jewish, and even some Christian inhabitants — shocks even contemporary observers.
+
+---
+
+### Three key developments
+
+**1. The Crusader states and the long contest**
+
+The First Crusade's success produces four Crusader states in the Levant: the Kingdom of Jerusalem, the County of Tripoli, the Principality of Antioch, and the County of Edessa. They are chronically understaffed — too few settlers, too few soldiers, too dependent on resupply from Europe — but they survive for nearly two centuries through a combination of military innovation (the great castles of the Crusader period, like Krak des Chevaliers, are marvels of defensive architecture), the military orders (the Knights Templar and Hospitallers — monk-soldiers who provide permanent professional garrisons), and periodic divisions among Muslim rulers.
+
+Saladin, Sultan of Egypt and Syria, reunifies the Muslim Near East and retakes Jerusalem in 1187 CE after defeating the Crusader army at the Battle of Hattin — trapping it in a waterless valley by controlling the wells. The subsequent Crusades (there are conventionally nine, though the numbering is partly artificial) progressively fail to recover the losses. The last Crusader stronghold, Acre, falls in 1291 CE. The Crusading project in the Holy Land is over.
+
+**2. The intellectual consequences**
+
+The Crusades reopen sustained contact between Latin Christendom and the Islamic world — and the Islamic world is, in the 12th century, dramatically more intellectually sophisticated. Through Sicily (under Norman rule but with a large Arab population), through Spain (where Christian reconquest produces contact with Islamic scholarship), and through Crusader states themselves, European scholars gain access to Arabic translations of Greek philosophical and scientific texts — Aristotle above all — along with original Islamic advances in mathematics, astronomy, and medicine.
+
+The result is the 12th-century Renaissance: a explosion of intellectual activity in which scholars like Peter Abelard develop scholastic philosophy (applying logical method to theological questions), translations flood into Latin from Arabic, and the first European universities emerge — Bologna (law, ~1088), Paris (theology, ~1150), Oxford (~1167). The recovery of Aristotle, filtered through Islamic commentary, generates the great synthesis of faith and reason that Aquinas will complete in the 13th century. The Crusades, intended as a military project, inadvertently trigger the intellectual revolution that produces the medieval university.
+
+**3. The consequences for Jewish communities**
+
+The Crusades introduce a catastrophic pattern of anti-Jewish violence into European history. The First Crusade is accompanied by pogroms across the Rhineland — Crusaders, reasoning that the enemies of Christ are equally dangerous at home and abroad, massacre Jewish communities in Speyer, Worms, Mainz, and Cologne. These massacres are condemned by Church authorities and local bishops, but the precedent of collective violence against Jews as a religious duty is established. It recurs with every subsequent Crusade and ultimately feeds into the persecution, expulsions, and pogroms that will mark Jewish life in medieval and early modern Europe.
+
+---
+
+### Why it matters
+
+The Crusading phase matters for three distinct reasons. Militarily, it demonstrates both the mobilizing power of religious ideology and the limits of European power projection without sustained logistics and local support. Intellectually, it is the transmission mechanism for the classical and Islamic learning that fuels the 12th-century Renaissance and eventually the Scientific Revolution. Culturally, it deepens the Christian-Muslim antagonism that structures much of subsequent European-Near Eastern relations, while simultaneously producing some of the most sophisticated cultural exchange of the medieval period — including Saladin's reputation among European chroniclers as a paragon of chivalric virtue. History, as usual, resists simple moral framing.

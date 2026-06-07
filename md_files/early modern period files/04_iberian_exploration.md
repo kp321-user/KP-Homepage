@@ -1,0 +1,38 @@
+# Iberian Exploration
+### Age of Exploration · Early Modern Period (~1415–1520 CE)
+
+The Iberian Exploration is where the medieval world ends and the modern world begins — not metaphorically but literally. When Portuguese ships round the Cape of Good Hope and Spanish ships cross the Atlantic, they connect the previously separate hemispheres of human civilization for the first time in recorded history. Nothing is the same afterward: not trade, not disease patterns, not religion, not the balance of global power, not the demographics of three continents. This is the most consequential geographical event since the end of the last Ice Age.
+
+---
+
+### Why Portugal and Spain?
+
+The Iberian Peninsula's geographic position on Europe's southwestern edge, combined with specific political and technological conditions, explains why exploration begins here rather than elsewhere. Portugal under Prince Henry the Navigator (~1394–1460 CE) systematically organizes maritime exploration as a state enterprise — funding voyages down the African coast, establishing a school of navigation at Sagres, and accumulating the cartographic and navigational knowledge needed for deep-sea sailing. The Portuguese motivations are a mixture of the religious (outflanking Islam, reaching the Christian kingdom of Prester John), the commercial (direct access to African gold and, eventually, Asian spices without Muslim intermediaries), and the genuinely curious.
+
+Spain, having completed the *Reconquista* — the 700-year campaign to expel Muslim rule from the Iberian Peninsula — in 1492 CE with the fall of Granada, has a freshly unified kingdom, a military aristocracy looking for new conquests, and a crusading religious ideology that transfers naturally to the enterprise of overseas expansion.
+
+---
+
+### Three key developments
+
+**1. Portugal and the African route to Asia**
+
+Portuguese exploration proceeds methodically down the African coast across the 15th century: Madeira and the Azores in the 1420s–1430s, the Gulf of Guinea in the 1470s, the Cape of Good Hope reached by Bartholomeu Dias in 1488 CE. Vasco da Gama completes the circuit in 1497–1499 CE, reaching Calicut in India and returning to Lisbon with a cargo of spices worth sixty times the cost of the voyage.
+
+The commercial implications are immediate and enormous. The Portuguese route to Asia bypasses the Ottoman-controlled overland routes and the Venetian-dominated Mediterranean trading system. Within two decades, Lisbon displaces Venice as the spice trade's European terminus. Portugal, a small kingdom of perhaps a million people, builds a maritime empire stretching from Brazil to Mozambique to Goa to Macau — held together not by territorial occupation but by control of key ports and sea lanes.
+
+**2. Columbus and the Atlantic crossing**
+
+Christopher Columbus's 1492 voyage is not, as he believed, a route to Asia — it is the European discovery of a hemisphere unknown to them. Columbus sails under Spanish patronage after the Portuguese reject his proposal, reaches the Caribbean in October 1492, and makes three subsequent voyages without ever understanding that he has reached continents previously unknown to Europeans. He dies in 1506 CE still believing he had reached Asia.
+
+The confusion matters less than the consequence. Spanish colonization of the Caribbean begins immediately, and within a generation Spanish conquistadors — Hernán Cortés in Mexico (1519–1521 CE) and Francisco Pizarro in Peru (1532–1533 CE) — overthrow the Aztec and Inca empires with small forces augmented by local allies, superior weapons, and, most devastatingly, Old World diseases against which American populations have no immunity. The population of the Americas collapses by an estimated 50–90% within a century of contact — the largest demographic catastrophe in human history.
+
+**3. The Treaty of Tordesillas and the division of the world**
+
+In 1494 CE, Spain and Portugal divide the non-European world between them along a meridian line drawn through the Atlantic — everything west to Spain, everything east to Portugal — under papal arbitration (Pope Alexander VI, conveniently Spanish). The Treaty of Tordesillas is history's most audacious act of cartographic arrogance: two kingdoms dividing a world they have barely seen, on behalf of a papacy whose authority to make such grants will shortly be challenged by the Reformation. It works, imperfectly, for a century — defining the Portuguese claim to Brazil (which bulges east of the line) and the Spanish claim to the rest of the Americas.
+
+---
+
+### Why it matters
+
+The Iberian Exploration matters because it makes the modern world. Before 1492, human history is the history of several largely separate civilizations developing in parallel. After 1492, all human histories are entangled — through trade, disease, religion, slavery, and eventually the political ideas that travel with the people. The Columbian Exchange (dealt with in the next article) is the biological dimension of this entanglement. The economic dimension is the flow of American silver that funds the Spanish empire and inflates European prices. The moral dimension — the conquest and enslavement of American peoples, the beginning of the transatlantic slave trade — is a wound whose consequences are still being reckoned with. The Iberian Exploration is the hinge on which the modern world turns, and it turns in multiple directions simultaneously.

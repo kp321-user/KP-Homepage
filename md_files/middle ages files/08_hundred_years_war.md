@@ -1,0 +1,40 @@
+# Hundred Years War
+### Late Middle Ages · Middle Ages (~1337–1453 CE)
+
+The Hundred Years War is misleadingly named — it is not one war but a series of conflicts, truces, and resumptions spanning 116 years between England and France. It is also much more than a dynastic quarrel. It is the crucible in which both France and England forge their national identities, in which medieval warfare is transformed by technology, and in which the feudal political order receives its most sustained stress test.
+
+---
+
+### The origins: a dynastic tangle
+
+The war's origins lie in a legal puzzle produced by the plague's disruption of royal succession. When the French Capetian line dies out in 1328 CE, the closest male heir is Edward III of England — grandson of Philip IV of France through his mother Isabella. France's nobility, unwilling to accept an English king, invokes Salic Law (which excludes inheritance through the female line) and crowns Philip VI of Valois instead. Edward III initially accepts this but reasserts his claim in 1337 when Philip confiscates English-held Gascony. The war is, at its root, a conflict over feudal obligation (Edward holds Gascony as a vassal of the French crown) that escalates into a question of who is the rightful King of France.
+
+What begins as a feudal legal dispute becomes, across four generations of fighting, something larger: a conflict that forces both kingdoms to define what they are and who belongs to them.
+
+---
+
+### Three key developments
+
+**1. The military revolution: longbow and gunpowder**
+
+The war's early phase produces some of medieval history's most dramatic military upsets. At Crécy (1346 CE), Poitiers (1356 CE), and Agincourt (1415 CE), English armies of mostly common soldiers armed with the Welsh longbow destroy French armies composed largely of armored knights — the flower of the feudal military aristocracy. The longbow can penetrate plate armor at combat distances, fires faster than a crossbow, and is cheap enough to equip common soldiers. The psychological and social message is devastating: the expensive, aristocratic, horse-mounted knight is no longer the decisive weapon of war. The common soldier with the right technology can kill him.
+
+By the war's later phases, gunpowder artillery is transforming siege warfare. The Bureau brothers' French artillery train, developed in the 1440s, can reduce castles that would have held out for months against medieval siege equipment. The war ends in 1453 CE partly because the French, using artillery systematically, simply demolish the English position in Normandy and Gascony fort by fort. The feudal castle, the defining military architecture of the Middle Ages, is becoming obsolete.
+
+**2. Joan of Arc and the birth of French national identity**
+
+By 1429 CE, England controls most of northern France, the English king is recognized as heir to the French throne under the Treaty of Troyes (1420 CE), and the French cause appears lost. Then a seventeen-year-old peasant girl from Lorraine presents herself to the Dauphin Charles, claiming divine visions commanding her to drive the English out of France.
+
+Joan of Arc's story is so improbable that contemporaries on both sides struggled to categorize it. She leads the relief of Orléans in May 1429 CE, turning the military tide, and ensures Charles VII's coronation at Reims. Captured by Burgundians, sold to the English, tried for heresy and witchcraft, and burned at the stake in 1431 CE at age nineteen, she is rehabilitated by a Church inquiry in 1456 CE. What matters historically is not the theology but the politics: Joan embeds the idea that France is a *nation* — a territory with a specific people, a specific identity, and a God-given right to existence — in French popular consciousness. This is new. Medieval political loyalty is to a lord, a dynasty, or a faith. National identity — loyalty to France *as France* — is what the Hundred Years War forges.
+
+**3. The transformation of both kingdoms**
+
+England's ultimate defeat — losing almost all its French territories by 1453 CE, retaining only Calais — has profound domestic consequences. A military aristocracy that has just been humiliated abroad turns its violence inward: the Wars of the Roses (1455–1485 CE), a dynastic civil war between the houses of Lancaster and York, follow almost immediately. The English nobility exhausts and destroys itself, clearing the ground for the Tudor dynasty and the stronger centralized monarchy that follows.
+
+France emerges from the war more unified, more centralized, and more conscious of itself as a nation than it entered it. Charles VII's reforms create a permanent royal army — the *compagnies d'ordonnance* — funded by permanent taxation, reducing the crown's dependence on feudal levies. The French state, for the first time, has a professional military it controls directly. This is the institutional foundation of the absolute monarchy that will reach its peak under Louis XIV two centuries later.
+
+---
+
+### Why it matters
+
+The Hundred Years War completes the transformation of medieval European politics. It demonstrates that feudal obligations are an insufficient basis for state power — you cannot fight a century-long war on the basis of personal loyalty and occasional levies. It accelerates the development of national identity as a political force. It reveals that technological change can instantly devalue the military class that has underwritten the social order for three centuries. And it ends with both England and France closer to the centralized, professional, tax-funded monarchies that will characterize the Early Modern period — fundamentally different animals from the feudal kingdoms that began the conflict.

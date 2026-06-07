@@ -1,0 +1,42 @@
+# Classical Greece
+### Classical Antiquity · Ancient History (~480–323 BCE)
+
+Classical Greece is one of the densest concentrations of intellectual and political output in human history — compressed into roughly 150 years, centered on a city of perhaps 300,000 people. The ideas produced in Athens in this period still shape how the Western world thinks about politics, philosophy, drama, and the nature of knowledge. Understanding why it happened where and when it did is as interesting as the output itself.
+
+---
+
+### The trigger: the Persian Wars
+
+The Classical period opens with the Persian Wars (490–479 BCE) — and Greece's shocking victories against the vastly larger Achaemenid Empire. Marathon (490 BCE), Thermopylae (480 BCE), Salamis (480 BCE), Plataea (479 BCE): these battles, especially the naval victory at Salamis, give Athens in particular an intoxicating sense of destiny. A small, free polis had defeated the world's greatest empire. Athenian democracy hadn't just survived — it had triumphed. The confidence this generates is a direct precondition for the cultural explosion that follows.
+
+---
+
+### Three key developments
+
+**1. Athenian democracy and its contradictions**
+
+Under Pericles (~461–429 BCE), Athens develops the most participatory political system the ancient world had seen. Male citizens — roughly 30,000 of a total population of perhaps 300,000 — participate directly in the Assembly, serve on juries, and hold public office by lottery. There are no professional politicians; governance is a civic duty performed by rotation.
+
+The contradictions are real and should not be minimized: this democracy rests on roughly 100,000 slaves, excludes all women, and treats resident foreigners as permanent second-class non-citizens. It also, in 399 BCE, executes Socrates for impiety and corrupting youth — democracy's most consequential act of censorship. The point isn't that Athenian democracy was admirable by modern standards. It's that the *idea* of self-governance by citizens, once articulated and demonstrated, proved impossible to permanently suppress.
+
+**2. The philosophical revolution**
+
+Socrates (~470–399 BCE) doesn't write anything — we know him entirely through his students. His method was destabilizing: relentless questioning of assumptions, particularly moral assumptions, until his interlocutors realized they didn't know what they thought they knew. His student Plato (~428–348 BCE) systematizes this into a comprehensive philosophy covering knowledge, reality, ethics, politics, and the soul. Plato's student Aristotle (~384–322 BCE) goes further still — essentially inventing formal logic, founding biology as an empirical discipline, and producing influential works on physics, rhetoric, poetics, ethics, and political theory. The three together span almost the entire range of human intellectual inquiry and establish frameworks still in active use today.
+
+**3. Drama, history, and the examined life**
+
+Classical Athens produces the theatrical tradition in its entirety. Aeschylus, Sophocles, and Euripides invent tragedy as a genre exploring fate, justice, and human limitation — Oedipus Rex, Antigone, and the Oresteia are still performed worldwide. Aristophanes invents political comedy sharp enough to get him in trouble. Herodotus writes the first prose history, attempting to explain the Persian Wars through research and narrative. Thucydides writes the second, about the Peloponnesian War, with a rigorous analytical standard — seeking human causes rather than divine explanation — that remains the model for historical writing.
+
+---
+
+### The Peloponnesian War and the fall
+
+Athens' golden age ends with the Peloponnesian War (431–404 BCE) — a catastrophic, generation-long conflict between Athens and Sparta that drags in most of the Greek world. Thucydides, who lived through it, understood it as a tragedy of imperial overreach: Athens, grown powerful and arrogant, provokes a war it ultimately cannot win. The Sicilian Expedition (415–413 BCE) — an enormous, hubristic attempt to conquer Sicily — ends in the total destruction of the Athenian fleet and army. Athens never recovers its former power.
+
+The broader lesson Thucydides draws — that democratic states are prone to the emotional decision-making of crowds, that power corrupts judgment, that the strong do what they can and the weak suffer what they must — is as uncomfortable now as it was then.
+
+---
+
+### Why it matters
+
+Classical Greece is where the Western intellectual tradition begins its self-conscious articulation. The questions Plato and Aristotle asked — What is justice? What is knowledge? What is the best way to organize a society? What is a human being? — have been the central questions of Western philosophy ever since, not because they were answered, but because the habit of asking them rigorously was established. Democracy, tragedy, systematic philosophy, historical analysis, and empirical science all emerge or mature here within the same 150-year window. It is, by almost any measure, the most generative century and a half in Western intellectual history.

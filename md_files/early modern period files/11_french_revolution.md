@@ -1,0 +1,38 @@
+# French Revolution
+### Age of Revolution · Early Modern Period (~1789–1799 CE)
+
+The French Revolution is the American Revolution's more radical, more violent, and more consequential sibling. Where the Americans largely preserved existing social structures while changing political arrangements, the French attempt to demolish and rebuild everything simultaneously — the monarchy, the aristocracy, the Church, the calendar, the system of weights and measures, even the names of the months. The results are exhilarating and terrifying in roughly equal measure, and the revolutionary and counter-revolutionary traditions it generates define European and global politics for the next two centuries.
+
+---
+
+### The conditions for explosion
+
+France in 1789 CE is a country of 28 million people governed by an absolute monarchy that has essentially bankrupted itself — partly through the cost of supporting the American Revolution, the final irony of a king funding a republican revolution that will inspire his own subjects. The Estates-General, France's representative body that hasn't met since 1614 CE, is convened in May 1789 to address the fiscal crisis. The Third Estate (commoners, representing 97% of the population) arrives with the Enlightenment's political vocabulary fully loaded: Rousseau's general will, Locke's natural rights, Montesquieu's separation of powers. When the king attempts to dismiss their demands, the Revolution begins.
+
+---
+
+### Three key developments
+
+**1. The phases of radicalization**
+
+The Revolution passes through distinct phases of escalating radicalization — each producing the conditions for the next. The constitutional monarchy phase (1789–1792 CE) produces the Declaration of the Rights of Man and Citizen, the abolition of feudalism, and the Civil Constitution of the Clergy (nationalizing the Church). The First Republic phase (1792–1795 CE) begins with war against Austria and Prussia, accelerates with the execution of Louis XVI in January 1793 CE, and culminates in the Terror (1793–1794 CE), when the Committee of Public Safety under Robespierre executes approximately 17,000 people officially and perhaps 40,000 in total as enemies of the Revolution.
+
+The Terror's internal logic is recognizable and terrifying: a revolution under external military threat and internal counter-revolutionary pressure develops an increasingly paranoid definition of loyalty, in which any deviation from the current political line becomes evidence of treason. Robespierre himself is guillotined in Thermidor 1794 CE — consumed by the mechanism he has perfected. The Directory that follows (1795–1799 CE) is corrupt and unstable, setting the stage for Bonaparte.
+
+**2. The revolutionary legacy: rights, terror, and nationalism**
+
+The Revolution produces three legacies that shape the subsequent two centuries. The first is the universalization of rights: the Declaration of the Rights of Man, whatever its exclusions in practice, states principles that are globally portable and eventually become the basis of the Universal Declaration of Human Rights (1948 CE). The second is the demonstration that popular violence can overthrow the most entrenched social hierarchies — a lesson absorbed by every subsequent revolutionary movement from Russia to China.
+
+The third, and perhaps most consequential, is nationalism. The Revolution invents the modern nation — not a collection of subjects owing loyalty to a king, but a sovereign people with a shared identity, language, and history. The levée en masse of 1793 CE — universal military conscription in defense of the republic — creates the first mass citizen army, motivated not by pay or loyalty to a commander but by identification with the nation itself. This model of the citizen-soldier defending the fatherland transforms warfare and produces the nationalist movements that reshape the European map throughout the 19th century.
+
+**3. The Revolution and slavery**
+
+The Revolution's most radical moment occurs not in Paris but in Saint-Domingue (modern Haiti). The Declaration of the Rights of Man reaches the Caribbean colony's 500,000 enslaved Africans and free people of color as an invitation. In 1791 CE, the Haitian Revolution begins — the only successful slave revolt in history, eventually producing, in 1804 CE, the first Black republic in the Western Hemisphere. The French National Convention abolishes slavery in 1794 CE — the first national government in history to do so — only for Napoleon to reinstate it in 1802 CE, triggering renewed Haitian resistance that results in the final French defeat.
+
+Haiti's independence is won at enormous cost — France imposes a crippling indemnity of 150 million francs in 1825 CE (the price of recognition) that Haiti continues paying until 1947 CE, ensuring that the first Black republic is financially crippled from birth. The revolution within the Revolution is both the period's most consistent application of its own principles and the most severely punished.
+
+---
+
+### Why it matters
+
+The French Revolution is the source code for modern political conflict. The left-right political spectrum is born in the Revolutionary Assembly, where supporters of the king sit on the right and radicals on the left. The competing traditions it generates — liberalism, republicanism, socialism, nationalism, conservatism, and eventually fascism (as a counter-revolutionary reaction) — are the dominant political forces of the 19th and 20th centuries. Napoleon, who inherits and exports the Revolution across Europe, destroys the old dynastic order and forces every European state to either adopt revolutionary institutions or develop nationalist resistance movements — both of which reshape the continent. The French Revolution doesn't just change France; it changes the political grammar of the modern world.

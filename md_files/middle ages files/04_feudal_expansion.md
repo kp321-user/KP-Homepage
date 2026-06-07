@@ -1,0 +1,36 @@
+# Feudal Expansion
+### High Middle Ages · Middle Ages (~1000–1100 CE)
+
+By the year 1000, western Europe has absorbed the worst of the Migration Period's disruptions, survived the 9th-century raids, and stabilized around the feudal system. What follows is three centuries of sustained expansion — demographic, agricultural, economic, and territorial — that transforms Europe from a fragmented post-Roman backwater into one of the world's most dynamic civilizations. The High Middle Ages are not the dark ages of popular imagination. They are a period of remarkable growth.
+
+---
+
+### The population surge
+
+Europe's population roughly doubles between 1000 and 1300 CE, from approximately 35 million to 70 million. The driver is agricultural: the adoption of the heavy wheeled plow (which can break the dense northern European soils that the lighter Roman plow couldn't manage), the three-field rotation system (leaving one-third fallow annually to restore fertility rather than one-half), and the increasing use of horse-drawn plowing (horses are faster than oxen, allowing more land to be worked). These innovations, spreading gradually across the previous centuries, reach critical mass in the 11th century and trigger a sustained increase in food production that supports population growth, urban revival, and everything else that follows.
+
+---
+
+### Three key developments
+
+**1. The clearing of Europe**
+
+Population pressure drives an enormous expansion of cultivated land. Forests are cleared, marshes drained, moors brought under the plow. The landscape of medieval Europe is actively manufactured during this period — the patchwork of fields, hedgerows, villages, and managed woodland that still characterizes parts of England and France today is largely a High Medieval creation. New villages appear across the map at a rate not seen before or since in European history. The frontier moves steadily outward: Germans push eastward into Slavic territories (*Ostsiedlung*), Iberian Christians push southward against Muslim al-Andalus, and Norman adventurers carve out kingdoms in England, southern Italy, and Sicily.
+
+**2. The revival of towns and trade**
+
+Agricultural surplus generates disposable income, which generates markets, which generate towns. The 11th century sees the revival of urban life across Europe on a scale not seen since Rome. Old Roman cities refill; new ones appear at river crossings, harbors, and cathedral sites. Merchants organize into guilds. Trade routes reactivate across the continent and into the Mediterranean. The Italian city-states — Venice, Genoa, Pisa — begin building the commercial networks that will eventually finance the Renaissance.
+
+Money economy revives alongside urban life. Coinage had never entirely disappeared, but barter and payment in kind had dominated much of the early medieval economy. As markets thicken and trade distances grow, coined money becomes practical again. This gradual remonetization is the precondition for the sophisticated financial instruments — credit, banking, insurance — that appear in the 12th and 13th centuries.
+
+**3. The reform of the Church and the Investiture Controversy**
+
+The 11th century Church is corrupt by its own standards: simony (buying and selling Church offices) is widespread, clergy marry and pass offices to their sons, and secular lords routinely appoint bishops and abbots — a practice called lay investiture that makes Church offices tools of political patronage. The Gregorian Reform movement, centered on the monastery of Cluny and championed by Pope Gregory VII, attacks all of this simultaneously.
+
+The Investiture Controversy (~1076–1122 CE) is the resulting collision between papal reformers and secular rulers over who has the right to appoint Church officials. At its dramatic peak, Emperor Henry IV stands barefoot in the snow outside the castle of Canossa in January 1077, begging Pope Gregory VII to lift his excommunication — a scene that every medieval person understood as the humiliation of secular by spiritual power. The conflict is resolved by the Concordat of Worms (1122 CE), a compromise that separates spiritual and temporal aspects of investiture. But the underlying tension between papal and imperial authority is not resolved — it is the central political drama of the High Middle Ages, and it generates, as a side effect, the development of canon law, universities, and the first systematic political theory.
+
+---
+
+### Why it matters
+
+The Feudal Expansion phase establishes the material and institutional conditions for everything that makes the High Middle Ages recognizable: the cathedral towns, the universities, the merchant class, the legal and philosophical sophistication. It also establishes the central tension — between a universal Church claiming authority over all Christian rulers and those rulers' claims to sovereignty within their own territories — that will not be resolved until the Reformation definitively breaks the Church's monopoly on spiritual authority four centuries later. The 11th century plants almost every seed the subsequent medieval period will grow.

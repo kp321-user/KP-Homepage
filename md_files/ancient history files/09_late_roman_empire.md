@@ -1,0 +1,48 @@
+# Late Roman Empire
+### Roman Era · Ancient History (~180–476 CE)
+
+The Late Roman Empire is the story of a system that had worked for centuries encountering problems it wasn't built to solve — and the improvised, sometimes brilliant, ultimately insufficient responses. It ends not with a single dramatic fall but with a long, uneven process of transformation that produces the medieval world.
+
+---
+
+### The crisis of the third century
+
+Marcus Aurelius dies in 180 CE and is succeeded by his son Commodus — vain, erratic, and eventually strangled in his bath by conspirators. This sets the pattern for the coming century. Between 235 and 284 CE — the Crisis of the Third Century — Rome has over fifty emperors in fifty years, most dying violently. Simultaneously: the Rhine-Danube frontier faces intensified Germanic pressure, the eastern frontier faces a revitalized Persian power under the Sassanid dynasty, plagues repeatedly devastate the population, trade networks contract, and the currency is debased so severely that the economy partially reverts to barter.
+
+The empire nearly dissolves — at one point splitting into three separate entities. That it survives at all is remarkable, and largely attributable to a series of soldier-emperors from the Balkans (Claudius II, Aurelian, Diocletian) who are effective generals if not polished statesmen.
+
+---
+
+### Three key developments
+
+**1. Diocletian's reforms and the Tetrarchy**
+
+Diocletian (~284–305 CE) responds to the crisis with radical restructuring. He doubles the size of the army, reorganizes the provinces into smaller administrative units, massively expands the bureaucracy, and — most importantly — divides imperial rule between four co-emperors (the Tetrarchy: two senior Augusti and two junior Caesars). The logic is sound: the empire is too large for one man to govern and defend simultaneously. The execution is less successful — the Tetrarchy collapses into civil war within twenty years of Diocletian's retirement.
+
+Diocletian also launches the last and most systematic persecution of Christians in the empire's history. It fails to suppress the movement and probably accelerates its growth.
+
+**2. Constantine and the Christianization of the empire**
+
+Constantine I (~306–337 CE) wins the civil wars that follow the Tetrarchy's collapse, and at the Battle of Milvian Bridge (312 CE) — according to his own account — sees a vision promising victory under the Christian sign. Whether genuinely converted or politically calculating (probably some of both), Constantine issues the Edict of Milan (313 CE) granting religious tolerance across the empire and begins actively favoring Christianity: funding church construction, exempting clergy from taxation, intervening in theological disputes.
+
+His foundation of Constantinople (~330 CE) on the site of Byzantium is equally consequential. The "New Rome" on the Bosphorus is better positioned geographically to defend the empire's wealthiest eastern half — and it will survive the western empire by nearly a thousand years, becoming the Byzantine Empire.
+
+**3. The fall of the Western empire**
+
+The Western empire's final century is a managed decline that becomes unmanageable. The underlying pressures are multiple: a shrinking tax base as territory is lost, an army increasingly composed of Germanic federates whose loyalty is to their commanders rather than Rome, a bureaucracy too large and expensive to sustain, and continuous external pressure from the Huns (who, arriving from Central Asia in the late 4th century, push the Visigoths and other Germanic peoples across the Roman frontier in mass movements Rome cannot absorb or expel).
+
+The sack of Rome by Visigoths under Alaric in 410 CE shocks the Roman world psychologically — the city had not been sacked in 800 years. Jerome, hearing the news in Bethlehem, writes: "The city which had taken the whole world was itself taken." But Rome doesn't fall in 410. It staggers on for another 66 years, its emperors increasingly puppets of Germanic military commanders. The conventional end date — 476 CE, when the Germanic chieftain Odoacer deposes the last western emperor, Romulus Augustulus — is somewhat arbitrary. Contemporaries barely noticed. The Roman Empire in the East continued for another thousand years.
+
+---
+
+### The transformation, not the fall
+
+Historians increasingly prefer "transformation" to "fall." The Roman institutions, legal traditions, and cultural frameworks don't disappear in 476 — they persist in modified forms. The Catholic Church inherits Roman administrative geography (dioceses follow Roman provincial boundaries). Germanic kingdoms adopt Roman law and Latin record-keeping. The Bishop of Rome — the Pope — steps into the political vacuum left by the vanished western emperor, claiming a universal authority that echoes imperial claims.
+
+What ends in the 5th century is Roman *political* unity in the west. What continues, transformed almost beyond recognition but genealogically continuous, is Roman *civilization*.
+
+---
+
+### Why it matters
+
+The Late Roman Empire is history's most studied case of civilizational transition. Every subsequent generation facing decline — medieval scholars, Renaissance humanists, Enlightenment thinkers, modern analysts — has returned to Rome to ask what went wrong and what it means. Edward Gibbon's answer emphasized Christianity and barbarism. Henri Pirenne emphasized the disruption of Mediterranean trade. Modern historians emphasize climate, disease, and the empire's structural fiscal problems. The debate continues because the question remains urgent: how do complex, successful civilizations fail, and what survives the failure? Rome's answer is that what survives is usually more than we expect, and arrives in forms we don't immediately recognize.
