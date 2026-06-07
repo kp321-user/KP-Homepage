@@ -90,12 +90,6 @@ class HistoryPage(db.Model):
 
 with app.app_context():
     db.create_all()
-    with db.engine.connect() as conn:
-        cols = [row[1] for row in conn.execute(text("PRAGMA table_info(history_page)"))]
-        if "content" not in cols:
-            conn.execute(text("ALTER TABLE history_page ADD COLUMN content TEXT"))
-            conn.commit()
-    print("Created at:", os.path.abspath("kp_db_2026.db"))
 
 
 @app.route("/")
