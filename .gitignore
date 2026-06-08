@@ -6,3 +6,6 @@ main.ipynb
 sync_db.py
 claude_api.txt
 CLAUDE.md
+TO DO NOTES.TXT
+two_way_sync_db.py
+one_way_push_db.py
