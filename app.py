@@ -63,7 +63,7 @@ class Link(db.Model):
     thumbnail = db.Column(db.String(500))
     category = db.Column(db.String(100))
     type = db.Column(db.String(50))
-    date_added = db.Column(db.DateTime)
+    date_added = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
     last_modified = db.Column(
         db.DateTime,
         default=lambda: datetime.now(timezone.utc),

@@ -73,7 +73,7 @@
               {% else %}
                 <a class="link-url" href="{{ link.url }}" target="_blank">{{ link.url }}</a>
               {% endif %}
-              <small class="link-meta">Category: {{ link.category }} | Type: {{ link.type }} | Added: {{ link.date_added.strftime('%Y-%m-%d') }}</small>
+              <small class="link-meta">Category: {{ link.category }} | Type: {{ link.type }}{% if link.date_added %} | Added: {{ link.date_added.strftime('%Y-%m-%d') }}{% endif %}</small>
             </div>
           </div>
           {% if current_user.is_authenticated %}
