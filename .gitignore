@@ -4,3 +4,5 @@ __pycache__/
 venv/
 main.ipynb
 sync_db.py
+claude_api.txt
+CLAUDE.md

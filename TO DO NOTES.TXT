@@ -1,9 +1,3 @@
-In APP.PY:
-rename /add to /add-weblink
-rename /edit to /edit-weblink
-rename /delete to /delete-weblink
-rename /pages to /hpages
-add github_notes.html
 
 learn beautifulsoup and how to write templates from python to html
 understand the process of displaying the history pages from the .md content
