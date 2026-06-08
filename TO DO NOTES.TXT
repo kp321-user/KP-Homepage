@@ -1,3 +1,0 @@
-
-learn beautifulsoup and how to write templates from python to html
-understand the process of displaying the history pages from the .md content
