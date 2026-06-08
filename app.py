@@ -17,7 +17,6 @@ from datetime import datetime, timezone
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-import threading
 from flask import send_file
 import yt_dlp
 from history_periods import HISTORY_PERIODS
@@ -427,26 +426,18 @@ download_history = []
 @app.route("/pick-folder")
 @login_required
 def pick_folder():
-    import tkinter as tk
-    from tkinter import filedialog
+    import subprocess, sys
 
-    folder = {"path": None}
+    script = (
+        "import tkinter as tk; from tkinter import filedialog; "
+        "root = tk.Tk(); root.withdraw(); root.wm_attributes('-topmost', 1); "
+        "path = filedialog.askdirectory(); print(path, end='')"
+    )
+    result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True)
+    selected = result.stdout.strip()
 
-    def open_picker():
-        root = tk.Tk()
-        root.withdraw()
-        root.wm_attributes("-topmost", 1)
-        selected = filedialog.askdirectory()
-        if selected:
-            folder["path"] = selected
-        root.destroy()
-
-    thread = threading.Thread(target=open_picker)
-    thread.start()
-    thread.join()
-
-    if folder["path"]:
-        download_folder["path"] = folder["path"]
+    if selected:
+        download_folder["path"] = selected
 
     return jsonify({"folder": download_folder["path"]})
 
