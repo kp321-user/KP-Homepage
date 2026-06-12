@@ -115,7 +115,9 @@
         document.getElementById("status").textContent = "Done! Check your downloads.";
         loadHistory();
       } else {
-        document.getElementById("status").textContent = "Something went wrong.";
+        let msg = "Something went wrong.";
+        try { const e = await res.json(); if (e.error) msg = "Error: " + e.error; } catch {}
+        document.getElementById("status").textContent = msg;
       }
     }
     async function loadHistory() {
