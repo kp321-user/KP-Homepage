@@ -476,11 +476,13 @@ def convert():
 
         if frmt == "mp4":
             ydl_opts = {
+                "format": "bestvideo+bestaudio/best",
                 "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
                 "merge_output_format": "mp4",
             }
         else:
             ydl_opts = {
+                "format": "bestaudio/best",
                 "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
                 "postprocessors": [
                     {
