@@ -16,7 +16,12 @@
 </head>
 <body>
   <img src="{{ url_for('static', filename='favicon-256x256.png') }}" class="top-right-logo" alt="Logo">
-  <h1>Welcome to the links page</h1>
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; border-bottom: 1px solid #30363d; margin-bottom: 0;">
+    <h1 style="margin: 0; border-bottom: none; padding-bottom: 6px;">Welcome to the links page</h1>
+    {% if current_user.is_authenticated %}
+      <a href="/add-link" class="add-btn"><button>+ Add Link</button></a>
+    {% endif %}
+  </div>
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
     <a href="/" class="back-link">← Back Home</a>
     {% if current_user.is_authenticated %}
@@ -25,11 +30,7 @@
       <a href="/login?next=/links" style="font-size: 14px; color: #8b949e;">Login</a>
     {% endif %}
   </div>
-  {% if current_user.is_authenticated %}
-    <a href="/add-link" class="add-btn"><button>+ Add Link</button></a>
-  {% endif %}
   
-  <!--<h2>Useful Links:</h2>
   <form class="filter-form" method="GET" action="/links">
     <div class="filter-dropdowns">
       <select name="category" onchange="this.form.submit()">
@@ -37,7 +38,7 @@
         {% for cat in categories %}
           <option value="{{ cat }}" {% if cat == selected_category %}selected{% endif %}>{{ cat }}</option>
         {% endfor %}
-      </select>-->
+      </select>
 
       <select name="type" onchange="this.form.submit()">
         <option value="">All Types</option>
