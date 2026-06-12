@@ -63,15 +63,6 @@
           <option value="mp4">MP4 (video)</option>
       </select>
       <br><br>
-      <label>Save to folder</label>
-      <div class="folder-row">
-        <input type="text" id="folder-display" value="{{ folder }}" readonly />
-        {% if not render_env %}
-          <button onclick="pickFolder()">Browse...</button>
-        {% else %}
-          <small style="opacity: 0.5;">Folder picker not available on server</small>
-        {% endif %}
-      </div>
 
       <button onclick="convertVideo()">Download</button>
 
@@ -111,23 +102,18 @@
       });
 
       if (res.ok) {
-        document.getElementById("status").textContent = "Done! File saved to folder.";
-        loadHistory(); // refresh history after conversion
+        const blob = await res.blob();
+        const downloadUrl = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = downloadUrl;
+        a.download = "";
+        a.click();
+        URL.revokeObjectURL(downloadUrl);
+        document.getElementById("status").textContent = "Done! Check your downloads.";
+        loadHistory();
       } else {
-      document.getElementById("status").textContent = "Something went wrong. Check the Flask console.";
+        document.getElementById("status").textContent = "Something went wrong.";
       }
-            /* this part is for downloading the file directly.
-            if (res.ok) {
-              const blob = await res.blob();
-              const downloadUrl = URL.createObjectURL(blob);
-              const a = document.createElement("a");
-              a.href = downloadUrl;
-              a.download = "";
-              a.click();
-              document.getElementById("status").textContent = "Done! Check your downloads.";
-            } else {
-              document.getElementById("status").textContent = "Something went wrong. Check the Flask console.";
-            } */
     }
     async function loadHistory() {
       const res = await fetch("/download-history");

@@ -1,7 +1,9 @@
 import os
 import markdown
 import re
-from flask import Flask, redirect, render_template, request, jsonify, abort
+import tempfile
+import shutil
+from flask import Flask, redirect, render_template, request, jsonify, abort, send_file, after_this_request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from flask_wtf.csrf import CSRFProtect
@@ -452,34 +454,50 @@ def converter():
 @login_required
 def convert():
     url = request.form.get("url")
-    folder = download_folder["path"]
     frmt = request.form.get("format", "mp3")
+    tmp_dir = tempfile.mkdtemp()
 
-    if frmt == "mp4":
-        ydl_opts = {
-            "format": "bestvideo+bestaudio/best",
-            "outtmpl": os.path.join(folder, "%(title)s.%(ext)s"),
-            "merge_output_format": "mp4",
-        }
-    else:
-        ydl_opts = {
-            "format": "bestaudio/best",
-            "outtmpl": os.path.join(folder, "%(title)s.%(ext)s"),
-            "postprocessors": [
-                {
-                    "key": "FFmpegExtractAudio",
-                    "preferredcodec": "mp3",
-                    "preferredquality": "192",
-                }
-            ],
-        }
+    try:
+        if frmt == "mp4":
+            ydl_opts = {
+                "format": "bestvideo+bestaudio/best",
+                "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
+                "merge_output_format": "mp4",
+            }
+        else:
+            ydl_opts = {
+                "format": "bestaudio/best",
+                "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
+                "postprocessors": [
+                    {
+                        "key": "FFmpegExtractAudio",
+                        "preferredcodec": "mp3",
+                        "preferredquality": "192",
+                    }
+                ],
+            }
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=True)
-        title = info.get("title", "Unknown")
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=True)
+            title = info.get("title", "Unknown")
 
-    download_history.append(title)
-    return jsonify({"status": "ok", "title": title})
+        files = os.listdir(tmp_dir)
+        if not files:
+            return jsonify({"error": "Download failed"}), 500
+
+        filepath = os.path.join(tmp_dir, files[0])
+
+        @after_this_request
+        def cleanup(response):
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+            return response
+
+        download_history.append(title)
+        return send_file(filepath, as_attachment=True, download_name=files[0])
+
+    except Exception as e:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/download-history")
