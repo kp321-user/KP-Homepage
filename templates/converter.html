@@ -66,7 +66,11 @@
       <label>Save to folder</label>
       <div class="folder-row">
         <input type="text" id="folder-display" value="{{ folder }}" readonly />
-        <button onclick="pickFolder()">Browse...</button>
+        {% if not render_env %}
+          <button onclick="pickFolder()">Browse...</button>
+        {% else %}
+          <small style="opacity: 0.5;">Folder picker not available on server</small>
+        {% endif %}
       </div>
 
       <button onclick="convertVideo()">Download</button>

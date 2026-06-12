@@ -445,7 +445,7 @@ def pick_folder():
 @app.route("/converter")
 @login_required
 def converter():
-    return render_template("converter.html", folder=download_folder["path"])
+    return render_template("converter.html", folder=download_folder["path"], render_env=os.getenv("RENDER"))
 
 
 @app.route("/convert", methods=["POST"])
