@@ -431,6 +431,21 @@ def csrf_token():
     return jsonify({"csrf_token": generate_csrf()})
 
 
+@app.route("/debug-cookies")
+@login_required
+def debug_cookies():
+    import base64
+    raw = os.getenv("YOUTUBE_COOKIES", "")
+    if not raw:
+        return jsonify({"status": "YOUTUBE_COOKIES not set"})
+    try:
+        decoded = base64.b64decode(raw).decode("utf-8")
+        lines = [l for l in decoded.splitlines() if l and not l.startswith("#")]
+        return jsonify({"status": "ok", "cookie_lines": len(lines), "first_domain": lines[0].split("\t")[0] if lines else "none"})
+    except Exception as e:
+        return jsonify({"status": "decode error", "error": str(e)})
+
+
 @app.route("/pick-folder")
 @login_required
 def pick_folder():
