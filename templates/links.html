@@ -26,7 +26,7 @@
     {% endif %}
   </div>
   {% if current_user.is_authenticated %}
-    <a href="/add" class="add-btn"><button>+ Add Link</button></a>
+    <a href="/add-link" class="add-btn"><button>+ Add Link</button></a>
   {% endif %}
   
   <!--<h2>Useful Links:</h2>
@@ -80,8 +80,8 @@
             <div class="actions-menu">
               <button class="more-btn" title="More actions (Alt-A)" onclick="toggleMenu(event, this)">⋮</button>
               <div class="dropdown">
-                <a href="/edit/{{ link.id }}"> ✏️ Edit</a>
-                <form action="/delete/{{ link.id }}" method="POST">
+                <a href="/edit-link/{{ link.id }}"> ✏️ Edit</a>
+                <form action="/delete-link/{{ link.id }}" method="POST">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <button type="submit">🗑 Delete</button>
                 </form>
