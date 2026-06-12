@@ -462,8 +462,16 @@ def convert():
     url = request.form.get("url")
     frmt = request.form.get("format", "mp3")
     tmp_dir = tempfile.mkdtemp()
+    cookies_file = None
 
     try:
+        cookies_content = os.getenv("YOUTUBE_COOKIES")
+        if cookies_content:
+            cf = tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False)
+            cf.write(cookies_content)
+            cf.close()
+            cookies_file = cf.name
+
         if frmt == "mp4":
             ydl_opts = {
                 "format": "bestvideo+bestaudio/best",
@@ -483,6 +491,9 @@ def convert():
                 ],
             }
 
+        if cookies_file:
+            ydl_opts["cookiefile"] = cookies_file
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
             title = info.get("title", "Unknown")
@@ -496,6 +507,8 @@ def convert():
         @after_this_request
         def cleanup(response):
             shutil.rmtree(tmp_dir, ignore_errors=True)
+            if cookies_file:
+                os.unlink(cookies_file)
             return response
 
         download_history.append(title)
@@ -503,6 +516,8 @@ def convert():
 
     except Exception as e:
         shutil.rmtree(tmp_dir, ignore_errors=True)
+        if cookies_file:
+            os.unlink(cookies_file)
         return jsonify({"error": str(e)}), 500
 
 
