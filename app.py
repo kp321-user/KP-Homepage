@@ -431,30 +431,6 @@ def csrf_token():
     return jsonify({"csrf_token": generate_csrf()})
 
 
-@app.route("/debug-cookies")
-@login_required
-def debug_cookies():
-    import base64
-    raw = os.getenv("YOUTUBE_COOKIES", "")
-    if not raw:
-        return jsonify({"status": "YOUTUBE_COOKIES not set"})
-    try:
-        decoded = base64.b64decode(raw).decode("utf-8")
-        lines = [l for l in decoded.splitlines() if l and not l.startswith("#")]
-        cf = tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False)
-        cf.write(decoded)
-        cf.close()
-        try:
-            with yt_dlp.YoutubeDL({"cookiefile": cf.name, "quiet": True, "no_warnings": True}) as ydl:
-                info = ydl.extract_info("https://www.youtube.com/watch?v=dQw4w9WgXcQ", download=False)
-            result = {"status": "ok", "cookie_lines": len(lines), "video_title": info.get("title", "unknown")}
-        except Exception as e:
-            result = {"status": "cookie_load_ok", "cookie_lines": len(lines), "yt_dlp_error": str(e)}
-        finally:
-            os.unlink(cf.name)
-        return jsonify(result)
-    except Exception as e:
-        return jsonify({"status": "decode error", "error": str(e)})
 
 
 @app.route("/pick-folder")
