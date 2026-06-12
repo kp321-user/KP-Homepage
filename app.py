@@ -465,8 +465,10 @@ def convert():
     cookies_file = None
 
     try:
-        cookies_content = os.getenv("YOUTUBE_COOKIES")
-        if cookies_content:
+        cookies_b64 = os.getenv("YOUTUBE_COOKIES")
+        if cookies_b64:
+            import base64
+            cookies_content = base64.b64decode(cookies_b64).decode("utf-8")
             cf = tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False)
             cf.write(cookies_content)
             cf.close()
