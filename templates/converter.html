@@ -90,11 +90,14 @@
 
       document.getElementById("status").textContent = "Converting... please wait.";
 
+      const csrfResp = await fetch("/csrf-token");
+      const csrfData = await csrfResp.json();
+
       const formData = new FormData();
       const format = document.getElementById("format").value;
       formData.append("format", format);
       formData.append("url", url);
-      formData.append("csrf_token", "{{ csrf_token() }}");
+      formData.append("csrf_token", csrfData.csrf_token);
 
       const res = await fetch("/convert", {
         method: "POST",

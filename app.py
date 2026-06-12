@@ -6,7 +6,7 @@ import shutil
 from flask import Flask, redirect, render_template, request, jsonify, abort, send_file, after_this_request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
-from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import (
     LoginManager,
     UserMixin,
@@ -423,6 +423,12 @@ def view_page(slug):
 
 download_folder = {"path": os.path.expanduser("~\\Music")}
 download_history = []
+
+
+@app.route("/csrf-token")
+@login_required
+def csrf_token():
+    return jsonify({"csrf_token": generate_csrf()})
 
 
 @app.route("/pick-folder")
