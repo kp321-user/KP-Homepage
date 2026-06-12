@@ -116,7 +116,18 @@
         loadHistory();
       } else {
         let msg = "Something went wrong.";
-        try { const e = await res.json(); if (e.error) msg = "Error: " + e.error; } catch {}
+        try {
+          const e = await res.json();
+          if (e.error) {
+            if (e.error.includes("Sign in to confirm")) {
+              msg = "This video is protected by YouTube and can't be downloaded from a server.";
+            } else if (e.error.includes("not available")) {
+              msg = "This video format is not available for download.";
+            } else {
+              msg = "Error: " + e.error;
+            }
+          }
+        } catch {}
         document.getElementById("status").textContent = msg;
       }
     }
