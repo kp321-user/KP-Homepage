@@ -474,19 +474,15 @@ def convert():
             cf.close()
             cookies_file = cf.name
 
-        extractor_args = {"youtube": {"player_client": ["ios"]}}
-
         if frmt == "mp4":
             ydl_opts = {
                 "format": "best",
                 "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
-                "extractor_args": extractor_args,
             }
         else:
             ydl_opts = {
-                "format": "bestaudio/best",
+                "format": "best",
                 "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
-                "extractor_args": extractor_args,
                 "postprocessors": [
                     {
                         "key": "FFmpegExtractAudio",
