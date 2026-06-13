@@ -21,6 +21,7 @@ Runs in debug mode on http://127.0.0.1:5000
 - `RENDER_DATABASE_URL` — needed only to run the sync scripts (`one_way_push_db.py` / `two_way_sync_db.py`)
 - `RENDER` — set to any value on Render; used to hide admin UI from public visitors
 - `YOUTUBE_COOKIES` — YouTube cookies as base64, set on Render; required for bot-protected videos
+- `ANTHROPIC_API_KEY` — required only for `extract_document.py`; authenticates requests to the Claude API
 
 ## Syncing local DB to Render
 ```
