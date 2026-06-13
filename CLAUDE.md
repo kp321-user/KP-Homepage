@@ -52,6 +52,8 @@ Render auto-deploys from `main` branch on GitHub push. Build command in Render d
 - `one_way_push_db.py` — main script to push local DB to Render (use this)
 - `two_way_sync_db.py` — backup bidirectional sync script
 - `extract_document.py` — uses Claude vision API to extract structured data from document images
+- `history_periods.py` — defines the era/period/phase taxonomy used by history page filters
+- `md_files/migrate_md.py` — bulk-writes markdown from `md_files/` into the DB (see Slug logic section)
 
 ## Known issues
 - Converter page (YouTube download) is live on Render. Some videos trigger bot detection due to datacenter IP — no fix short of residential proxies. YouTube cookies stored as base64 in `YOUTUBE_COOKIES` env var on Render.
