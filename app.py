@@ -3,9 +3,17 @@ import markdown
 import re
 import tempfile
 import shutil
-from flask import Flask, redirect, render_template, request, jsonify, abort, send_file, after_this_request
+from flask import (
+    Flask,
+    redirect,
+    render_template,
+    request,
+    jsonify,
+    abort,
+    send_file,
+    after_this_request,
+)
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 from flask_login import (
     LoginManager,
@@ -13,13 +21,11 @@ from flask_login import (
     login_user,
     logout_user,
     login_required,
-    current_user,
 )
 from datetime import datetime, timezone
 import requests
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
-from flask import send_file
 import yt_dlp
 from history_periods import HISTORY_PERIODS
 from urllib.parse import urlparse
@@ -27,13 +33,18 @@ from urllib.parse import urlparse
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+print(f"BASE_DIR: {BASE_DIR}")  # ------------------------------------
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dev-secret-key")
 
-database_url = os.environ.get("DATABASE_URL", "sqlite:///kp_db_2026.db")
+database_url = os.environ.get(
+    "DATABASE_URL", "sqlite:///" + os.path.join(BASE_DIR, "instance", "kp_db_2026.db")
+)
 if database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
+print(f"DATABASE_URL: {database_url}")  # ------------------------------------
+
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -76,6 +87,7 @@ class HistoryPage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200))
     slug = db.Column(db.String(200), unique=True)
+    is_read = db.Column(db.Boolean, default=False)
     era = db.Column(db.String(200))
     period = db.Column(db.String(200))
     phase = db.Column(db.String(200))
@@ -119,6 +131,7 @@ def history():
     selected_era = request.args.get("era", "")
     selected_period = request.args.get("period", "")
     selected_phase = request.args.get("phase", "")
+    selected_is_read = request.args.get("is_read", "")
 
     query = HistoryPage.query
     if selected_era:
@@ -127,7 +140,8 @@ def history():
         query = query.filter_by(period=selected_period)
     if selected_phase:
         query = query.filter_by(phase=selected_phase)
-
+    if selected_is_read != "":
+        query = query.filter_by(is_read=selected_is_read == "true")
     if sort == "title":
         pages = query.order_by(HistoryPage.title.asc()).all()
     elif sort == "last_modified":
@@ -145,6 +159,7 @@ def history():
         selected_era=selected_era,
         selected_period=selected_period,
         selected_phase=selected_phase,
+        selected_is_read=selected_is_read,
         periods=HISTORY_PERIODS,
     )
 
@@ -156,6 +171,21 @@ def make_slug(title):
     title = re.sub(r"\s+", "-", title)
     title = re.sub(r"-+", "-", title)
     return title
+
+
+@app.route("/toggle-hpage-read/<int:id>", methods=["POST"])
+@login_required
+def toggle_hpage_read(
+    id,
+):  # captures the article's id from the URL, e.g. /toggle-hpage-read/42
+    page = db.get_or_404(
+        HistoryPage, id
+    )  # fetches that article from the DB, returns a 404 if it doesn't exist
+    page.is_read = (
+        not page.is_read
+    )  # toggles the is_read boolean (True becomes False, False becomes True)
+    db.session.commit()  # saves the change to the database
+    return jsonify({"is_read": page.is_read})
 
 
 @app.route("/llms")
@@ -431,8 +461,6 @@ def csrf_token():
     return jsonify({"csrf_token": generate_csrf()})
 
 
-
-
 @app.route("/pick-folder")
 @login_required
 def pick_folder():
@@ -443,7 +471,9 @@ def pick_folder():
         "root = tk.Tk(); root.withdraw(); root.wm_attributes('-topmost', 1); "
         "path = filedialog.askdirectory(); print(path, end='')"
     )
-    result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True)
+    result = subprocess.run(
+        [sys.executable, "-c", script], capture_output=True, text=True
+    )
     selected = result.stdout.strip()
 
     if selected:
@@ -455,7 +485,9 @@ def pick_folder():
 @app.route("/converter")
 @login_required
 def converter():
-    return render_template("converter.html", folder=download_folder["path"], render_env=os.getenv("RENDER"))
+    return render_template(
+        "converter.html", folder=download_folder["path"], render_env=os.getenv("RENDER")
+    )
 
 
 @app.route("/convert", methods=["POST"])
@@ -470,6 +502,7 @@ def convert():
         cookies_b64 = os.getenv("YOUTUBE_COOKIES")
         if cookies_b64:
             import base64
+
             cookies_content = base64.b64decode(cookies_b64).decode("utf-8")
             cf = tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False)
             cf.write(cookies_content)

@@ -78,9 +78,16 @@
         {% endfor %}
       {% endif %}
     </select>
+    
+    <select name="is_read" onchange="this.form.submit()">
+      <option value="">All</option>
+      <option value="false" {% if selected_is_read == "false" %}selected{% endif %}>Unread</option>
+      <option value="true" {% if selected_is_read == "true" %}selected{% endif %}>Read</option>
+    </select> 
+  
   </div>
 
-  {% if selected_era or selected_period or selected_phase %}
+  {% if selected_era or selected_period or selected_phase or selected_is_read %}
     <div>
       <a href="/history">Clear Filters</a>
     </div>
@@ -108,14 +115,20 @@
             </div>
           </div>
           {% if not render_env %}
-            <div class="actions-menu">
-              <button class="more-btn" onclick="toggleMenu(event, this)">⋮</button>
-              <div class="dropdown">
-                <a href="/edit-hpage/{{ page.id }}">✏️ Edit</a>
-                <form action="/delete-hpage/{{ page.id }}" method="POST">
-                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                  <button type="submit">🗑 Delete</button>
-                </form>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox"
+                {% if page.is_read %}checked{% endif %}
+                onchange="toggleRead({{ page.id }}, this)"
+                title="Mark as read">
+              <div class="actions-menu">
+                <button class="more-btn" onclick="toggleMenu(event, this)">⋮</button>
+                <div class="dropdown">
+                  <a href="/edit-hpage/{{ page.id }}">✏️ Edit</a>
+                  <form action="/delete-hpage/{{ page.id }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" onclick="return confirm('Delete this article?')">🗑 Delete</button>
+                  </form>
+                </div>
               </div>
             </div>
           {% endif %}
@@ -144,6 +157,17 @@
     document.addEventListener("click", function() {
       document.querySelectorAll(".dropdown.open").forEach(d => d.classList.remove("open"));
     });
+    
+    function toggleRead(id, checkbox) {
+      fetch(`/toggle-hpage-read/${id}`, {
+        method: "POST",
+        headers: { "X-CSRFToken": "{{ csrf_token() }}" }
+      })
+      .then(res => res.json())
+      .then(data => { checkbox.checked = data.is_read; })
+      .catch(() => { checkbox.checked = !checkbox.checked; }); // revert on error
+    }
+  
   </script>
 
 </body>
