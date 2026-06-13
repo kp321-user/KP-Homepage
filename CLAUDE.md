@@ -32,8 +32,10 @@ Pushes local SQLite to Render PostgreSQL. This is the main sync script. `two_way
 Filename `01_foo_bar.md` → strip first 3 chars → remove `.md` → replace `_` with `-` → lowercase → `foo-bar`. Also tries appending `-overview` if no direct match.
 
 ## Key models
+Both models are independent — no foreign keys or SQLAlchemy relationships between them.
+
 - `Link` — url, title, thumbnail, category, type, date_added, last_modified
-- `HistoryPage` — title, slug, era, period, phase, start_year, content (markdown), date_added, last_modified
+- `HistoryPage` — title, slug (unique), era, period, phase, start_year, content (markdown), date_added, last_modified
 
 ## Templates
 - `history_pages/obsolete_htmls/` — old static HTML files, superseded by DB-driven `view_hpage.html`
