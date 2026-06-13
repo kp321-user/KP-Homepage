@@ -94,6 +94,10 @@
   {% endif %}
 </form>
 
+  <p id="article-count" style="font-size: 13px; color: #8b949e; margin-top: 4px; margin-bottom: 8px;">
+    Showing {{ history_pages|length }} article{{ 's' if history_pages|length != 1 else '' }}
+  </p>
+
   {% if history_pages %}
     <div class="link-list">
       {% for page in history_pages %}
@@ -142,10 +146,14 @@
   <script>
     function filterArticles() {
       const query = document.getElementById("search-bar").value.toLowerCase();
+      let visible = 0;
       document.querySelectorAll(".link-item").forEach(item => {
-        const text = item.querySelector(".link-title").textContent.toLowerCase();
-        item.style.display = text.includes(query) ? "" : "none";
+        const matches = item.querySelector(".link-title").textContent.toLowerCase().includes(query);
+        item.style.display = matches ? "" : "none";
+        if (matches) visible++;
       });
+      document.getElementById("article-count").textContent =
+        `Showing ${visible} ${visible === 1 ? "article" : "articles"}`;
     }
 
     function toggleMenu(event, btn) {
