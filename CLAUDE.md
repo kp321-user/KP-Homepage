@@ -52,7 +52,7 @@ Render auto-deploys from `main` branch on GitHub push. Build command in Render d
 - `Procfile` — tells Render to serve with gunicorn
 - `one_way_push_db.py` — main script to push local DB to Render (use this)
 - `two_way_sync_db.py` — backup bidirectional sync script
-- `extract_document.py` — uses Claude vision API to extract structured data from document images
+- `extract_document.py` — CLI/importable tool that sends a document image (local file or URL) to Claude Opus vision API and extracts all text, numbers, dates, tables, etc. Supports plain text output or `--json` for structured JSON. Can process multiple images in one call. Auto-resizes images that exceed the 10MB API limit. Requires `ANTHROPIC_API_KEY` in `.env`.
 - `history_periods.py` — defines the era/period/phase taxonomy used by history page filters
 - `md_files/migrate_md.py` — bulk-writes markdown from `md_files/` into the DB (see Slug logic section)
 
