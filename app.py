@@ -181,10 +181,9 @@ def toggle_hpage_read(
     page = db.get_or_404(
         HistoryPage, id
     )  # fetches that article from the DB, returns a 404 if it doesn't exist
-    page.is_read = (
-        not page.is_read
-    )  # toggles the is_read boolean (True becomes False, False becomes True)
-    db.session.commit()  # saves the change to the database
+    page.is_read = not page.is_read
+    page.last_modified = datetime.now(timezone.utc)
+    db.session.commit()
     return jsonify({"is_read": page.is_read})
 
 
