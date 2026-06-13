@@ -87,7 +87,7 @@ class HistoryPage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200))
     slug = db.Column(db.String(200), unique=True)
-    is_read = db.Column(db.Boolean, default=False)
+    is_read = db.Column(db.Integer, default=0)
     era = db.Column(db.String(200))
     period = db.Column(db.String(200))
     phase = db.Column(db.String(200))
@@ -141,7 +141,7 @@ def history():
     if selected_phase:
         query = query.filter_by(phase=selected_phase)
     if selected_is_read != "":
-        query = query.filter_by(is_read=selected_is_read == "true")
+        query = query.filter_by(is_read=1 if selected_is_read == "true" else 0)
     if sort == "title":
         pages = query.order_by(HistoryPage.title.asc()).all()
     elif sort == "last_modified":
@@ -181,7 +181,7 @@ def toggle_hpage_read(
     page = db.get_or_404(
         HistoryPage, id
     )  # fetches that article from the DB, returns a 404 if it doesn't exist
-    page.is_read = not page.is_read
+    page.is_read = 0 if page.is_read else 1
     page.last_modified = datetime.now(timezone.utc)
     db.session.commit()
     return jsonify({"is_read": page.is_read})
