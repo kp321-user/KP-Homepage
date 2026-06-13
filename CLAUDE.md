@@ -39,16 +39,17 @@ Filename `01_foo_bar.md` → strip first 3 chars → remove `.md` → replace `_
 - History articles are stored as markdown in the DB and rendered at `/hpages/<slug>`
 
 ## Deployment
-Render auto-deploys from `main` branch on GitHub push.
+Render auto-deploys from `main` branch on GitHub push. Build command in Render dashboard is `./build.sh`, which installs `ffmpeg` (required by the converter page) and runs `pip install -r requirements.txt`.
 
 ## Key files
 - `app.py` — main Flask app, all routes
 - `sync_db.py` — bidirectional SQLite/PostgreSQL sync
 - `templates/` — Jinja2 HTML templates
 - `md_files/` — source markdown for history articles
+- `build.sh` — Render build script; installs ffmpeg and Python deps
 
 ## Known issues
-- YouTube-to-MP3 route must NEVER be pushed to Render
+- Converter page (YouTube download) is live on Render. Some videos trigger bot detection due to datacenter IP — no fix short of residential proxies. YouTube cookies stored as base64 in `YOUTUBE_COOKIES` env var on Render.
 
 ## Current active work
 - Nothing in progress
