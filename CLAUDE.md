@@ -76,6 +76,8 @@ Render auto-deploys from `main` branch on GitHub push. Build command in Render d
 Static template pages served at fixed routes — no DB involvement:
 - `/python_notes`, `/github_notes`, `/beautifulsoup_notes`, `/llms`, `/java-notes`
 
+Generated with Pandoc from source documents. To regenerate, convert the source file with Pandoc and drop the output into `templates/`.
+
 ## Known issues
 - Converter page (YouTube download) is live on Render. Some videos trigger bot detection due to datacenter IP — no fix short of residential proxies. YouTube cookies stored as base64 in `YOUTUBE_COOKIES` env var on Render.
 - `/pick-folder` uses tkinter to open a GUI folder picker — only works locally. The converter template hides it on Render.
