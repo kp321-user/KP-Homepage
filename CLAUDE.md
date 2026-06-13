@@ -18,7 +18,7 @@ Runs in debug mode on http://127.0.0.1:5000
 - `SECRET_KEY` — Flask secret key
 - `ADMIN_USERNAME` / `ADMIN_PASSWORD` — login credentials
 - `DATABASE_URL` — set automatically by Render in production; omit locally to use SQLite
-- `RENDER_DATABASE_URL` — needed only to run `sync_db.py`
+- `RENDER_DATABASE_URL` — needed only to run the sync scripts (`one_way_push_db.py` / `two_way_sync_db.py`)
 - `RENDER` — set to any value on Render; used to hide admin UI from public visitors
 - `YOUTUBE_COOKIES` — YouTube cookies as base64, set on Render; required for bot-protected videos
 
@@ -44,7 +44,6 @@ Render auto-deploys from `main` branch on GitHub push. Build command in Render d
 
 ## Key files
 - `app.py` — main Flask app, all routes
-- `sync_db.py` — bidirectional SQLite/PostgreSQL sync
 - `templates/` — Jinja2 HTML templates
 - `md_files/` — source markdown for history articles
 - `build.sh` — Render build script; installs ffmpeg and Python deps
