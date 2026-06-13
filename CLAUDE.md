@@ -54,6 +54,22 @@ Render auto-deploys from `main` branch on GitHub push. Build command in Render d
 - `history_periods.py` — defines the era/period/phase taxonomy used by history page filters
 - `md_files/migrate_md.py` — bulk-writes markdown from `md_files/` into the DB (see Slug logic section)
 
+## Routes
+| Route | Auth | Description |
+|---|---|---|
+| `/` | No | Home page |
+| `/links` | No | Links page (filterable by category/type) |
+| `/add-link` | Yes | Add a new link |
+| `/edit-link/<id>` | Yes | Edit a link |
+| `/delete-link/<id>` | Yes | Delete a link |
+| `/history` | No | History articles list (filterable, sortable) |
+| `/hpages/<slug>` | No | View a history article |
+| `/add-hpage` | Yes | Add a history article |
+| `/edit-hpage/<id>` | Yes | Edit a history article |
+| `/delete-hpage/<id>` | Yes | Delete a history article |
+| `/converter` | Yes | YouTube download page (mp3/mp4) |
+| `/login` `/logout` | — | Auth |
+
 ## Notes pages
 Static template pages served at fixed routes — no DB involvement:
 - `/python_notes`, `/github_notes`, `/beautifulsoup_notes`, `/llms`, `/java-notes`
