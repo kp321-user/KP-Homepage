@@ -114,7 +114,7 @@
             </small>
             </div>
           </div>
-          {% if not render_env %}
+          {% if current_user.is_authenticated %}
             <div style="display: flex; align-items: center; gap: 8px;">
               <input type="checkbox"
                 {% if page.is_read %}checked{% endif %}
