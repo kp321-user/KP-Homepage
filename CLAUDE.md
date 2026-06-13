@@ -55,8 +55,13 @@ Render auto-deploys from `main` branch on GitHub push. Build command in Render d
 - `history_periods.py` — defines the era/period/phase taxonomy used by history page filters
 - `md_files/migrate_md.py` — bulk-writes markdown from `md_files/` into the DB (see Slug logic section)
 
+## Notes pages
+Static template pages served at fixed routes — no DB involvement:
+- `/python_notes`, `/github_notes`, `/beautifulsoup_notes`, `/llms`, `/java-notes`
+
 ## Known issues
 - Converter page (YouTube download) is live on Render. Some videos trigger bot detection due to datacenter IP — no fix short of residential proxies. YouTube cookies stored as base64 in `YOUTUBE_COOKIES` env var on Render.
+- `/pick-folder` uses tkinter to open a GUI folder picker — only works locally. The converter template hides it on Render.
 
 ## Current active work
 - Nothing in progress
