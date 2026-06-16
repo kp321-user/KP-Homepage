@@ -106,10 +106,20 @@
 
       if (res.ok) {
         const blob = await res.blob();
+
+        // Extract filename from response header
+        const disposition = res.headers.get("Content-Disposition");
+        console.log("Content-Disposition:", res.headers.get("Content-Disposition"));
+        let filename = "download";
+        if (disposition) {
+          const match = disposition.match(/filename\*?=(?:UTF-8'')?["']?([^"';\n]+)["']?/i);
+          if (match) filename = decodeURIComponent(match[1]);
+        }
+
         const downloadUrl = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = downloadUrl;
-        a.download = "";
+        a.download = filename;
         a.click();
         URL.revokeObjectURL(downloadUrl);
         document.getElementById("status").textContent = "Done! Check your downloads.";

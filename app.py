@@ -512,11 +512,13 @@ def convert():
             ydl_opts = {
                 "format": "best",
                 "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
+                "noplaylist": True,
             }
         else:
             ydl_opts = {
                 "format": "best",
                 "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
+                "noplaylist": True,
                 "postprocessors": [
                     {
                         "key": "FFmpegExtractAudio",
@@ -544,6 +546,7 @@ def convert():
             shutil.rmtree(tmp_dir, ignore_errors=True)
             if cookies_file:
                 os.unlink(cookies_file)
+            response.headers["Access-Control-Expose-Headers"] = "Content-Disposition"
             return response
 
         download_history.append(title)
