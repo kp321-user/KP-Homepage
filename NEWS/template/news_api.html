@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='darkstyle.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon-32x32.png') }}" sizes="32x32" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='favicon-16x16.png') }}" sizes="16x16" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='favicon-256x256.png') }}" sizes="256x256" type="image/png">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+  <img src="{{ url_for('static', filename='favicon-256x256.png') }}" class="top-right-logo" alt="Logo">
+
+  <h1>News Search</h1>
+
+  <form action="/news" method="POST">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <label>Search</label><br>
+  <input type="text" id="title" name="title" placeholder="Enter search query..."><br>
+  <small>
+      Keywords or phrases to search for in the article title and body.<br>
+      Advanced search is supported:
+      <ul>
+          <li>Surround phrases with quotes for exact match: <code>"bitcoin price"</code></li>
+          <li>Prepend with <code>+</code> for must appear: <code>+bitcoin</code></li>
+          <li>Prepend with <code>-</code> for must not appear: <code>-bitcoin</code></li>
+          <li>Use <code>AND / OR / NOT</code> with optional grouping: <code>crypto AND (ethereum OR litecoin) NOT bitcoin</code></li>
+      </ul>
+  </small>
+<!-- https://newsapi.org/docs/endpoints/everything:
+apiKey
+------
+required. Alternatively you can provide this via the X-Api-Key HTTP header.
+
+q
+------
+Keywords or phrases to search for in the article title and body.
+  Advanced search is supported here:
+    Surround phrases with quotes (") for exact match.
+    Prepend words or phrases that must appear with a + symbol. Eg: +bitcoin
+    Prepend words that must not appear with a - symbol. Eg: -bitcoin
+    Alternatively you can use the AND / OR / NOT keywords, and optionally group these with parenthesis. Eg: crypto AND (ethereum OR litecoin) NOT bitcoin.
+  The complete value for q must be URL-encoded. Max length: 500 chars.q Keywords or phrases to search for in the article title and body.
+
+searchIn
+--------
+The fields to restrict your q search to.
+  The possible options are:
+    title
+    description
+    content
+  Multiple options can be specified by separating them with a comma, for example: title,content.
+
+  This parameter is useful if you have an edge case where searching all the fields is not giving the desired outcome, but generally you should not need to set this.
+
+  Default: all fields are searched.
+
+sources
+-------
+A comma-seperated string of identifiers (maximum 20) for the news sources or blogs you want headlines from. Use the /sources endpoint to locate these programmatically or look at the sources index.
+
+domains
+-------
+A comma-seperated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to restrict the search to.
+
+excludeDomains
+--------------
+  A comma-seperated string of domains (eg bbc.co.uk, techcrunch.com, engadget.com) to remove from the results.
+
+  from: A date and optional time for the oldest article allowed. This should be in ISO 8601 format (e.g. 2026-06-18 or 2026-06-18T21:31:38)
+    Default: the oldest according to your plan.
+
+  to: A date and optional time for the newest article allowed. This should be in ISO 8601 format (e.g. 2026-06-18 or 2026-06-18T21:31:38)
+    Default: the newest according to your plan.
+
+  language: The 2-letter ISO-639-1 code of the language you want to get headlines for. Possible options: ardeenesfrheitnlnoptrusvudzh.
+    Default: all languages returned.
+
+  sortBy: The order to sort the articles in. Possible options: relevancy, popularity, publishedAt.
+    relevancy = articles more closely related to q come first.
+    popularity = articles from popular sources and publishers come first.
+    publishedAt = newest articles come first.
+    Default: publishedAt
+
+  pageSize: int. The number of results to return per page.
+    Default: 100. Maximum: 100.
+
+  page: int. Use this to page through the results.
+    Default: 1.
+
+    <label>Date</label><br>
+    <input type="date" id="date" name="date"><br><br>
+
+    <label>Category</label><br>
+    <select name="category" id="category-select" onchange="handleNewOption(this, 'category')">
+      {% for cat in categories %}
+        <option value="{{ cat }}" {% if link is defined and link.category == cat %}selected{% endif %}>{{ cat }}</option>
+      {% endfor %}
+      <option value="__new__">+ Add new category...</option>
+    </select>
+    <input type="text" id="category-new" name="category-new" placeholder="New category name" style="display:none; margin-top: 6px;"><br><br>
+    
+    <label>Type</label><br>
+    <select name="type" id="type-select" onchange="handleNewOption(this, 'type')">
+      {% for t in types %}
+        <option value="{{ t }}" {% if link is defined and link.type == t %}selected{% endif %}>{{ t }}</option>
+      {% endfor %}
+      <option value="__new__">+ Add new type...</option>
+    </select>
+    <input type="text" id="type-new" name="type-new" placeholder="New type name" style="display:none; margin-top: 6px;"><br><br>
+    
+-->
+
+    <button type="submit">Search</button>
+    <a href="/articles" class="btn btn-cancel">Cancel</a>
+
+  </form>
+
+  <script>
+  document.getElementById("url").addEventListener("blur", function() {
+    const url = this.value;
+    if (!url) return;
+
+    document.getElementById("title").placeholder = "Fetching...";
+
+    fetch("/fetch-metadata", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: "url=" + encodeURIComponent(url)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.title) {
+        document.getElementById("title").value = data.title;
+      }
+      document.getElementById("title").placeholder = "Auto-fills when URL is entered";
+
+      let optionsHtml = '<p style="margin: 8px 0 4px 0; color: #8b949e; font-size: 14px;">Select thumbnail:</p><div style="display: flex; gap: 12px; flex-wrap: wrap;">';
+
+      if (data.thumbnail) {
+        optionsHtml += `
+          <div onclick="selectThumbnail('${data.thumbnail}', this)" 
+              style="cursor: pointer; border: 2px solid #30363d; border-radius: 6px; padding: 4px;">
+            <img src="${data.thumbnail}" style="max-width: 120px; max-height: 80px; border-radius: 4px; display: block;">
+            <small style="color: #8b949e;">og:image</small>
+          </div>`;
+      }
+
+      if (data.favicon) {
+        optionsHtml += `
+          <div onclick="selectThumbnail('${data.favicon}', this)" 
+              style="cursor: pointer; border: 2px solid #30363d; border-radius: 6px; padding: 4px;">
+            <img src="${data.favicon}" style="width: 64px; height: 64px; border-radius: 4px; display: block;">
+            <small style="color: #8b949e;">favicon</small>
+          </div>`;
+      }
+      if (data.favicon_direct) {
+        optionsHtml += `
+          <div onclick="selectThumbnail('${data.favicon_direct}', this)" 
+              style="cursor: pointer; border: 2px solid #30363d; border-radius: 6px; padding: 4px;">
+            <img src="${data.favicon_direct}" style="width: 64px; height: 64px; object-fit: contain; border-radius: 4px; display: block;">
+            <small style="color: #8b949e;">site icon</small>
+          </div>`;
+      }
+      optionsHtml += '</div>';
+      document.getElementById("thumbnail-preview").innerHTML = optionsHtml;
+
+      if (data.thumbnail) {
+        document.getElementById("thumbnail").value = data.thumbnail;
+      } else if (data.favicon) {
+        document.getElementById("thumbnail").value = data.favicon;
+      }
+    })
+    .catch(() => {
+      document.getElementById("title").placeholder = "Could not fetch — enter manually";
+    });
+  });
+
+  function selectThumbnail(url, element) {
+    document.getElementById("thumbnail").value = url;
+    document.querySelectorAll("#thumbnail-preview div").forEach(div => {
+      div.style.borderColor = "#30363d";
+    });
+    element.style.borderColor = "#58a6ff";
+  }
+</script>
+
+<script>
+  function handleNewOption(select, field) {
+    const newInput = document.getElementById(field + "-new");
+    if (select.value === "__new__") {
+      newInput.style.display = "block";
+      newInput.required = true;
+      newInput.focus();
+    } else {
+      newInput.style.display = "none";
+      newInput.required = false;
+    }
+  }
+
+  // Before form submits, replace __new__ with the typed value
+  document.querySelector("form").addEventListener("submit", function() {
+    ["category", "type"].forEach(function(field) {
+      const select = document.getElementById(field + "-select");
+      const newInput = document.getElementById(field + "-new");
+      if (select.value === "__new__" && newInput.value.trim()) {
+        select.innerHTML += `<option value="${newInput.value}" selected>${newInput.value}</option>`;
+        select.value = newInput.value;
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

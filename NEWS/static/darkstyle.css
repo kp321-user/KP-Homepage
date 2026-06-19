@@ -1,0 +1,469 @@
+/* ── Reset ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ── Base ── */
+body {
+    font-family: Calibri, sans-serif;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+    background-color: #0d1117;
+    color: #c9d1d9;
+    font-size: 18px;  /* regular text */
+}
+
+/* ── Headings ── */
+h1 {
+    color: #e6edf3;
+    border-bottom: 1px solid #30363d;
+    padding-top: 32px;
+    padding-bottom: 18px;
+    font-size: 32px;
+}
+
+h2 {
+    color: #e6edf3;
+    margin: 8px 0 4px 0;
+    font-size: 28px;
+}
+
+h3 {
+    color: #cdd9e5;
+    margin: 24px 0 8px 0;
+    font-size: 20px;
+}
+
+/* ── Paragraph ── */
+p {
+    line-height: 1.6;
+    margin-bottom: 16px;
+    color: #c9d1d9;
+    font-size: 18px;
+}
+
+/* ── Small ── */
+small {
+    display: block;
+    line-height: 1.2;
+    font-size: 14px;
+    color: #8b949e;
+}
+
+/* ── Links ── */
+a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #79c0ff;
+    text-decoration: underline;
+}
+
+b {
+    color: #58a6ff;
+    text-decoration: none;
+    margin: 40px 0 8px 0;
+    font-size: 22px;
+    line-height: 2.0;
+    /* border: 1px solid #30363d; */
+    padding: 8px 18px;
+    border-radius: 6px;
+}
+
+/* ── Horizontal rule ── */
+hr {
+    border: none;
+    border-top: 1px solid #30363d;
+}
+
+/* ── Lists ── */
+ul, ol {
+    padding-left: 24px;
+    line-height: 1.6;
+}
+
+li {
+    margin: 4px 0;
+    color: #c9d1d9;
+}
+
+
+/* ── Forms (global) ── */
+input, button, select {
+    font-family: inherit;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="number"],
+input[type="password"],
+select {
+    flex: 1;
+    padding: 8px;
+    font-size: 18px;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    background-color: #161b22;
+    color: #c9d1d9;
+}
+.filter-dropdowns select {
+    flex: 0;        /* stop stretching */
+    width: 180px;   /* same fixed width for both */
+    height: 38px;  /* adjust this */
+    padding: 4px 10px;
+}
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    margin: 18px 0;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #238636;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+button:hover {
+    background-color: #2ea44f;
+}
+
+/* ── Add Link button ── */
+.add-btn {
+    display: inline-block;
+    margin: 8px 0;
+}
+
+/* ── Button utility classes ── */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    border: none;
+    font-family: inherit;
+}
+
+.btn-primary {
+    background-color: #238636;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2ea44f;
+    text-decoration: none;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: #6e7681;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #8b949e;
+    text-decoration: none;
+    color: white;
+}
+
+/* ── Navigation bar ── */
+nav {
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d;
+    padding: 12px 20px;
+    margin: 0 0 32px 0;    /* ← no negative margins */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-flow: column;
+    grid-template-rows: repeat(8, auto);
+    gap: 0px 16px;
+    z-index: 100;
+    border-radius: 8px;
+}
+
+nav a {
+    color: #58a6ff;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 4px 0;
+    line-height: 1.2;
+}
+
+nav a:hover {
+    color: #79c0ff;
+    text-decoration: underline;
+}
+
+nav .site-title {
+    color: #8b949e;
+    font-size: 18px;
+}
+
+/* ── Tables ── */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0;
+    font-size: 18px;
+}
+
+th {
+    background-color: #161b22;
+    color: #e6edf3;
+    padding: 10px 14px;
+    text-align: left;
+    border: 1px solid #30363d;
+}
+
+td {
+    padding: 10px 14px;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+}
+
+tr:nth-child(even) {
+    background-color: #161b22;
+}
+
+/* ── Utility classes ── */
+.error {
+    color: #f85149;
+    background: #21262d;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #f8514940;
+}
+
+.back-link {
+    display: inline-block;
+    margin: 10px 0 20px 0;
+    color: #58a6ff;
+}
+
+/* ── Link list ── */
+.link-list {
+    margin-top: 2px;
+}
+
+.link-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+    border-bottom: 1px solid #30363d;
+}
+
+.link-info {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.link-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #e6edf3;
+}
+
+.link-url {
+    font-size: 14px;
+    color: #58a6ff;
+}
+
+.link-meta {
+    font-size: 14px;
+    color: #8b949e;
+    flex-basis: 100%;
+}
+
+.link-item small {
+    display: block;
+    line-height: 1.2;
+    color: #8b949e;
+}
+
+.link-item form {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 0;
+    flex-shrink: 0;
+}
+
+.top-right-logo {
+    position: absolute;
+    top: 2px;
+    right: 10px;
+    width: 60px;
+    height: auto;
+}
+/* ── Actions menu ── */
+.actions-menu {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.more-btn {
+    background: none;
+    border: none;
+    color: #8b949e;
+    font-size: 18px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: opacity 0.1s;
+}
+
+.more-btn:hover {
+    color: #c9d1d9;
+    background-color: #21262d;
+    border-radius: 4px;
+}
+
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    min-width: 120px;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.dropdown a,
+.dropdown button {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #c9d1d9;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.dropdown a:hover,
+.dropdown button:hover {
+    background-color: #21262d;
+    color: #e6edf3;
+}
+
+.dropdown.open {
+    display: block;
+}
+
+.dropdown form {
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ── Code blocks ── */
+div.sourceCode {
+    border-radius: 8px;
+    border: 1px solid #30363d;
+    margin: 18px 0;
+    overflow: hidden;
+    background-color: #161b22;
+    font-size: 18px;
+}
+
+div.sourceCode code {
+    background-color: transparent;
+    color: inherit;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+}
+
+pre.sourceCode {
+    margin: 0;
+    padding: 18px;
+    overflow-x: auto;
+    font-size: 18px;
+}
+
+/* ── Blockquotes ── */
+blockquote {
+    border-left: 3px solid #58a6ff;
+    margin: 18px 0;
+    padding: 8px 18px;
+    background-color: #161b22;
+    border-radius: 0 6px 6px 0;
+    color: #8b949e;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px #161b22 inset;
+    -webkit-text-fill-color: #c9d1d9;
+    border: 1px solid #30363d;
+}
+
+/* ── Syntax highlighting (Pandoc) ── */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.3; }
+pre > code.sourceCode > span:empty { height: 1.1em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen { div.sourceCode { overflow: auto; } }
+
+pre.numberSource code { counter-reset: source-line 0; }
+pre.numberSource code > span { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before {
+  content: counter(source-line);
+  position: relative; left: -1em; text-align: right; vertical-align: baseline;
+  border: none; display: inline-block;
+  -webkit-user-select: none; user-select: none;
+  padding: 0 4px; width: 4em;
+}
+pre.numberSource { margin-left: 3em; padding-left: 4px; }
+
+/* Token colors */
+code span.al { color: #ffcfaf; }   /* Alert */
+code span.an { color: #7f9f7f; font-weight: bold; }  /* Annotation */
+code span.bn { color: #dca3a3; }   /* BaseN */
+code span.cf { color: #f0dfaf; }   /* ControlFlow */
+code span.ch { color: #dca3a3; }   /* Char */
+code span.cn { color: #dca3a3; font-weight: bold; }  /* Constant */
+code span.co { color: #7f9f7f; }   /* Comment */
+code span.cv { color: #7f9f7f; font-weight: bold; }  /* CommentVar */
+code span.do { color: #7f9f7f; }   /* Documentation */
+code span.dt { color: #dfdfbf; }   /* DataType */
+code span.dv { color: #dcdccc; }   /* DecVal */
+code span.er { color: #c3bf9f; }   /* Error */
+code span.fl { color: #c0bed1; }   /* Float */
+code span.fu { color: #efef8f; }   /* Function */
+code span.in { color: #7f9f7f; font-weight: bold; }  /* Information */
+code span.kw { color: #f0dfaf; }   /* Keyword */
+code span.op { color: #f0efd0; }   /* Operator */
+code span.ot { color: #efef8f; }   /* Other */
+code span.pp { color: #ffcfaf; font-weight: bold; }  /* Preprocessor */
+code span.sc { color: #dca3a3; }   /* SpecialChar */
+code span.ss { color: #cc9393; }   /* SpecialString */
+code span.st { color: #cc9393; }   /* String */
+code span.vs { color: #cc9393; }   /* VerbatimString */
+code span.wa { color: #7f9f7f; font-weight: bold; }  /* Warning */
