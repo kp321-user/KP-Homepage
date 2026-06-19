@@ -19,7 +19,7 @@
   <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; border-bottom: 1px solid #30363d; margin-bottom: 0;">
     <h1 style="margin: 0; border-bottom: none; padding-bottom: 6px;">Welcome to the links page</h1>
     {% if current_user.is_authenticated %}
-      <a href="/add-link" class="add-btn"><button>+ Add Link</button></a>
+      <a href="/add-link" class="btn btn-primary add-btn">+ Add Link</a>
     {% endif %}
   </div>
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -84,7 +84,7 @@
                 <a href="/edit-link/{{ link.id }}"> ✏️ Edit</a>
                 <form action="/delete-link/{{ link.id }}" method="POST">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                  <button type="submit">🗑 Delete</button>
+                  <button type="submit" onclick="return confirm('Delete this article?')">🗑 Delete</button>
                 </form>
               </div>
             </div>  

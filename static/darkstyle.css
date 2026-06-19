@@ -146,6 +146,41 @@ button:hover {
     margin: 8px 0;
 }
 
+/* ── Button utility classes ── */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    text-decoration: none;
+    border: none;
+    font-family: inherit;
+}
+
+.btn-primary {
+    background-color: #238636;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2ea44f;
+    text-decoration: none;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: #6e7681;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #8b949e;
+    text-decoration: none;
+    color: white;
+}
+
 /* ── Navigation bar ── */
 nav {
     background-color: #161b22;
