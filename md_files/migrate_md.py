@@ -2,12 +2,12 @@ import os
 import sqlite3
 
 MD_SOURCE = "md_files"
-SQLITE_PATH = r"C:\Users\Ken\Python files\Link-DB\instance\kp_db_2026.db"
+SQLITE_PATH = r"C:/Users/Ken/CODE/Link-DB/instance/kp_db_2026.db"
 
 
 def filename_to_slug(filename):
-    name = filename[3:]           # strip first 3 chars (e.g. "01_")
-    name = name.replace(".md", "") # strip extension
+    name = filename[3:]  # strip first 3 chars (e.g. "01_")
+    name = name.replace(".md", "")  # strip extension
     name = name.replace("_", "-")  # underscores to hyphens
     name = name.lower()
     return name
@@ -48,7 +48,9 @@ def run():
     if unmatched:
         print(f"\nUNMATCHED ({len(unmatched)}) — skipped:")
         for filepath, slug in unmatched:
-            print(f"  {os.path.basename(filepath)} -> derived slug '{slug}' (no DB match)")
+            print(
+                f"  {os.path.basename(filepath)} -> derived slug '{slug}' (no DB match)"
+            )
 
     confirm = input(f"\nWrite content for {len(matched)} pages? (y/n): ")
     if confirm.lower() != "y":
@@ -61,8 +63,7 @@ def run():
         with open(filepath, "r", encoding="utf-8") as f:
             md_content = f.read()
         cursor.execute(
-            "UPDATE history_page SET content = ? WHERE id = ?",
-            (md_content, page_id)
+            "UPDATE history_page SET content = ? WHERE id = ?", (md_content, page_id)
         )
         updated += 1
 

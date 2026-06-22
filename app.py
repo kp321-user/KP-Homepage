@@ -125,6 +125,16 @@ def beautifulsoup_notes():
     return render_template("beautifulsoup_notes.html")
 
 
+@app.route("/streamlit")
+def streamlit():
+    return render_template("streamlit.html")
+
+
+@app.route("/venvinfo")
+def venvinfo():
+    return render_template("windows_paths_venvs_notes.html")
+
+
 @app.route("/history")
 def history():
     sort = request.args.get("sort", "date_added")

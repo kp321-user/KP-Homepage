@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:image" content="{{ url_for('static', filename='favicon-256x256.png', _external=True) }}">
+  <title>Windows Paths, Shells, and Virtual Environments</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='darkstyle.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+  <link rel="icon" href="{{ url_for('static', filename='favicon-32x32.png') }}" sizes="32x32" type="image/png">
+  <link rel="icon" href="{{ url_for('static', filename='favicon-16x16.png') }}" sizes="16x16" type="image/png">
+  <link rel="icon" href="{{ url_for('static', filename='favicon-256x256.png') }}" sizes="256x256" type="image/png">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <style>
+    pre { overflow-x: auto; padding: 0.75rem 1rem; border-radius: 6px; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    th, td { padding: 0.5rem 0.75rem; text-align: left; vertical-align: top; }
+    hr { border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 2rem 0; }
+    code { padding: 0.1rem 0.3rem; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <img src="{{ url_for('static', filename='favicon-256x256.png') }}" class="top-right-logo" alt="Logo">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    <a href="/" class="back-link">← Back Home</a>
+  </div>
+
+  <h1>Windows Paths, Shells, and Virtual Environments — Reference Notes</h1>
+
+  <h2>1. Path separators by context</h2>
+  <p>Windows itself uses backslash (<code>\</code>) natively, but different tools/languages handle it differently.</p>
+  <table>
+    <thead>
+      <tr><th>Context</th><th>Separator</th><th>Escape character</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Python string literal</td>
+        <td><code>\</code> is dangerous unless raw (<code>r"..."</code>) or escaped (<code>\\</code>)</td>
+        <td><code>\</code></td>
+      </tr>
+      <tr>
+        <td>bash / Git Bash / Linux (Render)</td>
+        <td><code>/</code> only</td>
+        <td><code>\</code></td>
+      </tr>
+      <tr>
+        <td><code>cmd.exe</code> / <code>.bat</code> files</td>
+        <td><code>\</code> (native); <code>/</code> often tolerated too</td>
+        <td><code>^</code> (not <code>\</code>)</td>
+      </tr>
+      <tr>
+        <td>PowerShell</td>
+        <td><code>\</code> or <code>/</code> both work</td>
+        <td><code>`</code> (backtick, not <code>\</code>)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Practical takeaway:</strong> in Python code, prefer <code>pathlib.Path</code> over hand-built strings — it automatically uses the correct separator for whatever OS the code runs on (Windows locally, Linux on Render), removing the need to think about this at all.</p>
+
+  <pre><code>from pathlib import Path
+p = Path("Users") / "Ken" / "Projects" / "KP-Homepage" / "app.py"</code></pre>
+
+  <p>VS Code's "Copy Relative Path" still uses OS-native separators (backslash on Windows) — it is not forward-slash by default.</p>
+
+  <hr>
+
+  <h2>2. <code>.bat</code> file basics</h2>
+  <ul>
+    <li>Comments: use <code>REM comment text</code> (always safe) or <code>:: comment text</code> (works on its own line, but breaks inside parenthesized blocks like <code>if (...)</code> since it's actually a malformed label, not a true comment).</li>
+    <li>No inline comments — <code>REM</code>/<code>::</code> only comment out a whole line.</li>
+    <li><code>start</code> launches a process in a new window without blocking the script. If quoting the command, use <code>start "" your-command</code> so <code>start</code> doesn't mistake the first quoted string for a window title.</li>
+    <li><code>call</code> is required when invoking another <code>.bat</code>/<code>.cmd</code> from within a script (e.g. <code>activate.bat</code>) — without <code>call</code>, control transfers in and never returns to run the rest of your script.</li>
+    <li>Add <code>pause</code> at the end of a launcher script so error messages don't vanish if the window auto-closes on failure.</li>
+  </ul>
+
+  <hr>
+
+  <h2>3. Pinning a <code>.bat</code> shortcut to the taskbar</h2>
+  <p>Windows only allows pinning actual executables/shortcuts to the taskbar — <code>.bat</code> files often don't show a "Pin to taskbar" option directly, especially on Windows 11.</p>
+
+  <p><strong>Fix:</strong> Edit the shortcut's <strong>Target</strong> to invoke <code>cmd.exe</code> directly, with the <code>.bat</code> as an argument:</p>
+  <pre><code>Target:    C:\Windows\System32\cmd.exe /c "C:\path\to\run.bat"
+Start in:  C:\path\to\</code></pre>
+  <p>Because the target is now <code>cmd.exe</code> (a real <code>.exe</code>), Windows treats it as pinnable.</p>
+
+  <p><strong>Fallback:</strong> copy the shortcut into the Start Menu programs folder, find it via Start search, then right-click <em>that</em> search result to pin — this works even when right-clicking the file directly offers nothing:</p>
+  <pre><code>C:\Users\&lt;user&gt;\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\</code></pre>
+
+  <hr>
+
+  <h2>4. Activating a venv — shell matters</h2>
+  <table>
+    <thead><tr><th>Shell</th><th>Activation command</th></tr></thead>
+    <tbody>
+      <tr><td><code>cmd.exe</code> / inside a <code>.bat</code></td><td><code>call "C:\path\to\venv\Scripts\activate.bat"</code></td></tr>
+      <tr><td>PowerShell</td><td><code>&amp; "C:\path\to\venv\Scripts\Activate.ps1"</code></td></tr>
+      <tr><td>Git Bash</td><td><code>source /c/path/to/venv/Scripts/activate</code></td></tr>
+    </tbody>
+  </table>
+
+  <ul>
+    <li>PowerShell's <code>&amp;</code> is the <strong>call operator</strong> — required when running a <em>quoted string</em> or path as a command, otherwise PowerShell just echoes/evaluates it as text instead of executing it.</li>
+    <li>PowerShell may block scripts by default (execution policy). Fix for current session only:
+      <pre><code>Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass</code></pre>
+    </li>
+    <li>A successful activation changes your prompt to show <code>(venv-name)</code> at the start of the line. If that doesn't appear, activation didn't actually happen.</li>
+  </ul>
+
+  <hr>
+
+  <h2>5. Why some bare commands work and others don't (PATH)</h2>
+  <p>Typing a bare command (<code>python</code>, <code>pip</code>, <code>streamlit</code>) only works if the corresponding <code>.exe</code> lives in a folder currently listed in the <strong>PATH</strong> environment variable. Windows searches PATH folders in order looking for a match.</p>
+  <ul>
+    <li><code>python</code> works system-wide because the Python install folder (e.g. <code>C:\Python314\</code>) is added to PATH at install time (if "Add to PATH" was checked).</li>
+    <li><code>pip</code> works the same way, but from the <code>Scripts</code> subfolder (<code>C:\Python314\Scripts\</code>), which must <em>also</em> be on PATH.</li>
+    <li>A venv's <code>Scripts</code> folder (e.g. <code>whisper-env\Scripts\</code>) is <strong>never</strong> added to PATH permanently. Activating a venv only <strong>temporarily prepends</strong> that folder to PATH for the current terminal session. Close the terminal (or don't activate) and that command stops being found — this is expected, not a bug.</li>
+    <li>There are actually two separate PATH lists in Windows: <strong>System</strong> PATH (applies to all users) and <strong>User</strong> PATH (applies only to the current user). Both are editable from the same "Edit environment variable" screen.</li>
+  </ul>
+
+  <p><strong>Decision on adding things to PATH manually:</strong> generally avoid adding a venv's Streamlit (or similar) to PATH for convenience. It reintroduces ambiguity about <em>which</em> installed copy a bare command will resolve to, especially once multiple venvs/installs exist. Calling the full executable path directly (see below) sidesteps PATH entirely and is more reliable.</p>
+
+  <hr>
+
+  <h2>6. Bypassing PATH/activation entirely — calling the executable directly</h2>
+  <p>Two equivalent ways to run an installed package without activating anything:</p>
+  <pre><code>"C:\path\to\venv\Scripts\python.exe" -m streamlit run app.py</code></pre>
+  <pre><code>"C:\path\to\venv\Scripts\streamlit.exe" run app.py</code></pre>
+  <ul>
+    <li><strong>Line 1:</strong> runs the venv's <code>python.exe</code> directly, and <code>-m streamlit</code> tells Python "find the installed <code>streamlit</code> package and execute its module entry point (<code>__main__.py</code>)" instead of running a file path.</li>
+    <li><strong>Line 2:</strong> runs <code>streamlit.exe</code>, a tiny launcher script <code>pip</code> auto-generates inside <code>Scripts\</code> when streamlit is installed. It's hardcoded to call that same venv's <code>python.exe</code> internally — functionally identical to Line 1, just shorter.</li>
+  </ul>
+  <p>Both fully bypass the need for activation or PATH changes, because you're telling Windows exactly which file to execute — no searching required.</p>
+
+  <hr>
+
+  <h2>7. Why direct-path calls still get the right packages (site-packages mechanics)</h2>
+  <ul>
+    <li>Every Python install (system, user-level, or venv) has its own <strong><code>site-packages</code></strong> folder — the actual on-disk location where <code>pip install X</code> copies a package's files.</li>
+    <li><code>import numpy</code> works by Python searching a list of folders (<code>sys.path</code>); <code>site-packages</code> is one of those folders.</li>
+    <li>Creating a venv (<code>python -m venv whisper-env</code>) generates a private, empty <code>site-packages</code> folder inside it (<code>whisper-env\Lib\site-packages\</code>), plus its own <code>python.exe</code> in <code>whisper-env\Scripts\</code>.</li>
+    <li>A small config file (<code>pyvenv.cfg</code>) in the venv's root tells that venv's <code>python.exe</code> to <strong>only</strong> look in its own <code>site-packages</code>, never the system one.</li>
+    <li>Therefore: isolation is determined by <strong>which <code>python.exe</code> you run</strong>, not by activation. Activation is just a PATH convenience so you can type a bare command — the isolation already exists the moment the venv folder is created.</li>
+    <li>This is why calling <code>whisper-env\Scripts\streamlit.exe</code> (or <code>whisper-env\Scripts\python.exe -m streamlit</code>) directly — with zero activation — still correctly finds everything installed inside that venv: the executable is permanently wired to that venv's own Python and <code>site-packages</code>.</li>
+  </ul>
+
+  <hr>
+
+  <h2>8. Recommended habit going forward</h2>
+  <p>Use a <code>run.bat</code> per project for consistency, whether or not the project uses a venv. Same filename (<code>run.bat</code>), same shape, every time — removes decision fatigue.</p>
+
+  <p><strong>Project WITH a venv:</strong></p>
+  <pre><code>@echo off
+cd /d "C:\path\to\project\"
+"C:\path\to\project\venv\Scripts\streamlit.exe" run app.py
+pause</code></pre>
+
+  <p><strong>Project WITHOUT a venv:</strong></p>
+  <pre><code>@echo off
+cd /d "C:\path\to\project\"
+streamlit run app.py
+pause</code></pre>
+
+  <p>Same structure either way (<code>cd</code> into project, then run) — only difference is a full venv path vs. a bare command. <code>.bat</code> is preferred over <code>.ps1</code> for this use case: simpler, double-click friendly, no execution-policy friction.</p>
+
+</body>
+</html>
