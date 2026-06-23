@@ -1,5 +1,7 @@
 import os
 import markdown
+import threading
+import uuid
 import re
 import tempfile
 import shutil
@@ -462,6 +464,114 @@ def view_page(slug):
 
 download_folder = {"path": os.path.expanduser("~\\Music")}
 download_history = []
+conversion_jobs = (
+    {}
+)  # job_id -> {status, percent, speed, eta, filepath, filename, error}
+
+
+def make_progress_hook(job_id):
+    def hook(d):
+        if d["status"] == "downloading":
+            total = d.get("total_bytes") or d.get("total_bytes_estimate")
+            downloaded = d.get("downloaded_bytes", 0)
+            percent = round((downloaded / total) * 100, 1) if total else None
+            conversion_jobs[job_id].update(
+                {
+                    "status": "downloading",
+                    "percent": percent,
+                    "speed": d.get("speed"),
+                    "eta": d.get("eta"),
+                }
+            )
+        elif d["status"] == "finished":
+            # Download done; if mp3, ffmpeg postprocessing starts next
+            conversion_jobs[job_id].update({"status": "processing", "percent": 100})
+
+    return hook
+
+
+def make_postprocessor_hook(job_id):
+    def hook(d):
+        # yt-dlp doesn't expose ffmpeg's internal percent here, just phase changes
+        if d["status"] == "started":
+            conversion_jobs[job_id].update({"status": "processing"})
+        elif d["status"] == "finished":
+            conversion_jobs[job_id].update({"status": "finalizing"})
+
+    return hook
+
+
+def run_conversion(job_id, url, frmt):
+    tmp_dir = tempfile.mkdtemp()
+    cookies_file = None
+
+    try:
+        cookies_b64 = os.getenv("YOUTUBE_COOKIES")
+        if cookies_b64:
+            import base64
+
+            cookies_content = base64.b64decode(cookies_b64).decode("utf-8")
+            cf = tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False)
+            cf.write(cookies_content)
+            cf.close()
+            cookies_file = cf.name
+
+        if frmt == "mp4":
+            ydl_opts = {
+                "format": "best",
+                "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
+                "noplaylist": True,
+                "progress_hooks": [make_progress_hook(job_id)],
+            }
+        else:
+            ydl_opts = {
+                "format": "best",
+                "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
+                "noplaylist": True,
+                "postprocessors": [
+                    {
+                        "key": "FFmpegExtractAudio",
+                        "preferredcodec": "mp3",
+                        "preferredquality": "192",
+                    }
+                ],
+                "progress_hooks": [make_progress_hook(job_id)],
+                "postprocessor_hooks": [make_postprocessor_hook(job_id)],
+            }
+
+        if cookies_file:
+            ydl_opts["cookiefile"] = cookies_file
+
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=True)
+            title = info.get("title", "Unknown")
+
+        files = os.listdir(tmp_dir)
+        if not files:
+            conversion_jobs[job_id] = {"status": "error", "error": "Download failed"}
+            shutil.rmtree(tmp_dir, ignore_errors=True)
+            return
+
+        filepath = os.path.join(tmp_dir, files[0])
+        download_history.append(title)
+
+        conversion_jobs[job_id].update(
+            {
+                "status": "done",
+                "percent": 100,
+                "filepath": filepath,
+                "filename": files[0],
+                "tmp_dir": tmp_dir,
+            }
+        )
+
+    except Exception as e:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
+        conversion_jobs[job_id] = {"status": "error", "error": str(e)}
+
+    finally:
+        if cookies_file and os.path.exists(cookies_file):
+            os.unlink(cookies_file)
 
 
 @app.route("/csrf-token")
@@ -504,69 +614,46 @@ def converter():
 def convert():
     url = request.form.get("url")
     frmt = request.form.get("format", "mp3")
-    tmp_dir = tempfile.mkdtemp()
-    cookies_file = None
 
-    try:
-        cookies_b64 = os.getenv("YOUTUBE_COOKIES")
-        if cookies_b64:
-            import base64
+    job_id = str(uuid.uuid4())
+    conversion_jobs[job_id] = {"status": "starting", "percent": 0}
 
-            cookies_content = base64.b64decode(cookies_b64).decode("utf-8")
-            cf = tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False)
-            cf.write(cookies_content)
-            cf.close()
-            cookies_file = cf.name
+    thread = threading.Thread(target=run_conversion, args=(job_id, url, frmt))
+    thread.start()
 
-        if frmt == "mp4":
-            ydl_opts = {
-                "format": "best",
-                "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
-                "noplaylist": True,
-            }
-        else:
-            ydl_opts = {
-                "format": "best",
-                "outtmpl": os.path.join(tmp_dir, "%(title)s.%(ext)s"),
-                "noplaylist": True,
-                "postprocessors": [
-                    {
-                        "key": "FFmpegExtractAudio",
-                        "preferredcodec": "mp3",
-                        "preferredquality": "192",
-                    }
-                ],
-            }
+    return jsonify({"job_id": job_id})
 
-        if cookies_file:
-            ydl_opts["cookiefile"] = cookies_file
 
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=True)
-            title = info.get("title", "Unknown")
+@app.route("/progress/<job_id>")
+@login_required
+def progress(job_id):
+    job = conversion_jobs.get(job_id)
+    if not job:
+        return jsonify({"status": "unknown"}), 404
+    # Don't leak the server filepath to the client
+    safe = {k: v for k, v in job.items() if k not in ("filepath", "tmp_dir")}
+    return jsonify(safe)
 
-        files = os.listdir(tmp_dir)
-        if not files:
-            return jsonify({"error": "Download failed"}), 500
 
-        filepath = os.path.join(tmp_dir, files[0])
+@app.route("/download/<job_id>")
+@login_required
+def download_result(job_id):
+    job = conversion_jobs.get(job_id)
+    if not job or job.get("status") != "done":
+        return jsonify({"error": "File not ready"}), 404
 
-        @after_this_request
-        def cleanup(response):
-            shutil.rmtree(tmp_dir, ignore_errors=True)
-            if cookies_file:
-                os.unlink(cookies_file)
-            response.headers["Access-Control-Expose-Headers"] = "Content-Disposition"
-            return response
+    filepath = job["filepath"]
+    filename = job["filename"]
+    tmp_dir = job["tmp_dir"]
 
-        download_history.append(title)
-        return send_file(filepath, as_attachment=True, download_name=files[0])
-
-    except Exception as e:
+    @after_this_request
+    def cleanup(response):
         shutil.rmtree(tmp_dir, ignore_errors=True)
-        if cookies_file:
-            os.unlink(cookies_file)
-        return jsonify({"error": str(e)}), 500
+        conversion_jobs.pop(job_id, None)
+        response.headers["Access-Control-Expose-Headers"] = "Content-Disposition"
+        return response
+
+    return send_file(filepath, as_attachment=True, download_name=filename)
 
 
 @app.route("/download-history")

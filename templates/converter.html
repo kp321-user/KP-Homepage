@@ -66,12 +66,21 @@
 
       <button onclick="convertVideo()">Download</button>
 
+      <!-- short status line, e.g. "Downloading..." / "Converting audio..." -->
       <div id="status"></div>
-    
+
+      <!-- progress bar widget: hidden until a conversion starts -->
+      <div class="progress-container" id="progress-container">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+        <div id="progress-text"></div>
+      </div>
+
       <h3>Download History</h3>
       <ul id="history-list"></ul>
     </div>
-  
+
   <script>
     async function pickFolder() {
       document.getElementById("status").textContent = "Opening folder picker...";
@@ -88,7 +97,16 @@
         return;
       }
 
-      document.getElementById("status").textContent = "Converting... please wait.";
+      const statusEl = document.getElementById("status");
+      const container = document.getElementById("progress-container");
+      const fill = document.getElementById("progress-fill");
+      const text = document.getElementById("progress-text");
+
+      statusEl.textContent = "Starting...";
+      container.style.display = "block";
+      fill.className = "progress-bar-fill";
+      fill.style.width = "0%";
+      text.textContent = "";
 
       const csrfResp = await fetch("/csrf-token");
       const csrfData = await csrfResp.json();
@@ -99,48 +117,114 @@
       formData.append("url", url);
       formData.append("csrf_token", csrfData.csrf_token);
 
-      const res = await fetch("/convert", {
+      const startRes = await fetch("/convert", {
         method: "POST",
         body: formData
       });
 
-      if (res.ok) {
-        const blob = await res.blob();
+      if (!startRes.ok) {
+        statusEl.textContent = "Failed to start conversion.";
+        container.style.display = "none";
+        return;
+      }
 
-        // Extract filename from response header
-        const disposition = res.headers.get("Content-Disposition");
-        console.log("Content-Disposition:", res.headers.get("Content-Disposition"));
-        let filename = "download";
-        if (disposition) {
-          const match = disposition.match(/filename\*?=(?:UTF-8'')?["']?([^"';\n]+)["']?/i);
-          if (match) filename = decodeURIComponent(match[1]);
+      const { job_id } = await startRes.json();
+      pollProgress(job_id);
+    }
+
+    async function pollProgress(jobId) {
+      const fill = document.getElementById("progress-fill");
+      const text = document.getElementById("progress-text");
+      const statusEl = document.getElementById("status");
+      const container = document.getElementById("progress-container");
+
+      const res = await fetch(`/progress/${jobId}`);
+      const data = await res.json();
+
+      if (data.status === "downloading") {
+        statusEl.textContent = "Downloading...";
+        fill.className = "progress-bar-fill";
+        if (data.percent != null) {
+          fill.style.width = data.percent + "%";
+          const speed = data.speed ? (data.speed / 1024).toFixed(0) + " KB/s" : "";
+          const eta = data.eta != null ? `ETA ${data.eta}s` : "";
+          text.textContent = `${data.percent}% ${speed} ${eta}`.trim();
+        } else {
+          fill.className = "progress-bar-fill indeterminate";
+          text.textContent = "Downloading...";
         }
+        setTimeout(() => pollProgress(jobId), 1000);
 
-        const downloadUrl = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = downloadUrl;
-        a.download = filename;
-        a.click();
-        URL.revokeObjectURL(downloadUrl);
-        document.getElementById("status").textContent = "Done! Check your downloads.";
-        loadHistory();
-      } else {
+      } else if (data.status === "processing" || data.status === "finalizing") {
+        statusEl.textContent = "Converting audio...";
+        fill.className = "progress-bar-fill indeterminate";
+        text.textContent = "Processing with ffmpeg, this can take a moment...";
+        setTimeout(() => pollProgress(jobId), 1000);
+
+      } else if (data.status === "starting") {
+        statusEl.textContent = "Starting...";
+        setTimeout(() => pollProgress(jobId), 1000);
+
+      } else if (data.status === "done") {
+        fill.className = "progress-bar-fill";
+        fill.style.width = "100%";
+        text.textContent = "Done.";
+        statusEl.textContent = "Finishing up download...";
+        await downloadFinishedFile(jobId);
+
+      } else if (data.status === "error") {
         let msg = "Something went wrong.";
-        try {
-          const e = await res.json();
-          if (e.error) {
-            if (e.error.includes("Sign in to confirm")) {
-              msg = "This video is protected by YouTube and can't be downloaded from a server.";
-            } else if (e.error.includes("not available")) {
-              msg = "This video format is not available for download.";
-            } else {
-              msg = "Error: " + e.error;
-            }
+        if (data.error) {
+          if (data.error.includes("Sign in to confirm")) {
+            msg = "This video is protected by YouTube and can't be downloaded from a server.";
+          } else if (data.error.includes("not available")) {
+            msg = "This video format is not available for download.";
+          } else {
+            msg = "Error: " + data.error;
           }
-        } catch {}
-        document.getElementById("status").textContent = msg;
+        }
+        statusEl.textContent = msg;
+        container.style.display = "none";
+
+      } else {
+        statusEl.textContent = "Lost track of this job.";
+        container.style.display = "none";
       }
     }
+
+    async function downloadFinishedFile(jobId) {
+      const statusEl = document.getElementById("status");
+      const container = document.getElementById("progress-container");
+
+      const res = await fetch(`/download/${jobId}`);
+      if (!res.ok) {
+        statusEl.textContent = "File wasn't ready or already cleaned up.";
+        container.style.display = "none";
+        return;
+      }
+
+      const blob = await res.blob();
+
+      // Extract filename from response header
+      const disposition = res.headers.get("Content-Disposition");
+      let filename = "download";
+      if (disposition) {
+        const match = disposition.match(/filename\*?=(?:UTF-8'')?["']?([^"';\n]+)["']?/i);
+        if (match) filename = decodeURIComponent(match[1]);
+      }
+
+      const downloadUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(downloadUrl);
+
+      statusEl.textContent = "Done! Check your downloads.";
+      container.style.display = "none";
+      loadHistory();
+    }
+
     async function loadHistory() {
       const res = await fetch("/download-history");
       const data = await res.json();
