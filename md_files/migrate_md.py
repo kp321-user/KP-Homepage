@@ -2,7 +2,7 @@ import os
 import sqlite3
 
 MD_SOURCE = "md_files"
-SQLITE_PATH = r"C:/Users/Ken/CODE/Link-DB/instance/kp_db_2026.db"
+SQLITE_PATH = r"C:/Users/Ken/CODE/HUB/instance/kp_db_2026.db"
 
 
 def filename_to_slug(filename):

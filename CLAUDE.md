@@ -1,4 +1,4 @@
-# Link-DB Project
+# HUB Project
 
 Flask web app serving a personal homepage with links, history articles, and notes pages.
 
